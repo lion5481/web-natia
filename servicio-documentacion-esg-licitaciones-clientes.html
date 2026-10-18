@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentación ambiental para clientes y licitaciones | LABAD</title>
+  <meta name="description" content="Prepara y organiza la documentación ambiental necesaria para responder a clientes, procesos de homologación y licitaciones." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="images/labad-logo.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --white: #FFFFFF;
+      --green: #1B4332;
+      --green-medium: #2D6A4F;
+      --green-pale: #E9F1EC;
+      --green-soft: #3E7A5C;
+      --gray: #F5F5F5;
+      --gray-border: #E4E2DE;
+      --charcoal: #1A1A1A;
+      --text-muted: #5C5C58;
+      --text-faint: #8A8883;
+      --surface: #F8FAF8;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--white);
+      color: var(--charcoal);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    h1, h2, h3, h4, p { margin: 0; }
+    button { font: inherit; }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+    }
+
+    .section { padding: 112px 0; }
+    @media (max-width: 900px) {
+      .section { padding: 76px 0; }
+    }
+
+    .bg-soft { background: var(--gray); }
+    .bg-deep { background: var(--green); }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 18px;
+    }
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 32px;
+      height: 1.5px;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin: 0 auto 52px;
+      text-align: center;
+    }
+    .section-title {
+      font-size: clamp(30px, 3.8vw, 42px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+    }
+    #problema .section-title {
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.06;
+      letter-spacing: -0.045em;
+    }
+    .section-sub {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 15px 30px;
+      border-radius: 3px;
+      font-size: 15.5px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--green);
+      color: var(--white);
+      box-shadow: 0 12px 24px -18px rgba(27, 67, 50, 0.85);
+    }
+    .btn-primary:hover {
+      background: var(--green-medium);
+      box-shadow: 0 18px 30px -18px rgba(27, 67, 50, 0.9);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--charcoal);
+      border-color: var(--charcoal);
+    }
+    .btn-secondary:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .btn-light {
+      background: var(--white);
+      color: var(--green);
+    }
+    .btn-light:hover {
+      background: var(--green-pale);
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+    }
+
+    header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px 0;
+      transition: padding 0.25s ease, box-shadow 0.25s ease;
+    }
+    header.scrolled {
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      padding: 14px 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--charcoal);
+    }
+    .nav-brand-logo { display: block; width: 140px; max-width: 100%; height: auto; flex: 0 0 auto; }
+    .logo span { color: var(--green); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    .nav-links a {
+      position: relative;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--charcoal);
+      padding-bottom: 3px;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--green);
+      transition: width 0.2s ease;
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+
+    .nav-cta-item { margin-left: 6px; }
+    .nav-cta { padding: 10px 22px; font-size: 14px; }
+    .nav-links a.nav-cta::after { display: none; }
+    .nav-links a.nav-cta,
+    .nav-links a.nav-cta:hover { color: var(--white) !important; }
+
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--charcoal);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 8px 0 18px;
+        box-shadow: 0 18px 28px -16px rgba(0,0,0,0.12);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+      }
+      .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .nav-links li { width: 100%; }
+      .nav-links a {
+        display: block;
+        padding: 14px 28px;
+      }
+      .nav-cta-item { margin-left: 0; padding: 10px 28px 4px; }
+      .nav-cta { display: block; text-align: center; }
+      .nav-toggle { display: block; }
+    }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-toggle { display: flex !important; align-items: center; gap: 6px; }
+    .dropdown-arrow { width: 14px; height: 14px; flex: 0 0 14px; transition: transform .2s ease; }
+    .nav-dropdown:hover .dropdown-arrow,
+    .nav-dropdown:focus-within .dropdown-arrow,
+    .nav-dropdown.active .dropdown-arrow { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      width: 320px;
+      padding: 8px;
+      border: 1px solid rgba(26,58,42,.1);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, -6px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s;
+      z-index: 1000;
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu,
+    .nav-dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .nav-links .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: var(--charcoal);
+    }
+    .nav-links .dropdown-item::after { display: none; }
+    .dropdown-item:hover { background: #f3f8f5; }
+    .dropdown-item-icon {
+      display: flex;
+      width: 36px;
+      height: 36px;
+      flex: 0 0 36px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: rgba(26,58,46,.07);
+      color: var(--green);
+    }
+    .dropdown-item-icon svg { width: 18px; height: 18px; }
+    .dropdown-item-text { display: flex; flex-direction: column; gap: 2px; }
+    .dropdown-item-text strong { color: #1a3a2e; font-size: .84rem; line-height: 1.25; }
+    .dropdown-item-text small { color: #71887b; font-size: .72rem; line-height: 1.3; }
+    .dropdown-item + .dropdown-item { border-top: 1px solid #f0f0ee; }
+    @media (max-width: 980px) {
+      .nav-links .nav-dropdown-toggle { display: flex; }
+      .dropdown-menu {
+        position: static;
+        display: none;
+        width: auto;
+        margin: 0 20px 8px;
+        transform: none;
+        border: 0;
+        background: #f3f8f5;
+        box-shadow: none;
+      }
+      .nav-dropdown.active .dropdown-menu { display: block; transform: none; }
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 126px;
+      padding-bottom: 62px;
+    }
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      gap: 62px;
+    }
+    .hero-copy, .hero-media { flex: 1; }
+    .hero-copy { max-width: 560px; }
+    .hero h1 {
+      font-size: clamp(38px, 5vw, 66px);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: var(--charcoal);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+    .hero-sub {
+      font-size: clamp(17px, 1.7vw, 22px);
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      max-width: 515px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .hero-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-faint);
+      font-size: 13.5px;
+    }
+    .hero-note .icon { width: 15px; height: 15px; color: var(--green); }
+
+    .hero-media {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .image-frame {
+      position: relative;
+      width: min(100%, 520px);
+    }
+    .image-shell {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(27,67,50,0.12);
+      box-shadow: 0 24px 60px -28px rgba(27,67,50,0.35);
+      background: #dfeae4;
+    }
+    .image-shell img {
+      width: 100%;
+      height: 100%;
+      max-height: 620px;
+      object-fit: cover;
+      display: block;
+    }
+    .image-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.04), rgba(27,67,50,0.08));
+      pointer-events: none;
+    }
+    .image-accent {
+      position: absolute;
+      left: -14px;
+      bottom: -14px;
+      width: 46%;
+      height: 44%;
+      border-left: 3px solid var(--green);
+      border-bottom: 3px solid var(--green);
+      border-bottom-left-radius: 18px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @media (max-width: 900px) {
+      .hero-inner { flex-direction: column; gap: 42px; }
+      .hero-copy { max-width: 100%; }
+      .hero { padding-top: 118px; }
+    }
+
+    .grid { display: grid; gap: 24px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    #que-hacemos .grid-2 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    @media (max-width: 980px) {
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-6 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #que-hacemos .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
+      #que-hacemos .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 16px;
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      border-color: var(--green);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 34px -24px rgba(27,67,50,0.45);
+    }
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--green-pale);
+      color: var(--green);
+      border-radius: 12px;
+      margin: 0 0 20px;
+    }
+    .card-icon .icon { width: 24px; height: 24px; }
+    .card h3 {
+      font-size: 18px;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      color: var(--charcoal);
+      font-weight: 800;
+      text-align: left;
+    }
+    .card p {
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--text-muted);
+      text-align: left;
+    }
+
+    .problem-quote {
+      margin-top: 30px;
+      text-align: center;
+      padding-top: 28px;
+      border-top: 1px solid var(--gray-border);
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.45;
+      font-weight: 600;
+      color: var(--charcoal);
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+    .timeline-step {
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 16px;
+      padding: 26px 18px 22px;
+      text-align: center;
+      min-height: 180px;
+    }
+    .timeline-step .step-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--green-pale);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-weight: 800;
+      font-size: 18px;
+      border: 1px solid rgba(27,67,50,0.15);
+    }
+    .timeline-step h3 {
+      font-size: 16px;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      font-weight: 800;
+      color: var(--charcoal);
+    }
+    .timeline-step p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+    @media (max-width: 900px) {
+      .timeline { grid-template-columns: 1fr; }
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .info-grid { grid-template-columns: 1fr; }
+    }
+    .info-card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 24px;
+      background: var(--green-pale);
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .info-card-header .card-icon {
+      margin: 0;
+      width: 44px;
+      height: 44px;
+    }
+    .info-card-header h3 {
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green);
+      font-weight: 800;
+    }
+    .info-card ul { padding: 14px 24px 22px; }
+    .info-card li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-border);
+      color: var(--charcoal);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .info-card li:last-child { border-bottom: none; }
+    .info-card li .icon {
+      width: 16px;
+      height: 16px;
+      margin-top: 3px;
+      color: var(--green-medium);
+      flex-shrink: 0;
+    }
+
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    #que-recibe-cliente .section-title { color: var(--white); }
+    @media (max-width: 900px) {
+      .deliverables-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .deliverables-grid { grid-template-columns: 1fr; }
+    }
+    .deliverable-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 28px 22px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    }
+    .deliverable-card:hover {
+      border-color: rgba(255,255,255,0.42);
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.12);
+    }
+    .deliverable-card .card-icon {
+      margin: 0 0 18px;
+      background: rgba(255,255,255,0.16);
+      color: #FFFFFF;
+    }
+    .deliverable-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: var(--white);
+      text-align: left;
+    }
+    .deliverable-card p {
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: #F0F7F3;
+      text-align: left;
+    }
+
+    .benefit-panel {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: start;
+      padding: 0;
+    }
+    @media (max-width: 900px) {
+      .benefit-panel { grid-template-columns: 1fr; }
+    }
+    .benefits-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 640px) {
+      .benefits-list { grid-template-columns: 1fr; }
+    }
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 12px;
+      padding: 18px 16px;
+    }
+    .benefit-item .icon {
+      color: var(--green-medium);
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+    }
+    .benefit-item strong {
+      display: block;
+      color: var(--charcoal);
+      font-size: 16px;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .benefit-item span {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .audience-box {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+    .audience-box h3 {
+      color: var(--charcoal);
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+    .audience-box ul {
+      list-style: disc;
+      padding-left: 18px;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .quote-box {
+      margin-top: 18px;
+      background: var(--green-pale);
+      border: 1px solid rgba(27,67,50,0.12);
+      border-radius: 10px;
+      padding: 18px 20px;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .packages-grid { grid-template-columns: 1fr; }
+    }
+    .package-card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 18px;
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .package-card.highlight {
+      border-color: var(--green);
+      box-shadow: 0 20px 30px -26px rgba(27,67,50,0.45);
+    }
+    .package-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--green-pale);
+      color: var(--green);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      width: fit-content;
+    }
+    .package-card h3 {
+      font-size: 30px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+      color: var(--charcoal);
+      font-weight: 800;
+    }
+    .package-card p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .package-list {
+      list-style: disc;
+      padding-left: 18px;
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+    .package-card .btn { margin-top: auto; }
+
+    .not-sure {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 18px;
+      color: var(--charcoal);
+      line-height: 1.7;
+    }
+    .not-sure strong {
+      display: block;
+      font-size: 30px;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .cta-panel {
+      background: var(--green);
+      color: var(--white);
+      border-radius: 16px;
+      padding: 54px 24px;
+      text-align: center;
+    }
+    .cta-panel h2 {
+      font-size: clamp(28px, 3.4vw, 42px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      font-weight: 800;
+      color: var(--white);
+    }
+    .cta-panel p {
+      max-width: 780px;
+      margin: 0 auto;
+      color: #d7e4dd;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .document-service {
+      --white: #FAFAF7;
+      --beige: #F1EDE4;
+      --gray: #F1EDE4;
+      --charcoal: #303632;
+      background: var(--white);
+      color: var(--charcoal);
+    }
+    .document-service .service-hero {
+      position: relative;
+      position: relative;
+      display: flex;
+      min-height: min(820px,92vh);
+      align-items: center;
+      overflow: hidden;
+      padding: 150px 0 100px;
+      background: var(--green);
+      color: var(--white);
+    }
+    .service-hero-media, .service-hero-shade { position: absolute; inset: 0; }
+    .service-hero-media { margin: 0; }
+    .service-hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 55%; }
+    .service-hero-shade { background: linear-gradient(90deg,rgba(15,34,26,.88) 0%,rgba(15,34,26,.68) 48%,rgba(15,34,26,.18) 100%); }
+    .service-hero-copy { position: relative; z-index: 1; max-width: 790px; }
+    .service-hero .eyebrow { color: #E2ECE6; }
+    .service-hero h1 { max-width: 780px; margin-bottom: 22px; color: var(--white); font-size: clamp(42px,4.3vw,60px); font-weight: 800; letter-spacing: -.045em; line-height: 1.02; }
+    .service-hero .hero-sub { max-width: 680px; margin-bottom: 30px; color: #F3F5F1; font-size: clamp(17px,1.5vw,19px); line-height: 1.7; }
+    .service-hero .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .document-service .btn-secondary-light { border-color: rgba(255,255,255,.78); background: transparent; color: var(--white); }
+    .document-service .btn-secondary-light:hover { background: rgba(255,255,255,.12); }
+    .document-service .editorial-section { padding: 110px 0; background: var(--white); }
+    .document-service .editorial-section.soft { background: var(--beige); }
+    .document-service .editorial-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,.92fr); align-items: center; gap: clamp(36px,7vw,96px); }
+    .document-service .editorial-grid.reverse { grid-template-columns: minmax(0,.92fr) minmax(0,1fr); }
+    .document-service .editorial-grid.reverse .editorial-copy { order: 2; }
+    .document-service .editorial-grid.reverse figure { order: 1; }
+    .document-service .editorial-copy { max-width: 650px; }
+    .document-service .editorial-copy h2 { margin-bottom: 20px; color: var(--charcoal); font-size: clamp(31px,4.1vw,48px); font-weight: 800; letter-spacing: -.03em; line-height: 1.12; }
+    .document-service .editorial-copy > p { color: var(--text-muted); font-size: 16.5px; line-height: 1.78; }
+    .document-service .editorial-copy > p + p { margin-top: 14px; }
+    .document-service .service-photo { overflow: hidden; border-radius: 4px; background: var(--green-pale); }
+    .document-service .service-photo img { width: 100%; aspect-ratio: 1.18 / 1; object-fit: cover; }
+    .document-service .section-intro { max-width: 760px; margin: 0 auto 48px; }
+    .document-service .section-intro .eyebrow { margin-bottom: 16px; }
+    .document-service .section-intro h2 { color: var(--charcoal); font-size: clamp(32px,4.4vw,52px); font-weight: 800; letter-spacing: -.035em; line-height: 1.1; }
+    .document-service .section-intro > p { margin-top: 16px; color: var(--text-muted); font-size: 17px; line-height: 1.7; }
+    .document-service .editorial-items { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 34px; margin-top: 48px; }
+    .document-service .editorial-item { padding-top: 20px; border-top: 1px solid var(--gray-border); }
+    .document-service .editorial-item h3 { margin-bottom: 9px; color: var(--green); font-size: 18px; font-weight: 800; line-height: 1.35; }
+    .document-service .editorial-item p { color: var(--text-muted); font-size: 14.5px; line-height: 1.7; }
+    .document-service .problem-quote { max-width: 860px; margin: 38px auto 0; padding-top: 24px; border-top: 1px solid var(--gray-border); color: var(--green); font-size: clamp(20px,2.4vw,27px); font-weight: 700; line-height: 1.5; }
+    .document-service .service-section { padding: 96px 0; background: #F7F8F5; }
+    .document-service .que-hacemos .container { max-width: 1164px; }
+    .document-service .que-hacemos-intro { display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); align-items: center; gap: clamp(36px,6vw,72px); margin-bottom: 64px; }
+    .document-service .que-hacemos-photo { overflow: hidden; margin: 0; border-radius: 14px; background: #e8eee8; }
+    .document-service .que-hacemos-photo img { width: 100%; aspect-ratio: 1.25 / 1; object-fit: cover; }
+    .document-service .que-hacemos-copy { max-width: 580px; }
+    .document-service .que-hacemos .section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .document-service .que-hacemos .label-line { display: block; width: 32px; height: 2px; background: #2D6A4F; }
+    .document-service .que-hacemos .label-text { color: #2D6A4F; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .document-service .que-hacemos .section-title { max-width: 700px; margin-bottom: 20px; color: #1a2e1a; font-size: clamp(2rem,4vw,3rem); font-weight: 800; line-height: 1.15; }
+    .document-service .que-hacemos .section-subtitle { max-width: 620px; color: #4B5563; font-size: 1rem; line-height: 1.7; }
+    .document-service .process-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 48px; }
+    .document-service .process-col { display: flex; min-width: 0; flex-direction: column; gap: 20px; }
+    .document-service .col-top-bar { width: 100%; height: 3px; margin-bottom: 8px; border-radius: 2px; background: linear-gradient(90deg,#2D6A4F 0%,#52B788 100%); }
+    .document-service .col-title { color: #111a11; font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.3; }
+    .document-service .col-list { display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0; list-style: none; }
+    .document-service .col-list li { position: relative; padding-left: 18px; color: #374151; font-size: .97rem; line-height: 1.7; }
+    .document-service .col-list li::before { position: absolute; top: 11px; left: 0; width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: #52B788; content: ""; }
+    .document-service .como-trabajamos-section { background: #f5f3ef; padding: 90px 0; }
+    .document-service .ct-header { max-width: 640px; margin-bottom: 56px; }
+    .document-service .ct-label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: #2d6a4f; font-size: .72rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .document-service .ct-title { margin-bottom: 16px; color: #1a3a2e; font-size: 2.2rem; font-weight: 800; line-height: 1.2; }
+    .document-service .ct-subtitle { max-width: 520px; color: #5a7a6a; font-size: .95rem; line-height: 1.65; }
+    .document-service .ct-diagram { display: flex; flex-direction: column; gap: 0; max-width: 820px; }
+    .document-service .ct-block { display: grid; grid-template-columns: 48px 1fr 280px; align-items: stretch; overflow: hidden; background: #fff; border: 1px solid #e8e4dc; border-radius: 14px; transition: box-shadow .2s ease, transform .2s ease; }
+    .document-service .ct-block:hover { box-shadow: 0 6px 28px rgba(26,58,46,.1); transform: translateX(4px); }
+    .document-service .ct-block--final { border-color: #1a3a2e; }
+    .document-service .ct-block-number { display: flex; align-items: center; justify-content: center; padding: 20px 0; background: #1a3a2e; color: rgba(255,255,255,.25); font-size: 1.1rem; font-weight: 800; writing-mode: vertical-rl; letter-spacing: .05em; }
+    .document-service .ct-block--final .ct-block-number { background: #2d6a4f; color: rgba(255,255,255,.5); }
+    .document-service .ct-block-body { display: flex; align-items: flex-start; gap: 16px; padding: 24px 28px; border-right: 1px solid #e8e4dc; }
+    .document-service .ct-block-icon { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex-shrink: 0; border-radius: 10px; background: rgba(26,58,46,.07); color: #1a3a2e; }
+    .document-service .ct-block-icon svg { width: 22px; height: 22px; }
+    .document-service .ct-block-content h3 { margin-bottom: 6px; color: #1a3a2e; font-size: 1.05rem; font-weight: 700; }
+    .document-service .ct-block-content p { color: #5a7a6a; font-size: .85rem; line-height: 1.6; }
+    .document-service .ct-block-result { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 24px 28px; background: #fafaf8; }
+    .document-service .ct-block-result--final { background: rgba(26,58,46,.04); }
+    .document-service .ct-result-label { color: #2d6a4f; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .document-service .ct-result-text { color: #1a3a2e; font-size: .85rem; font-weight: 500; line-height: 1.45; }
+    .document-service .ct-connector { display: flex; align-items: center; justify-content: center; margin-left: 48px; padding: 6px 0; color: #c8d8d0; }
+    .document-service .ct-connector svg { width: 16px; height: 16px; }
+    .document-service .process-note { margin-top: 24px; color: var(--text-faint); font-size: 13px; line-height: 1.6; }
+    .document-service .entregables-section { padding: 90px 0; background: #fff; border-top: 1px solid #e8e4dc; }
+    .document-service .entregables-header { max-width: 660px; margin-bottom: 56px; }
+    .document-service .entregables-label { display: block; margin-bottom: 14px; color: #2d6a4f; font-size: .72rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .document-service .entregables-title { margin-bottom: 16px; color: #1a3a2e; font-size: 2rem; font-weight: 800; line-height: 1.25; }
+    .document-service .entregables-intro { color: #5a7a6a; font-size: .95rem; line-height: 1.65; }
+    .document-service .entregables-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 56px; }
+    .document-service .entregables-block-label { margin-bottom: 20px; color: #9ab0a5; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .document-service .entregables-list { display: flex; flex-direction: column; gap: 14px; margin: 0 0 24px; padding: 0; list-style: none; }
+    .document-service .entregables-list li { display: flex; align-items: flex-start; gap: 12px; color: #2a4a3a; font-size: .88rem; line-height: 1.55; }
+    .document-service .entregables-icon { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px; border-radius: 50%; background: rgba(45,106,79,.1); color: #2d6a4f; }
+    .document-service .entregables-icon svg { width: 16px; height: 16px; }
+    .document-service .entregables-nota { margin-top: 8px; padding-top: 18px; border-top: 1px solid #e8e4dc; color: #9ab0a5; font-size: .78rem; line-height: 1.6; }
+    .document-service .entregables-right { display: flex; flex-direction: column; gap: 0; }
+    .document-service .valor-card { display: flex; align-items: flex-start; gap: 16px; padding: 20px 0; border-bottom: 1px solid #e8e4dc; }
+    .document-service .valor-card:first-of-type { padding-top: 0; }
+    .document-service .valor-card--highlight { margin-top: 8px; padding: 20px 18px; border-bottom: none; border-radius: 12px; background: rgba(26,58,46,.04); }
+    .document-service .valor-card-icon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: rgba(26,58,46,.07); color: #1a3a2e; }
+    .document-service .valor-card-icon svg { width: 20px; height: 20px; }
+    .document-service .valor-card--highlight .valor-card-icon { background: rgba(26,58,46,.12); }
+    .document-service .valor-card strong { display: block; margin-bottom: 5px; color: #1a3a2e; font-size: .92rem; font-weight: 700; }
+    .document-service .valor-card p { margin: 0; color: #5a7a6a; font-size: .83rem; line-height: 1.55; }
+    .document-service .cta-panel { border-radius: 0; }
+    .document-service .cta-note { display: block; margin-top: 18px; color: #D7E4DD; font-size: 13px; }
+    .document-service .cta-section { position: relative; overflow: hidden; padding: 100px 0; }
+    .document-service .cta-bg { position: absolute; inset: 0; z-index: 0; }
+    .document-service .cta-bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+    .document-service .cta-bg-overlay { position: absolute; inset: 0; background: linear-gradient(105deg,rgba(10,28,20,.96) 0%,rgba(18,48,34,.9) 45%,rgba(10,28,20,.8) 100%); }
+    .document-service .cta-content { position: relative; z-index: 1; }
+    .document-service .cta-inner { display: grid; grid-template-columns: 1fr 380px; gap: 64px; align-items: center; }
+    .document-service .cta-label { display: block; margin-bottom: 16px; color: #7ec8a0; font-size: .72rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .document-service .cta-title { margin-bottom: 20px; color: #fff; font-size: 2.1rem; font-weight: 800; line-height: 1.2; }
+    .document-service .cta-desc { max-width: 480px; margin-bottom: 16px; color: rgba(255,255,255,.7); font-size: .95rem; line-height: 1.7; }
+    .document-service .cta-nota { margin: 0; padding-left: 12px; border-left: 2px solid #7ec8a0; color: rgba(255,255,255,.4); font-size: .78rem; line-height: 1.5; }
+    .document-service .cta-box { padding: 36px 32px; border: 1px solid rgba(255,255,255,.14); border-radius: 20px; background: rgba(255,255,255,.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .document-service .cta-box-icon { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; margin-bottom: 18px; border-radius: 14px; background: rgba(126,200,160,.15); color: #7ec8a0; }
+    .document-service .cta-box-icon svg { width: 28px; height: 28px; }
+    .document-service .cta-box-title { margin-bottom: 8px; color: #fff; font-size: 1.15rem; font-weight: 700; }
+    .document-service .cta-box-desc { margin-bottom: 24px; color: rgba(255,255,255,.55); font-size: .84rem; line-height: 1.55; }
+    .document-service .cta-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-bottom: 20px; padding: 14px 24px; border-radius: 10px; background: #fff; color: #1a3a2e; font-size: .92rem; font-weight: 700; text-decoration: none; transition: background .2s ease,transform .2s ease; }
+    .document-service .cta-btn:hover { transform: translateY(-2px); background: #f0faf4; }
+    .document-service .cta-btn svg { width: 16px; height: 16px; }
+    .document-service .cta-box-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .document-service .cta-box-tags span { padding: 4px 12px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: rgba(255,255,255,.07); color: rgba(255,255,255,.45); font-size: .72rem; }
+    @media (max-width: 900px) {
+      .document-service .service-hero { min-height: 680px; padding: 132px 0 78px; }
+      .document-service .service-hero-shade { background: linear-gradient(90deg,rgba(15,34,26,.84),rgba(15,34,26,.5)); }
+      .document-service .editorial-grid, .document-service .editorial-grid.reverse { grid-template-columns: 1fr; gap: 28px; }
+      .document-service .editorial-grid.reverse .editorial-copy, .document-service .editorial-grid.reverse figure { order: initial; }
+      .document-service .cta-inner { grid-template-columns: 1fr; gap: 40px; }
+      .document-service .cta-box { max-width: 480px; }
+      .document-service .cta-title { font-size: 1.7rem; }
+    }
+    @media (max-width: 760px) {
+      .document-service .service-hero { min-height: 650px; padding: 110px 0 64px; }
+      .document-service .service-hero-media img { object-position: 72% center; }
+      .document-service .service-hero h1 { font-size: clamp(35px,9vw,42px); }
+      .document-service .service-hero .hero-sub { font-size: 16px; line-height: 1.6; }
+      .document-service .editorial-section, .document-service .service-section { padding: 78px 0; }
+      .document-service .que-hacemos-intro { grid-template-columns: 1fr; gap: 28px; margin-bottom: 40px; }
+      .document-service .que-hacemos-photo img { aspect-ratio: 1.5 / 1; }
+      .document-service .service-photo img { aspect-ratio: 1.35 / 1; }
+      .document-service .editorial-items { grid-template-columns: 1fr; gap: 22px; margin-top: 32px; }
+    }
+    @media (max-width: 640px) {
+      .document-service .cta-section { padding: 72px 0; }
+      .document-service .cta-title { font-size: 1.45rem; }
+    }
+    @media (max-width: 900px) {
+      .document-service .que-hacemos .section-title { font-size: 1.75rem; }
+      .document-service .process-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 36px; }
+      .document-service .process-col:last-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 600px) {
+      .document-service .que-hacemos { padding: 72px 0; }
+      .document-service .que-hacemos .container { padding: 0 20px; }
+      .document-service .process-grid { grid-template-columns: 1fr; gap: 40px; }
+      .document-service .process-col:last-child { grid-column: auto; }
+      .document-service .que-hacemos .section-subtitle { margin-bottom: 52px; }
+    }
+    @media (max-width: 768px) {
+      .document-service .como-trabajamos-section { padding: 78px 0; }
+      .document-service .ct-block { grid-template-columns: 36px 1fr; grid-template-rows: auto auto; }
+      .document-service .ct-block-number { grid-row: 1 / 3; font-size: .85rem; }
+      .document-service .ct-block-body { padding: 18px 20px; border-right: none; border-bottom: 1px solid #e8e4dc; }
+      .document-service .ct-block-result { padding: 14px 20px; background: #f5f3ef; }
+      .document-service .ct-connector { margin-left: 36px; }
+      .document-service .ct-title { font-size: 1.7rem; }
+      .document-service .entregables-grid { grid-template-columns: 1fr; gap: 40px; }
+      .document-service .entregables-title { font-size: 1.6rem; }
+      .document-service .valor-card--highlight { padding: 16px 14px; }
+    }
+    @media (max-width: 760px) {
+      .document-service .entregables-section { padding: 78px 0; }
+    }
+
+    .newsletter { background: var(--charcoal); padding: 36px 0; }
+    .newsletter-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .newsletter-inner p { color: #fff; font-size: 15.5px; font-weight: 600; }
+    .newsletter-form { display: flex; gap: 10px; flex: 1; max-width: 440px; min-width: 260px; }
+    .newsletter-form input {
+      flex: 1; padding: 12px 16px; border: 1.5px solid #3A3A38; background: #242422;
+      color: #fff; font-size: 14.5px; border-radius: 2px;
+    }
+    .newsletter-form input::placeholder { color: #8A8985; }
+    .newsletter-form input:focus { outline: none; border-color: var(--green-soft); }
+    .newsletter-form .btn { padding: 12px 22px; font-size: 14px; flex-shrink: 0; }
+    footer { padding: 0; background: #fff; border-top: 1px solid #E5E7EB; }
+    .footer-main { padding: 48px 0; }
+    .footer-grid { display: grid; grid-template-columns: 1.1fr 1.5fr .7fr; align-items: start; }
+    .footer-brand, .footer-nav, .footer-social { min-height: 100%; padding: 0 32px; }
+    .footer-brand { padding-left: 0; border-right: 1px solid #E5E7EB; }
+    .footer-nav { border-right: 1px solid #E5E7EB; }
+    .footer-brand img { width: 170px; height: auto; max-width: 100%; margin-bottom: 16px; }
+    .footer-brand p { color: #6B7280; font-size: 13px; line-height: 1.6; }
+    .footer-brand .footer-tagline { max-width: 260px; margin-bottom: 8px; }
+    .footer-nav h4, .footer-social h4 {
+      margin-bottom: 16px; color: #6B7280; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.3px; text-transform: uppercase;
+    }
+    .footer-nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; list-style: none; }
+    .footer-nav a { color: #374151; font-size: 14px; transition: color .18s ease; }
+    .footer-nav a:hover, .footer-nav a:focus-visible { color: #2D6A4F; }
+    .footer-social a {
+      display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center;
+      color: #374151; transition: color .18s ease, transform .18s ease;
+    }
+    .footer-social a:hover { transform: translateY(-2px); color: #2D6A4F; }
+    .footer-social svg { width: 24px; height: 24px; }
+    .footer-bottom {
+      margin: 0; padding: 18px 20px; color: #D1D5DB; background: #1a1a2e;
+      font-size: 12.5px; text-align: center;
+    }
+    @media (max-width: 760px) {
+      .footer-main { padding: 40px 0; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .footer-brand, .footer-nav, .footer-social { padding: 0; border: 0; }
+      .footer-brand img { margin: 0 auto 16px; }
+      .footer-brand .footer-tagline { margin-right: auto; margin-left: auto; }
+      .footer-nav ul { grid-template-columns: 1fr; gap: 12px; }
+      .footer-social a { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute;pointer-events:none;opacity:0" aria-hidden="true" focusable="false">
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 2"/></symbol>
+    <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h4.1a2 2 0 0 1 1.4.6l1.2 1.2a2 2 0 0 0 1.4.6H18.5A2.5 2.5 0 0 1 21 10v7.5A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-10Z"/></symbol>
+    <symbol id="icon-clipboard" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="icon-briefcase" viewBox="0 0 24 24"><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M4 9h16a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z"/></symbol>
+    <symbol id="icon-flag" viewBox="0 0 24 24"><path d="M4 21V5"/><path d="M4 5h12l-2 4 2 4H4"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.2 2.8 7.8 7 9 4.2-1.2 7-4.8 7-9V6l-7-3Z"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></symbol>
+    <symbol id="icon-building" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21V9h12v12"/><path d="M9 9V3h6v6M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/></symbol>
+    <symbol id="icon-people" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="icon-gauge" viewBox="0 0 24 24"><path d="M4 14a8 8 0 1 1 16 0"/><path d="M12 12l4-4"/><path d="M12 12V7"/></symbol>
+    <symbol id="icon-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><path d="M2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></symbol>
+    <symbol id="icon-bars" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  </svg>
+
+  <header id="siteHeader">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="LABAD, inicio"><img class="nav-brand-logo" src="images/labad-brand.png" alt="LABAD"></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <svg class="icon"><use href="#icon-bars"></use></svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Inicio</a></li>
+        <li class="nav-item nav-dropdown">
+          <a href="index.html#services" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+            Servicios
+            <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <div class="dropdown-menu">
+            <a href="servicio-compras-proveedores.html" class="dropdown-item"><span class="dropdown-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span><span class="dropdown-item-text"><strong>Compras y proveedores</strong><small>Evaluación ESG de cadena de suministro</small></span></a>
+            <a href="servicio-documentacion-esg-licitaciones-clientes.html" class="dropdown-item"><span class="dropdown-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="dropdown-item-text"><strong>Documentación ESG, licitaciones y clientes</strong><small>Requisitos ESG para clientes y pliegos</small></span></a>
+            <a href="servicio-economia-circular.html" class="dropdown-item"><span class="dropdown-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></span><span class="dropdown-item-text"><strong>Economía circular</strong><small>Residuos, materiales y recursos industriales</small></span></a>
+            <a href="servicio-huella-carbono-por-operacion.html" class="dropdown-item"><span class="dropdown-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12h2m16 0h2M12 2v2m0 16v2"/><circle cx="12" cy="12" r="4"/><path d="M12 8a7 7 0 017 7M5 12a7 7 0 017-7"/></svg></span><span class="dropdown-item-text"><strong>Huella de carbono</strong><small>Cálculo, informe y plan de reducción</small></span></a>
+          </div>
+        </li>
+        <li><a href="quienes-somos.html">Quiénes somos</a></li>
+        <li><a href="index.html#metodologia">Metodología</a></li>
+        <li><a href="index.html#news">Artículos y novedades</a></li>
+        <li><a href="pia-pilot.html">PIA Pilot</a></li>
+        <li class="nav-cta-item"><a href="index.html#contact" class="btn btn-primary nav-cta">Contacto</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="document-service">
+    <section class="service-hero" id="inicio" aria-labelledby="service-title">
+      <figure class="service-hero-media">
+        <img src="images/documentacion-analisis-labad.jpeg" alt="Profesional revisando documentación ambiental y evidencias de producto junto a su equipo de trabajo" fetchpriority="high" />
+      </figure>
+      <div class="service-hero-shade" aria-hidden="true"></div>
+      <div class="container service-hero-copy">
+        <span class="eyebrow">Documentación ambiental · Clientes · Licitaciones</span>
+        <h1 id="service-title">La documentación ambiental que tu empresa necesita para responder con confianza.</h1>
+        <p class="hero-sub">Clientes y licitaciones solicitan información ambiental sobre productos, operaciones y proveedores. Te ayudamos a identificar requisitos, ordenar evidencias y preparar respuestas basadas en datos que tu empresa puede acreditar.</p>
+        <div class="hero-actions">
+          <a href="#contacto" class="btn btn-light">Cuéntanos qué necesitas <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+          <a href="#que-hacemos" class="btn btn-secondary-light">Qué incluye el servicio</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="editorial-section soft" id="problema" aria-labelledby="problem-title">
+      <div class="container">
+        <div class="editorial-grid">
+          <div class="editorial-copy">
+            <span class="eyebrow">El reto</span>
+            <h2 id="problem-title">Cuando un cliente pide información, necesitas algo más que documentos dispersos.</h2>
+            <p>La información ambiental puede estar repartida entre departamentos, hojas de cálculo, fichas técnicas, registros internos y documentos de proveedores. Reunirla y comprobar su coherencia puede convertirse en una tarea urgente cuando llega una solicitud o una licitación.</p>
+          </div>
+          <figure class="service-photo">
+            <img src="images/documentacion-trazabilidad-materiales-labad.jpeg" alt="Profesional analiza muestras de materiales y acabados en un espacio de innovación" loading="lazy" />
+          </figure>
+        </div>
+        <div class="editorial-items">
+          <article class="editorial-item">
+            <h3>Solicitudes de clientes</h3>
+            <p>Datos sobre materiales, composición, residuos, emisiones u otros aspectos ambientales que requieren una respuesta clara.</p>
+          </article>
+          <article class="editorial-item">
+            <h3>Licitaciones y homologaciones</h3>
+            <p>Requisitos de contratación o evaluación que piden documentación específica y evidencias localizables.</p>
+          </article>
+          <article class="editorial-item">
+            <h3>Información dispersa o incompleta</h3>
+            <p>Documentos que pueden estar desactualizados, no ser comparables o no responder exactamente a lo solicitado.</p>
+          </article>
+        </div>
+        <p class="problem-quote">El reto no es acumular documentos. Es saber qué te piden, qué puedes demostrar y qué necesitas completar.</p>
+      </div>
+    </section>
+
+    <section class="service-section que-hacemos" id="que-hacemos" aria-labelledby="service-includes-title">
+      <div class="container">
+        <div class="que-hacemos-intro">
+          <figure class="que-hacemos-photo">
+            <img src="images/documentacion-analisis-labad.jpeg" alt="Revisión de requisitos ambientales y documentación de soporte para clientes" loading="lazy">
+          </figure>
+          <div class="que-hacemos-copy">
+            <div class="section-label">
+              <span class="label-line"></span>
+              <span class="label-text">QUÉ HACEMOS</span>
+            </div>
+            <h2 class="section-title" id="service-includes-title">Convertimos requisitos ambientales en<br>documentación útil para tu negocio.</h2>
+            <p class="section-subtitle">Revisamos los requisitos de cada solicitud y organizamos las evidencias necesarias para preparar respuestas comprensibles, ajustadas al contexto de tu empresa.</p>
+          </div>
+        </div>
+        <div class="process-grid">
+          <div class="process-col">
+            <div class="col-top-bar"></div>
+            <h3 class="col-title">Análisis de requisitos</h3>
+            <ul class="col-list">
+              <li>Revisamos la solicitud del cliente, los criterios ambientales de la licitación o los requisitos de homologación.</li>
+              <li>Identificamos los documentos, datos y evidencias que se solicitan.</li>
+              <li>Diferenciamos la información disponible de la que requiere revisión o recopilación adicional.</li>
+            </ul>
+          </div>
+          <div class="process-col">
+            <div class="col-top-bar"></div>
+            <h3 class="col-title">Revisión y organización documental</h3>
+            <ul class="col-list">
+              <li>Revisamos los documentos facilitados por la empresa.</li>
+              <li>Señalamos incoherencias, información desactualizada, carencias y limitaciones de los datos.</li>
+              <li>Organizamos las evidencias por requisito, tema ambiental y uso previsto.</li>
+              <li>Indicamos qué cuestiones requieren validación interna.</li>
+            </ul>
+          </div>
+          <div class="process-col">
+            <div class="col-top-bar"></div>
+            <h3 class="col-title">Preparación de respuestas y entregables</h3>
+            <ul class="col-list">
+              <li>Ayudamos a estructurar las respuestas a cuestionarios ambientales.</li>
+              <li>Preparamos una relación de evidencias y documentación de soporte.</li>
+              <li>Organizamos la información para su presentación a clientes o en procesos de contratación.</li>
+              <li>Proponemos acciones para completar las carencias identificadas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="como-trabajamos-section" id="como-lo-hacemos" aria-labelledby="process-title">
+      <div class="container">
+        <div class="ct-header">
+          <span class="ct-label">— CÓMO TRABAJAMOS</span>
+          <h2 class="ct-title" id="process-title">
+            Un proceso claro, desde la solicitud<br>
+            hasta la documentación preparada.
+          </h2>
+          <p class="ct-subtitle">
+            Adaptamos el trabajo al tipo de solicitud, la información disponible y el plazo de respuesta. El alcance y los entregables se acuerdan con cada cliente.
+          </p>
+        </div>
+        <div class="ct-diagram">
+          <div class="ct-block">
+            <div class="ct-block-number">01</div>
+            <div class="ct-block-body">
+              <div class="ct-block-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="11" cy="11" r="7"/>
+                  <path d="M21 21l-4.35-4.35"/>
+                </svg>
+              </div>
+              <div class="ct-block-content">
+                <h3>Entender</h3>
+                <p>Revisamos la petición del cliente o los requisitos de la licitación y delimitamos el trabajo.</p>
+              </div>
+            </div>
+            <div class="ct-block-result">
+              <span class="ct-result-label">Resultado</span>
+              <span class="ct-result-text">Alcance y prioridades acordados</span>
+            </div>
+          </div>
+          <div class="ct-connector">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+          </div>
+          <div class="ct-block">
+            <div class="ct-block-number">02</div>
+            <div class="ct-block-body">
+              <div class="ct-block-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M9 11l3 3L22 4"/>
+                  <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+              </div>
+              <div class="ct-block-content">
+                <h3>Analizar</h3>
+                <p>Identificamos la información disponible, las evidencias necesarias y las posibles carencias.</p>
+              </div>
+            </div>
+            <div class="ct-block-result">
+              <span class="ct-result-label">Resultado</span>
+              <span class="ct-result-text">Visión ordenada de requisitos, datos y documentación pendiente</span>
+            </div>
+          </div>
+          <div class="ct-connector">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+          </div>
+          <div class="ct-block">
+            <div class="ct-block-number">03</div>
+            <div class="ct-block-body">
+              <div class="ct-block-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+              </div>
+              <div class="ct-block-content">
+                <h3>Preparar</h3>
+                <p>Organizamos los documentos y ayudamos a estructurar las respuestas según el formato solicitado.</p>
+              </div>
+            </div>
+            <div class="ct-block-result">
+              <span class="ct-result-label">Resultado</span>
+              <span class="ct-result-text">Evidencias y respuestas preparadas para revisión de la empresa</span>
+            </div>
+          </div>
+          <div class="ct-connector">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+          </div>
+          <div class="ct-block ct-block--final">
+            <div class="ct-block-number">04</div>
+            <div class="ct-block-body">
+              <div class="ct-block-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <div class="ct-block-content">
+                <h3>Entregar</h3>
+                <p>Facilitamos los entregables acordados y una relación de cuestiones pendientes, limitaciones o mejoras recomendadas.</p>
+              </div>
+            </div>
+            <div class="ct-block-result ct-block-result--final">
+              <span class="ct-result-label">Resultado</span>
+              <span class="ct-result-text">La empresa valida los datos y aprueba la información antes de compartirla</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="entregables-section" id="documentacion" aria-labelledby="entregables-title">
+      <div class="container">
+        <div class="entregables-header">
+          <span class="entregables-label">Entregables y valor</span>
+          <h2 class="entregables-title" id="entregables-title">
+            Documentación organizada para tomar decisiones<br>
+            y responder con seguridad.
+          </h2>
+          <p class="entregables-intro">
+            Cada empresa llega con una situación diferente.
+            Adaptamos el alcance a lo que realmente necesitas —
+            sin documentación genérica, sin trabajo que no puedas usar.
+          </p>
+        </div>
+
+        <div class="entregables-grid">
+          <div class="entregables-left">
+            <p class="entregables-block-label">
+              Según el alcance acordado, el servicio puede incluir:
+            </p>
+            <ul class="entregables-list">
+              <li>
+                <span class="entregables-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span>Diagnóstico de los requisitos ambientales de la solicitud o licitación.</span>
+              </li>
+              <li>
+                <span class="entregables-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span>Matriz de requisitos, documentación disponible y evidencias pendientes.</span>
+              </li>
+              <li>
+                <span class="entregables-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span>Revisión de documentos facilitados por la empresa.</span>
+              </li>
+              <li>
+                <span class="entregables-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span>Cuestionarios ambientales preparados y estructurados para revisión interna.</span>
+              </li>
+              <li>
+                <span class="entregables-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span>Dossier documental organizado para el cliente o proceso de contratación.</span>
+              </li>
+              <li>
+                <span class="entregables-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span>Listado de carencias, riesgos documentales y acciones recomendadas.</span>
+              </li>
+            </ul>
+            <p class="entregables-nota">
+              Los entregables concretos dependen de los requisitos aplicables, la documentación facilitada y el alcance contratado. La empresa valida y aprueba la información antes de presentarla a terceros.
+            </p>
+          </div>
+
+          <div class="entregables-right">
+            <p class="entregables-block-label">
+              Lo que esto genera en tu organización:
+            </p>
+            <div class="valor-card">
+              <div class="valor-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/>
+                  <polyline points="13 2 13 9 20 9"/>
+                </svg>
+              </div>
+              <div>
+                <strong>Agilidad documental</strong>
+                <p>Localizas la información correcta cuando llega una solicitud, sin buscar entre carpetas dispersas.</p>
+              </div>
+            </div>
+            <div class="valor-card">
+              <div class="valor-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M9 11l3 3L22 4"/>
+                  <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+              </div>
+              <div>
+                <strong>Coherencia ESG</strong>
+                <p>Detectas diferencias entre tus documentos y las respuestas que entregas a clientes o licitaciones.</p>
+              </div>
+            </div>
+            <div class="valor-card">
+              <div class="valor-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <div>
+                <strong>Trazabilidad de evidencias</strong>
+                <p>Cada requisito ambiental queda vinculado a su evidencia disponible — o a la carencia que conviene resolver.</p>
+              </div>
+            </div>
+            <div class="valor-card valor-card--highlight">
+              <div class="valor-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              </div>
+              <div>
+                <strong>Visibilidad de carencias</strong>
+                <p>Sabes exactamente qué información falta, qué riesgo documental tienes y qué conviene mejorar antes de la próxima solicitud.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section" id="contacto" aria-labelledby="contact-title">
+      <div class="cta-bg">
+        <img src="img/cta-documentacion.jpg" alt="Profesional revisando documentación ESG" class="cta-bg-img" />
+        <div class="cta-bg-overlay"></div>
+      </div>
+
+      <div class="container cta-content">
+        <div class="cta-inner">
+          <div class="cta-text">
+            <span class="cta-label">¿Tienes una solicitud encima de la mesa?</span>
+            <h2 class="cta-title" id="contact-title">
+              ¿Te han pedido documentación
+              ambiental y no sabes
+              por dónde empezar?
+            </h2>
+            <p class="cta-desc">
+              Cuéntanos qué te solicita tu cliente, qué documentación
+              tienes disponible y cuál es el plazo de respuesta.
+              Analizamos contigo el alcance y las opciones para
+              preparar una respuesta adecuada.
+            </p>
+            <p class="cta-nota">
+              Primera conversación para entender la necesidad
+              y valorar el alcance del servicio.
+            </p>
+          </div>
+
+          <div class="cta-box">
+            <div class="cta-box-inner">
+              <div class="cta-box-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+              </div>
+              <p class="cta-box-title">Hablemos de tu caso</p>
+              <p class="cta-box-desc">
+                Sin compromiso. Valoramos juntos
+                si tiene sentido trabajar juntos.
+              </p>
+              <a href="mailto:natia.omiadze@opendeusto.es" class="cta-btn">
+                Escribir a LABAD
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <div class="cta-box-tags">
+                <span>Sin permanencia</span>
+                <span>Alcance acordado</span>
+                <span>Respuesta rápida</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <div class="newsletter" id="newsletter">
+    <div class="container newsletter-inner">
+      <p>Suscríbete para recibir noticias sobre compras sostenibles y artículos como este.</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Tu email" required>
+        <button class="btn btn-primary" type="submit">Suscribirme</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="footer-main">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src="images/labad-brand.png" alt="LABAD">
+          <p class="footer-tagline">Sustainability Strategy &amp; Circular Economy Consulting</p>
+          <p class="footer-location">Bilbao, País Vasco</p>
+        </div>
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="index.html#top">Inicio</a></li>
+            <li><a href="index.html#services">Servicios</a></li>
+            <li><a href="quienes-somos.html">Quiénes somos</a></li>
+            <li><a href="index.html#metodologia">Metodología</a></li>
+            <li><a href="index.html#news">Artículos y novedades</a></li>
+            <li><a href="index.html#pis-pilot">PIA Pilot</a></li>
+            <li><a href="index.html#contact">Contacto</a></li>
+          </ul>
+        </nav>
+        <div class="footer-social">
+          <h4>Síguenos</h4>
+          <a href="https://www.linkedin.com/in/natia-omiadze/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 LABAD. Todos los derechos reservados.</div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('siteHeader');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    navToggle.addEventListener('click', function () {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+
+    navLinks.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 980 && link.classList.contains('nav-dropdown-toggle')) return;
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        if (dropdown && dropdownToggle) {
+          dropdown.classList.remove('active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+    const dropdown = document.querySelector('.nav-dropdown');
+    const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
+    if (dropdown && dropdownToggle) {
+      dropdownToggle.addEventListener('click', function (event) {
+        if (window.innerWidth <= 980) {
+          event.preventDefault();
+          const open = dropdown.classList.toggle('active');
+          dropdownToggle.setAttribute('aria-expanded', String(open));
+        }
+      });
+      document.addEventListener('click', function (event) {
+        if (!dropdown.contains(event.target)) {
+          dropdown.classList.remove('active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          dropdown.classList.remove('active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+          navLinks.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+          dropdownToggle.focus();
+        }
+      });
+    }
+
+    document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const input = event.currentTarget.querySelector('input');
+      const button = event.currentTarget.querySelector('button');
+      const original = button.textContent;
+      button.textContent = '¡Gracias!';
+      input.value = '';
+      setTimeout(function () { button.textContent = original; }, 2400);
+    });
+  </script>
+</body>
+</html>

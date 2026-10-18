@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compras y evaluación de proveedores | LABAD</title>
+  <meta name="description" content="Evaluamos proveedores e integramos criterios ambientales y de riesgo en las decisiones de compra, adaptando el análisis a la criticidad y las necesidades de cada empresa." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+  <style>
+    :root {
+      --white: #FFFFFF;
+      --green: #1B4332;
+      --green-medium: #2D6A4F;
+      --green-soft: #3E7A5C;
+      --green-pale: #E9F1EC;
+      --gray: #F5F5F5;
+      --gray-border: #E4E2DE;
+      --charcoal: #1A1A1A;
+      --text-muted: #5C5C58;
+      --text-faint: #8A8883;
+      --shadow: rgba(27, 67, 50, 0.12);
+      --shadow-dark: rgba(0,0,0,0.08);
+      --ok: #2D6A4F;
+      --warning: #C58B12;
+      --danger: #B3402F;
+      --surface: #f9faf8;
+      --success-soft: #e8f1eb;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--charcoal);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    h1, h2, h3, h4, p { margin: 0; }
+    button { font: inherit; }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+    }
+
+    .section {
+      padding: 110px 0;
+    }
+
+    @media (max-width: 900px) {
+      .section { padding: 78px 0; }
+    }
+
+    .bg-soft { background: var(--gray); }
+    .bg-deep { background: var(--green); }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 1.5px;
+      background: var(--green);
+      display: inline-block;
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin: 0 auto 54px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 3.7vw, 42px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+      font-weight: 800;
+    }
+
+    .section-sub {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 15px 30px;
+      border-radius: 3px;
+      font-size: 15.5px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--white);
+      box-shadow: 0 14px 26px -18px rgba(27, 67, 50, 0.8);
+    }
+
+    .btn-primary:hover {
+      background: var(--green-medium);
+      box-shadow: 0 18px 32px -18px rgba(27, 67, 50, 0.9);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--charcoal);
+      border-color: var(--charcoal);
+    }
+
+    .btn-secondary:hover {
+      color: var(--green);
+      border-color: var(--green);
+    }
+
+    .btn-light {
+      background: var(--white);
+      color: var(--green);
+    }
+
+    .btn-light:hover {
+      background: var(--green-pale);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px 0;
+      transition: padding 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    header.scrolled {
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      padding: 14px 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--charcoal);
+    }
+    .nav-brand-logo { display: block; width: 140px; max-width: 100%; height: auto; flex: 0 0 auto; }
+
+    .logo span {
+      color: var(--green);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      position: relative;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--charcoal);
+      padding-bottom: 3px;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--green);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-cta-item { margin-left: 6px; }
+    .nav-cta { padding: 10px 22px; font-size: 14px; }
+    .nav-links a.nav-cta::after { display: none; }
+    .nav-links a.nav-cta,
+    .nav-links a.nav-cta:hover { color: var(--white) !important; }
+
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: transparent;
+      color: var(--charcoal);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 8px 0 18px;
+        box-shadow: 0 18px 28px -16px rgba(0,0,0,0.12);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .nav-links li { width: 100%; }
+      .nav-links a {
+        display: block;
+        padding: 14px 28px;
+      }
+      .nav-cta-item { margin-left: 0; padding: 10px 28px 4px; }
+      .nav-cta { display: block; text-align: center; }
+      .nav-toggle { display: block; }
+    }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-toggle { display: flex !important; align-items: center; gap: 6px; }
+    .dropdown-arrow { width: 14px; height: 14px; flex: 0 0 14px; transition: transform .2s ease; }
+    .nav-dropdown:hover .dropdown-arrow, .nav-dropdown:focus-within .dropdown-arrow, .nav-dropdown.active .dropdown-arrow { transform: rotate(180deg); }
+    .dropdown-menu { position: absolute; top: calc(100% + 10px); left: 50%; width: 320px; padding: 8px; border: 1px solid rgba(26,58,42,.1); border-radius: 12px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.1); opacity: 0; visibility: hidden; transform: translate(-50%,-6px); transition: opacity .2s ease,transform .2s ease,visibility .2s; z-index: 1000; }
+    .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu, .nav-dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translate(-50%,0); }
+    .nav-links .dropdown-item { display: block; padding: 10px 12px; border-radius: 8px; color: var(--charcoal); }
+    .nav-links .dropdown-item::after { display: none; }
+    .dropdown-item:hover { background: #f3f8f5; }
+    .dropdown-item strong { display: block; color: #1a3a2e; font-size: .84rem; line-height: 1.25; }
+    .dropdown-item small { display: block; margin-top: 2px; color: #71887b; font-size: .72rem; line-height: 1.3; }
+    @media (max-width: 980px) {
+      .dropdown-menu { position: static; display: none; width: auto; margin: 0 20px 8px; transform: none; border: 0; background: #f3f8f5; box-shadow: none; }
+      .nav-dropdown.active .dropdown-menu { display: block; transform: none; }
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 130px;
+      padding-bottom: 62px;
+    }
+
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      gap: 58px;
+    }
+
+    .hero-copy,
+    .hero-media {
+      flex: 1;
+    }
+
+    .hero-copy {
+      max-width: 540px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 5vw, 66px);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: var(--charcoal);
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 1.7vw, 22px);
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      max-width: 520px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .hero-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-faint);
+      font-size: 13.5px;
+    }
+
+    .hero-note .icon {
+      width: 15px;
+      height: 15px;
+      color: var(--green);
+    }
+
+    .hero-media {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-shell {
+      position: relative;
+      width: min(100%, 520px);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px -28px rgba(27,67,50,0.35);
+      background: #dfeae4;
+      border: 1px solid rgba(27,67,50,0.12);
+    }
+
+    .image-shell img {
+      width: 100%;
+      height: 100%;
+      max-height: 620px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.04), rgba(27,67,50,0.08));
+      pointer-events: none;
+    }
+
+    .image-accent {
+      position: absolute;
+      left: -16px;
+      bottom: -16px;
+      width: 42%;
+      height: 42%;
+      border: 3px solid var(--green);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        flex-direction: column;
+        gap: 42px;
+      }
+      .hero-copy { max-width: 100%; }
+      .hero-media { width: 100%; }
+      .hero { padding-top: 120px; }
+    }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+    @media (max-width: 980px) {
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 16px;
+      padding: 34px 28px;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--green);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 34px -24px rgba(27,67,50,0.45);
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--green-pale);
+      color: var(--green);
+      border-radius: 12px;
+      margin: 0 auto 20px;
+    }
+
+    .card-icon .icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .step-number {
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      color: var(--charcoal);
+      font-weight: 800;
+    }
+
+    .card p {
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .highlight-box {
+      margin-top: 34px;
+      padding: 32px 28px 26px;
+      border: 1px solid var(--gray-border);
+      border-radius: 16px;
+      background: var(--white);
+      text-align: center;
+    }
+
+    .highlight-box .card-icon {
+      margin-bottom: 18px;
+    }
+
+    .highlight-box h3 {
+      font-size: clamp(20px, 2.1vw, 26px);
+      line-height: 1.4;
+      margin-bottom: 10px;
+      font-weight: 800;
+      color: var(--charcoal);
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .highlight-box p {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    .problem-quote {
+      margin-top: 30px;
+      text-align: center;
+      padding-top: 28px;
+      border-top: 1px solid var(--gray-border);
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.45;
+      font-weight: 600;
+      color: var(--charcoal);
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .timeline-step {
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 16px;
+      padding: 26px 18px 22px;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .timeline-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      width: 36px;
+      height: 1px;
+      background: rgba(27,67,50,0.35);
+      transform: translateY(-50%);
+    }
+
+    .timeline-step .step-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--green-pale);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-weight: 800;
+      font-size: 18px;
+      border: 1px solid rgba(27,67,50,0.15);
+    }
+
+    .timeline-step h3 {
+      font-size: 16px;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      color: var(--charcoal);
+      font-weight: 800;
+    }
+
+    .timeline-step p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+      .timeline-step:not(:last-child)::after {
+        display: none;
+      }
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .info-grid { grid-template-columns: 1fr; }
+    }
+
+    .info-card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 24px;
+      background: var(--green-pale);
+      border-bottom: 1px solid var(--gray-border);
+    }
+
+    .info-card-header .card-icon {
+      margin: 0;
+      width: 44px;
+      height: 44px;
+    }
+
+    .info-card-header h3 {
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .info-card ul {
+      padding: 14px 24px 22px;
+    }
+
+    .info-card li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-border);
+      color: var(--charcoal);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .info-card li:last-child { border-bottom: none; }
+
+    .info-card li .icon {
+      width: 16px;
+      height: 16px;
+      margin-top: 3px;
+      color: var(--green-medium);
+      flex-shrink: 0;
+    }
+
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .deliverables-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .deliverables-grid { grid-template-columns: 1fr; }
+    }
+
+    .deliverable-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 28px 22px;
+      min-height: 220px;
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    }
+
+    .deliverable-card:hover {
+      border-color: rgba(255,255,255,0.28);
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .deliverable-card .card-icon {
+      margin: 0 0 18px;
+      background: rgba(255,255,255,0.12);
+      color: #dfeee5;
+    }
+
+    .deliverable-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .deliverable-card p {
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: #dfeee5;
+    }
+
+    .benefits-wrap {
+      padding: 86px 0 20px;
+    }
+
+    .benefit-panel {
+      background: var(--white);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 30px 28px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .benefit-panel { grid-template-columns: 1fr; }
+    }
+
+    .benefits-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .benefits-list { grid-template-columns: 1fr; }
+    }
+
+    .benefit-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 18px 16px;
+    }
+
+    .benefit-item .icon {
+      color: #9ec3b1;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+    }
+
+    .benefit-item strong {
+      display: block;
+      color: var(--white);
+      font-size: 16px;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .benefit-item span {
+      color: #d7e4dd;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .audience-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .audience-box h3 {
+      color: var(--white);
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+
+    .audience-box ul {
+      list-style: disc;
+      padding-left: 18px;
+      color: #d7e4dd;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .quote-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-top: 18px;
+      color: #e9f4ee;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .packages-grid { grid-template-columns: 1fr; }
+    }
+
+    .package-card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 18px;
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .package-card.highlight {
+      border-color: var(--green);
+      box-shadow: 0 20px 30px -26px rgba(27,67,50,0.45);
+    }
+
+    .package-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--green-pale);
+      color: var(--green);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      width: fit-content;
+    }
+
+    .package-card h3 {
+      font-size: 30px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+      color: var(--charcoal);
+      font-weight: 800;
+    }
+
+    .package-card p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .package-list {
+      list-style: disc;
+      padding-left: 18px;
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+
+    .package-card .btn {
+      margin-top: auto;
+    }
+
+    .not-sure {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 18px;
+      color: var(--charcoal);
+      line-height: 1.7;
+    }
+
+    .not-sure strong {
+      display: block;
+      font-size: 30px;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .cta-panel {
+      background: var(--green);
+      color: var(--white);
+      border-radius: 16px;
+      padding: 54px 24px;
+      text-align: center;
+    }
+
+    .cta-panel h2 {
+      font-size: clamp(28px, 3.4vw, 42px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    .cta-panel p {
+      max-width: 780px;
+      margin: 0 auto;
+      color: #d7e4dd;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .newsletter { background: var(--charcoal); padding: 36px 0; }
+    .newsletter-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .newsletter-inner p { color: #fff; font-size: 15.5px; font-weight: 600; }
+    .newsletter-form { display: flex; gap: 10px; flex: 1; max-width: 440px; min-width: 260px; }
+    .newsletter-form input {
+      flex: 1; padding: 12px 16px; border: 1.5px solid #3A3A38; background: #242422;
+      color: #fff; font-size: 14.5px; border-radius: 2px;
+    }
+    .newsletter-form input::placeholder { color: #8A8985; }
+    .newsletter-form input:focus { outline: none; border-color: var(--green-soft); }
+    .newsletter-form .btn { padding: 12px 22px; font-size: 14px; flex-shrink: 0; }
+
+    footer { padding: 0; background: #fff; border-top: 1px solid #E5E7EB; }
+    .footer-main { padding: 48px 0; }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.5fr .7fr;
+      align-items: start;
+    }
+    .footer-brand, .footer-nav, .footer-social { min-height: 100%; padding: 0 32px; }
+    .footer-brand { padding-left: 0; border-right: 1px solid #E5E7EB; }
+    .footer-nav { border-right: 1px solid #E5E7EB; }
+    .footer-brand img { width: 170px; height: auto; max-width: 100%; margin-bottom: 16px; }
+    .footer-brand p { color: #6B7280; font-size: 13px; line-height: 1.6; }
+    .footer-brand .footer-tagline { max-width: 260px; margin-bottom: 8px; }
+    .footer-nav h4, .footer-social h4 {
+      margin-bottom: 16px; color: #6B7280; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.3px; text-transform: uppercase;
+    }
+    .footer-nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; list-style: none; }
+    .footer-nav a { color: #374151; font-size: 14px; transition: color .18s ease; }
+    .footer-nav a:hover, .footer-nav a:focus-visible { color: #2D6A4F; }
+    .footer-social a {
+      display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center;
+      color: #374151; transition: color .18s ease, transform .18s ease;
+    }
+    .footer-social a:hover { transform: translateY(-2px); color: #2D6A4F; }
+    .footer-social svg { width: 24px; height: 24px; }
+    .footer-bottom {
+      margin: 0; padding: 18px 20px; color: #D1D5DB; background: #1a1a2e;
+      font-size: 12.5px; text-align: center;
+    }
+    @media (max-width: 760px) {
+      .footer-main { padding: 40px 0; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .footer-brand, .footer-nav, .footer-social { padding: 0; border: 0; }
+      .footer-brand img { margin: 0 auto 16px; }
+      .footer-brand .footer-tagline { margin-right: auto; margin-left: auto; }
+      .footer-nav ul { grid-template-columns: 1fr; gap: 12px; }
+      .footer-social a { margin: 0 auto; }
+    }
+  </style>
+  <style>
+.supplier-page {
+  --supplier-white: #FAFAF7;
+  --supplier-green: #1B4332;
+  --supplier-green-medium: #2D6A4F;
+  --supplier-green-pale: #E9F1EC;
+  --supplier-beige: #F1EDE4;
+  --supplier-charcoal: #303632;
+  --supplier-muted: #5C5C58;
+  --supplier-border: rgba(27, 67, 50, .2);
+  color: var(--supplier-charcoal);
+  background: var(--supplier-white);
+}
+
+.supplier-page section { scroll-margin-top: 92px; }
+.supplier-page .supplier-container {
+  width: min(100% - 64px, 1180px);
+  margin: 0 auto;
+}
+.supplier-page .supplier-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  color: var(--supplier-green-medium);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.supplier-page .supplier-eyebrow::before {
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.supplier-page .supplier-hero {
+  position: relative;
+  display: flex;
+  min-height: min(820px, 92vh);
+  align-items: center;
+  overflow: hidden;
+  padding: 150px 0 100px;
+  background: var(--supplier-green);
+  color: var(--supplier-white);
+}
+.supplier-page .supplier-hero-photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  margin: 0;
+  background: var(--supplier-green);
+}
+.supplier-page .supplier-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 54%;
+}
+.supplier-page .supplier-hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15, 34, 26, .82) 0%, rgba(15, 34, 26, .62) 52%, rgba(15, 34, 26, .28) 100%);
+  pointer-events: none;
+}
+.supplier-page .supplier-hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+}
+.supplier-page .supplier-hero .supplier-eyebrow { color: #E2ECE6; }
+.supplier-page .supplier-hero h1 {
+  max-width: 960px;
+  margin: 0 0 22px;
+  color: var(--supplier-white);
+  font-size: clamp(42px, 5vw, 66px);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1.03;
+}
+.supplier-page .supplier-hero-intro {
+  max-width: 830px;
+  margin: 0 0 16px;
+  color: #F3F5F1;
+  font-size: clamp(16px, 1.45vw, 19px);
+  line-height: 1.7;
+}
+.supplier-page .supplier-hero-intro + .supplier-hero-intro { margin-bottom: 28px; }
+.supplier-page .supplier-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.supplier-page .supplier-btn {
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+.supplier-page .supplier-btn:hover { transform: translateY(-1px); }
+.supplier-page .supplier-btn-light { background: var(--supplier-white); color: var(--supplier-green); }
+.supplier-page .supplier-btn-light:hover { background: var(--supplier-green-pale); }
+.supplier-page .supplier-btn-outline { border-color: rgba(255, 255, 255, .78); color: var(--supplier-white); }
+.supplier-page .supplier-btn-outline:hover { background: rgba(255, 255, 255, .12); }
+
+.supplier-page .supplier-editorial,
+.supplier-page .supplier-approach,
+.supplier-page .supplier-deliverables,
+.supplier-page .supplier-close {
+  padding: 108px 0;
+}
+.supplier-page .supplier-problem { background: var(--supplier-beige); }
+.supplier-page .reto-section {
+  padding: 90px 0;
+  border-top: 1px solid #e8e4dc;
+  background: #f5f3ef;
+}
+.supplier-page .reto-header { max-width: 660px; margin-bottom: 48px; }
+.supplier-page .reto-label {
+  display: block;
+  margin-bottom: 14px;
+  color: #2d6a4f;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.supplier-page .reto-title {
+  margin-bottom: 16px;
+  color: #1a3a2e;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.supplier-page .reto-intro {
+  max-width: 580px;
+  color: #5a7a6a;
+  font-size: .95rem;
+  line-height: 1.65;
+}
+.supplier-page .reto-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.supplier-page .reto-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px 24px;
+  border: 1px solid #e8e4dc;
+  border-radius: 16px;
+  background: #fff;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.supplier-page .reto-card:hover {
+  box-shadow: 0 6px 28px rgba(26,58,46,.1);
+  transform: translateY(-3px);
+}
+.supplier-page .reto-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.supplier-page .reto-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+.supplier-page .reto-card-icon svg { width: 22px; height: 22px; }
+.supplier-page .reto-card-icon--yellow { background: rgba(234,179,8,.1); color: #b45309; }
+.supplier-page .reto-card-icon--orange { background: rgba(234,88,12,.1); color: #c2410c; }
+.supplier-page .reto-card-icon--red { background: rgba(220,38,38,.1); color: #dc2626; }
+.supplier-page .reto-card-tag {
+  color: #9ab0a5;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.supplier-page .reto-card h3 {
+  margin: 0;
+  color: #1a3a2e;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.supplier-page .reto-card > p {
+  flex: 1;
+  margin: 0;
+  color: #5a7a6a;
+  font-size: .84rem;
+  line-height: 1.6;
+}
+.supplier-page .reto-card-signal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid #f0ede8;
+  color: #9ab0a5;
+  font-size: .76rem;
+  font-weight: 500;
+}
+.supplier-page .signal-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.supplier-page .signal-dot--yellow { background: #eab308; }
+.supplier-page .signal-dot--orange { background: #f97316; }
+.supplier-page .signal-dot--red { background: #ef4444; }
+.supplier-page .reto-insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 8px;
+  padding: 24px 28px;
+  border-radius: 14px;
+  background: #1a3a2e;
+}
+.supplier-page .reto-insight-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(126,200,160,.15);
+  color: #7ec8a0;
+}
+.supplier-page .reto-insight-icon svg { width: 20px; height: 20px; }
+.supplier-page .reto-insight p {
+  margin: 0;
+  color: rgba(255,255,255,.75);
+  font-size: .92rem;
+  line-height: 1.65;
+}
+.supplier-page .reto-insight p strong { color: #fff; font-weight: 700; }
+.supplier-page .supplier-problem h2,
+.supplier-page .supplier-section-heading h2,
+.supplier-page .supplier-editorial-copy h2,
+.supplier-page .supplier-close h2 {
+  margin: 0;
+  color: var(--supplier-charcoal);
+  font-size: clamp(31px, 4.1vw, 48px);
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.12;
+}
+.supplier-page .supplier-section-heading > p,
+.supplier-page .supplier-editorial-copy > p,
+.supplier-page .supplier-close > p {
+  color: var(--supplier-muted);
+  font-size: 16px;
+  line-height: 1.78;
+}
+.supplier-page .supplier-editorial-copy > p + p { margin-top: 12px; }
+.supplier-page .supplier-editorial-list { max-width: 930px; margin: 0 auto; }
+.supplier-page .supplier-editorial-item {
+  display: grid;
+  grid-template-columns: minmax(190px, .7fr) minmax(0, 1.3fr);
+  gap: 34px;
+  padding: 24px 0;
+  border-top: 1px solid var(--supplier-border);
+}
+.supplier-page .supplier-editorial-item h3,
+.supplier-page .supplier-work-row h3,
+.supplier-page .supplier-process-row h3 {
+  margin: 0;
+  color: var(--supplier-green);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+}
+.supplier-page .supplier-editorial-item p,
+.supplier-page .supplier-work-row li {
+  color: var(--supplier-muted);
+  font-size: 15px;
+  line-height: 1.72;
+}
+.supplier-page .supplier-quote {
+  max-width: 850px;
+  margin: 40px auto 0;
+  padding: 23px 26px;
+  border-left: 3px solid var(--supplier-green);
+  background: var(--supplier-white);
+  color: var(--supplier-green);
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.supplier-page .supplier-approach { background: var(--supplier-white); }
+.supplier-page .supplier-section-heading { max-width: 800px; margin: 0 auto 44px; }
+.supplier-page .supplier-section-heading .supplier-eyebrow { margin-bottom: 16px; }
+.supplier-page .supplier-section-heading h2 { margin-bottom: 16px; }
+.supplier-page .supplier-work-list { border-bottom: 1px solid var(--supplier-border); }
+.supplier-page .supplier-work-row {
+  display: grid;
+  grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr);
+  gap: 42px;
+  padding: 28px 0;
+  border-top: 1px solid var(--supplier-border);
+}
+.supplier-page .supplier-work-row ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding-left: 20px;
+}
+.supplier-page .supplier-work-row li::marker { color: var(--supplier-green-medium); }
+
+.supplier-page .evaluacion-section {
+  padding: 90px 0;
+  border-top: 1px solid #e8e4dc;
+  background: #fff;
+}
+.supplier-page .evaluacion-header { max-width: 660px; margin-bottom: 52px; }
+.supplier-page .evaluacion-label {
+  display: block;
+  margin-bottom: 14px;
+  color: #2d6a4f;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.supplier-page .evaluacion-title {
+  margin-bottom: 16px;
+  color: #1a3a2e;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.supplier-page .evaluacion-intro { color: #5a7a6a; font-size: .95rem; line-height: 1.65; }
+.supplier-page .evaluacion-grid {
+  display: grid;
+  grid-template-columns: 1fr 32px 1fr 32px 1fr;
+  gap: 0;
+  align-items: start;
+}
+.supplier-page .eval-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 48px;
+  color: #c8d8d0;
+}
+.supplier-page .eval-arrow svg { width: 20px; height: 20px; }
+.supplier-page .eval-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  padding: 28px 24px;
+  border: 1px solid #e8e4dc;
+  border-radius: 16px;
+  background: #f8f7f4;
+}
+.supplier-page .eval-column--highlight { border-color: #1a3a2e; background: #1a3a2e; }
+.supplier-page .eval-column-header { display: flex; align-items: flex-start; gap: 14px; }
+.supplier-page .eval-column-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(26,58,46,.08);
+  color: #1a3a2e;
+}
+.supplier-page .eval-column-icon svg { width: 20px; height: 20px; }
+.supplier-page .eval-column-icon--light { background: rgba(255,255,255,.12); color: #7ec8a0; }
+.supplier-page .eval-column-number {
+  display: block;
+  margin-bottom: 4px;
+  color: #2d6a4f;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+.supplier-page .eval-column-number--light { color: #7ec8a0; }
+.supplier-page .eval-column h3 {
+  margin: 0;
+  color: #1a3a2e;
+  font-size: .95rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.supplier-page .eval-column--highlight h3 { color: #fff; }
+.supplier-page .eval-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.supplier-page .eval-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #4a6a5a;
+  font-size: .83rem;
+  line-height: 1.55;
+}
+.supplier-page .eval-list--light li { color: rgba(255,255,255,.7); }
+.supplier-page .eval-list-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #2d6a4f;
+}
+.supplier-page .eval-list-dot--light { background: #7ec8a0; }
+.supplier-page .eval-column-output { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid #e8e4dc; }
+.supplier-page .eval-column-output--light { border-top-color: rgba(255,255,255,.12); }
+.supplier-page .eval-output-label {
+  color: #2d6a4f;
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.supplier-page .eval-column--highlight .eval-output-label { color: #7ec8a0; }
+.supplier-page .eval-output-text { color: #1a3a2e; font-size: .8rem; font-weight: 600; line-height: 1.4; }
+.supplier-page .eval-column--highlight .eval-output-text { color: rgba(255,255,255,.9); }
+@media (max-width: 900px) {
+  .supplier-page .evaluacion-grid { grid-template-columns: 1fr; gap: 16px; }
+  .supplier-page .eval-arrow { height: 24px; padding-top: 0; transform: rotate(90deg); }
+  .supplier-page .evaluacion-title { font-size: 1.65rem; }
+}
+
+.supplier-page .supplier-editorial { background: var(--supplier-white); }
+.supplier-page .supplier-editorial.soft { background: var(--supplier-beige); }
+.supplier-page .supplier-editorial-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(38px, 7vw, 92px);
+}
+.supplier-page .supplier-editorial-grid.reverse { grid-template-columns: minmax(0, 1fr) minmax(0, .92fr); }
+.supplier-page .supplier-editorial-grid.reverse .supplier-editorial-copy { order: 2; }
+.supplier-page .supplier-editorial-grid.reverse .supplier-photo-slot { order: 1; }
+.supplier-page .supplier-editorial-copy { max-width: 620px; }
+.supplier-page .supplier-editorial-copy .supplier-eyebrow { margin-bottom: 16px; }
+.supplier-page .supplier-editorial-copy h2 { margin-bottom: 20px; }
+.supplier-page .supplier-photo-slot {
+  min-width: 0;
+  min-height: 380px;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(27, 67, 50, .13);
+  border-radius: 5px;
+  background: var(--supplier-green-pale);
+}
+.supplier-page .supplier-photo-slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  object-position: center;
+}
+.supplier-page .supplier-photo-slot.wide { min-height: 420px; }
+
+.supplier-page .supplier-deliverables-note,
+.supplier-page .supplier-process-note {
+  margin-top: 26px;
+  color: #77756F;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.supplier-page .proceso-section { position: relative; overflow: hidden; padding: 100px 0; }
+.supplier-page .proceso-bg { position: absolute; inset: 0; z-index: 0; }
+.supplier-page .proceso-bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+.supplier-page .proceso-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,rgba(8,20,14,.94) 0%,rgba(15,38,26,.88) 50%,rgba(8,20,14,.94) 100%);
+}
+.supplier-page .proceso-content { position: relative; z-index: 1; }
+.supplier-page .proceso-header { max-width: 560px; margin: 0 auto 56px; text-align: center; }
+.supplier-page .proceso-label {
+  display: block;
+  margin-bottom: 14px;
+  color: #7ec8a0;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.supplier-page .proceso-title { margin-bottom: 12px; color: #fff; font-size: 2rem; font-weight: 800; line-height: 1.25; }
+.supplier-page .proceso-subtitle { color: rgba(255,255,255,.5); font-size: .88rem; line-height: 1.6; }
+.supplier-page .proceso-steps {
+  display: grid;
+  grid-template-columns: 1fr 28px 1fr 28px 1fr 28px 1fr;
+  gap: 0;
+  align-items: start;
+}
+.supplier-page .proceso-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 36px;
+  color: rgba(126,200,160,.4);
+}
+.supplier-page .proceso-connector svg { width: 18px; height: 18px; }
+.supplier-page .proceso-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 26px 22px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,.07);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background .2s ease,border-color .2s ease,transform .2s ease;
+}
+.supplier-page .proceso-step:hover {
+  transform: translateY(-4px);
+  border-color: rgba(126,200,160,.35);
+  background: rgba(255,255,255,.11);
+}
+.supplier-page .proceso-step--final { border-color: rgba(126,200,160,.3); background: rgba(126,200,160,.1); }
+.supplier-page .proceso-step--final:hover { border-color: rgba(126,200,160,.5); background: rgba(126,200,160,.16); }
+.supplier-page .proceso-step-top { display: flex; align-items: center; justify-content: space-between; }
+.supplier-page .proceso-step-number { color: rgba(255,255,255,.1); font-size: 1.8rem; font-weight: 900; line-height: 1; }
+.supplier-page .proceso-step-number--final { color: rgba(126,200,160,.25); }
+.supplier-page .proceso-step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.6);
+}
+.supplier-page .proceso-step-icon svg { width: 20px; height: 20px; }
+.supplier-page .proceso-step-icon--final { background: rgba(126,200,160,.15); color: #7ec8a0; }
+.supplier-page .proceso-step h3 { margin: 0; color: #fff; font-size: 1rem; font-weight: 700; line-height: 1.3; }
+.supplier-page .proceso-step p { flex: 1; margin: 0; color: rgba(255,255,255,.58); font-size: .81rem; line-height: 1.55; }
+.supplier-page .proceso-step-tag {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.35);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.supplier-page .proceso-step-tag--final { background: rgba(126,200,160,.12); color: #7ec8a0; }
+@media (max-width: 900px) {
+  .supplier-page .proceso-steps { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; gap: 0; }
+  .supplier-page .proceso-connector { height: 28px; padding: 4px 0; transform: rotate(90deg); }
+  .supplier-page .proceso-title { font-size: 1.65rem; }
+}
+@media (max-width: 640px) {
+  .supplier-page .proceso-section { padding: 72px 0; }
+  .supplier-page .proceso-step { padding: 20px 18px; }
+}
+
+.supplier-page .supplier-deliverables { background: var(--supplier-white); }
+.supplier-page .supplier-deliverables-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: clamp(38px, 7vw, 88px);
+  align-items: start;
+}
+.supplier-page .supplier-deliverables-list { margin: 0; padding: 0; list-style: none; }
+.supplier-page .supplier-deliverables-list li {
+  padding: 15px 0;
+  border-top: 1px solid var(--supplier-border);
+  color: var(--supplier-charcoal);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.supplier-page .supplier-deliverables-list li:last-child { border-bottom: 1px solid var(--supplier-border); }
+
+.supplier-page .supplier-close {
+  border-top: 1px solid #e8e4dc;
+  background: #ffffff;
+}
+.supplier-page .supplier-close-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(38px, 7vw, 92px);
+}
+.supplier-page .supplier-close h2 { margin-bottom: 18px; }
+.supplier-page .supplier-close .supplier-photo-slot { background: #E8E4D9; }
+
+.supplier-page .cta-proveedores-section { position: relative; overflow: hidden; padding: 110px 0; }
+.supplier-page .cta-proveedores-bg { position: absolute; inset: 0; z-index: 0; }
+.supplier-page .cta-proveedores-bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+.supplier-page .cta-proveedores-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg,rgba(6,18,12,.97) 0%,rgba(12,32,22,.92) 40%,rgba(6,18,12,.82) 100%);
+}
+.supplier-page .cta-proveedores-content { position: relative; z-index: 1; }
+.supplier-page .cta-proveedores-inner {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 72px;
+  align-items: center;
+}
+.supplier-page .cta-proveedores-label {
+  display: block;
+  margin-bottom: 18px;
+  color: #7ec8a0;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.supplier-page .cta-proveedores-title { margin-bottom: 20px; color: #fff; font-size: 2.1rem; font-weight: 800; line-height: 1.2; }
+.supplier-page .cta-proveedores-desc { max-width: 480px; margin-bottom: 32px; color: rgba(255,255,255,.62); font-size: .95rem; line-height: 1.7; }
+.supplier-page .cta-signals { display: flex; flex-direction: column; gap: 10px; }
+.supplier-page .cta-signal { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.7); font-size: .84rem; font-weight: 500; }
+.supplier-page .cta-signal svg { flex-shrink: 0; color: #7ec8a0; }
+.supplier-page .cta-proveedores-box {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 36px 30px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 20px;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.supplier-page .cta-prov-box-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  border-radius: 14px;
+  background: rgba(126,200,160,.12);
+  color: #7ec8a0;
+}
+.supplier-page .cta-prov-box-icon svg { width: 26px; height: 26px; }
+.supplier-page .cta-prov-box-title { margin: 0; color: #fff; font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
+.supplier-page .cta-prov-box-desc { margin: 0; color: rgba(255,255,255,.5); font-size: .83rem; line-height: 1.55; }
+.supplier-page .cta-prov-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 15px 24px;
+  border-radius: 10px;
+  background: #fff;
+  color: #1a3a2e;
+  font-size: .92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .2s ease,transform .2s ease;
+}
+.supplier-page .cta-prov-btn:hover { transform: translateY(-2px); background: #f0faf4; }
+.supplier-page .cta-prov-btn svg { width: 16px; height: 16px; }
+.supplier-page .cta-prov-divider { height: 1px; margin: 4px 0; background: rgba(255,255,255,.08); }
+.supplier-page .cta-prov-context { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.supplier-page .cta-prov-context-item { display: flex; flex-direction: column; gap: 4px; }
+.supplier-page .cta-prov-context-number { color: #7ec8a0; font-size: 1.8rem; font-weight: 900; line-height: 1; }
+.supplier-page .cta-prov-context-text { color: rgba(255,255,255,.4); font-size: .72rem; line-height: 1.4; }
+.supplier-page a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+@media (max-width: 760px) {
+  .supplier-page .supplier-container { width: min(100% - 40px, 1180px); }
+  .supplier-page .supplier-hero {
+    min-height: 720px;
+    padding: 132px 0 76px;
+  }
+  .supplier-page .supplier-hero h1 { font-size: clamp(40px, 10vw, 54px); }
+  .supplier-page .supplier-hero-photo img { object-position: 58% center; }
+  .supplier-page .supplier-hero-shade { background: linear-gradient(90deg, rgba(15, 34, 26, .9), rgba(15, 34, 26, .72)); }
+  .supplier-page .supplier-actions { align-items: stretch; flex-direction: column; }
+  .supplier-page .supplier-btn { width: 100%; }
+  .supplier-page .supplier-editorial,
+  .supplier-page .supplier-approach,
+  .supplier-page .supplier-deliverables,
+  .supplier-page .supplier-close { padding: 76px 0; }
+  .supplier-page .reto-section { padding: 76px 0; }
+  .supplier-page .reto-cards { grid-template-columns: 1fr; max-width: 480px; }
+  .supplier-page .reto-title { font-size: 1.65rem; }
+  .supplier-page .supplier-editorial-grid,
+  .supplier-page .supplier-editorial-grid.reverse,
+  .supplier-page .supplier-deliverables-grid,
+  .supplier-page .supplier-close-grid { grid-template-columns: 1fr; gap: 30px; }
+  .supplier-page .supplier-editorial-grid.reverse .supplier-editorial-copy,
+  .supplier-page .supplier-editorial-grid.reverse .supplier-photo-slot { order: initial; }
+  .supplier-page .supplier-photo-slot,
+  .supplier-page .supplier-photo-slot.wide { min-height: 300px; }
+  .supplier-page .evaluacion-section { padding: 76px 0; }
+  .supplier-page .evaluacion-grid { grid-template-columns: 1fr; gap: 16px; }
+  .supplier-page .eval-arrow { height: 24px; padding-top: 0; transform: rotate(90deg); }
+  .supplier-page .evaluacion-title { font-size: 1.65rem; }
+  .supplier-page .supplier-editorial-item,
+  .supplier-page .supplier-work-row { grid-template-columns: 1fr; gap: 10px; }
+  .supplier-page .cta-proveedores-inner { grid-template-columns: 1fr; gap: 40px; }
+  .supplier-page .cta-proveedores-box { max-width: 460px; }
+  .supplier-page .cta-proveedores-title { font-size: 1.7rem; }
+  .supplier-page .reto-section { padding: 64px 0; }
+  .supplier-page .reto-insight { flex-direction: column; gap: 12px; }
+  .supplier-page .evaluacion-section { padding: 64px 0; }
+  .supplier-page .cta-proveedores-section { padding: 72px 0; }
+  .supplier-page .cta-proveedores-title { font-size: 1.4rem; }
+  .supplier-page .cta-prov-context { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 440px) {
+  .supplier-page .supplier-container { width: min(100% - 36px, 1180px); }
+  .supplier-page .supplier-hero { min-height: 760px; }
+  .supplier-page .supplier-hero h1 { font-size: clamp(38px, 10.4vw, 44px); }
+  .supplier-page .supplier-hero-intro { font-size: 15px; }
+  .supplier-page .supplier-photo-slot,
+  .supplier-page .supplier-photo-slot.wide { min-height: 240px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .supplier-page .supplier-btn { transition: none; }
+  .supplier-page .supplier-btn:hover { transform: none; }
+}
+
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute;pointer-events:none;opacity:0" aria-hidden="true" focusable="false">
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 2"/></symbol>
+    <symbol id="icon-file" viewBox="0 0 24 24"><path d="M14 2v6h6M4 21V5a2 2 0 0 1 2-2h7l7 7v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/></symbol>
+    <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></symbol>
+    <symbol id="icon-briefcase" viewBox="0 0 24 24"><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M4 9h16a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.2 2.8 7.8 7 9 4.2-1.2 7-4.8 7-9V6l-7-3Z"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="icon-clipboard" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="icon-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M3 17v2a2 2 0 0 0 2 2h2M21 7V5a2 2 0 0 0-2-2h-2M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 12h10"/></symbol>
+    <symbol id="icon-people" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="icon-flag" viewBox="0 0 24 24"><path d="M4 21V5"/><path d="M4 5h12l-2 4 2 4H4"/></symbol>
+    <symbol id="icon-building" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21V9h12v12"/><path d="M9 9V3h6v6M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/></symbol>
+    <symbol id="icon-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><path d="M2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></symbol>
+    <symbol id="icon-bulb" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M9 15a6 6 0 1 1 6-9.5A4.5 4.5 0 0 0 9 15Z"/></symbol>
+    <symbol id="icon-bars" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  </svg>
+
+  <header id="siteHeader">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="LABAD, inicio"><img class="nav-brand-logo" src="images/labad-brand.png" alt="LABAD"></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <svg class="icon"><use href="#icon-bars"></use></svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Inicio</a></li>
+        <li class="nav-item nav-dropdown">
+          <a href="index.html#services" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">Servicios <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="dropdown-menu">
+            <a href="servicio-compras-proveedores.html" class="dropdown-item"><strong>Compras y proveedores</strong><small>Evaluación ESG de cadena de suministro</small></a>
+            <a href="servicio-documentacion-esg-licitaciones-clientes.html" class="dropdown-item"><strong>Documentación ESG, licitaciones y clientes</strong><small>Requisitos ESG para clientes y pliegos</small></a>
+            <a href="servicio-economia-circular.html" class="dropdown-item"><strong>Economía circular</strong><small>Residuos, materiales y recursos industriales</small></a>
+            <a href="servicio-huella-carbono-por-operacion.html" class="dropdown-item"><strong>Huella de carbono</strong><small>Cálculo, informe y plan de reducción</small></a>
+          </div>
+        </li>
+        <li><a href="quienes-somos.html">Quiénes somos</a></li>
+        <li><a href="index.html#metodologia">Metodología</a></li>
+        <li><a href="index.html#news">Artículos y novedades</a></li>
+        <li><a href="pia-pilot.html">PIA Pilot</a></li>
+        <li class="nav-cta-item"><a href="index.html#contact" class="btn btn-primary nav-cta">Contacto</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="supplier-page">
+    <section class="supplier-hero" id="inicio" aria-labelledby="supplier-title">
+      <figure class="supplier-hero-photo">
+        <img src="images/compras-evaluacion-proveedores-hero.jpeg" alt="Profesionales revisan muestras de materiales y componentes en un entorno de trabajo industrial" fetchpriority="high">
+      </figure>
+      <div class="supplier-hero-shade" aria-hidden="true"></div>
+      <div class="supplier-container supplier-hero-copy">
+        <span class="supplier-eyebrow">Compras · Proveedores · Gestión del riesgo</span>
+        <h1 id="supplier-title">Decisiones de compra más sólidas. Proveedores mejor evaluados. Menos riesgos para tu negocio.</h1>
+        <p class="supplier-hero-intro">Tus proveedores influyen en mucho más que el precio de compra. Su capacidad de suministro, la calidad de la información que proporcionan, la trazabilidad de los materiales y su respuesta a los requisitos de tus clientes también pueden afectar a tu negocio.</p>
+        <p class="supplier-hero-intro">En LABAD te ayudamos a evaluar proveedores, identificar riesgos y organizar la información relevante para que tus decisiones de compra tengan una base más clara y estratégica.</p>
+        <div class="supplier-actions">
+          <a class="supplier-btn supplier-btn-light" href="index.html#contact">Analicemos tu cadena de suministro</a>
+          <a class="supplier-btn supplier-btn-outline" href="#que-hacemos">Descubre cómo trabajamos</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="reto-section" id="problema" aria-labelledby="problem-title">
+      <div class="supplier-container">
+        <div class="reto-header">
+          <span class="reto-label">El reto</span>
+          <h2 class="reto-title" id="problem-title">
+            Un proveedor puede ser competitivo
+            en precio y seguir representando un riesgo.
+          </h2>
+          <p class="reto-intro">
+            Una decisión de compra no depende únicamente del coste
+            de adquisición. También importa la fiabilidad del suministro,
+            la disponibilidad de información, la capacidad de respuesta
+            y el cumplimiento de los requisitos que afectan
+            a la relación comercial.
+          </p>
+        </div>
+        <div class="reto-cards">
+          <div class="reto-card">
+            <div class="reto-card-top">
+              <div class="reto-card-icon reto-card-icon--yellow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              </div>
+              <span class="reto-card-tag">Riesgo de información</span>
+            </div>
+            <h3>Información insuficiente</h3>
+            <p>No siempre se dispone de información clara, comparable o actualizada sobre el proveedor — sus materiales, sus procesos y la documentación que puede aportar ante una solicitud.</p>
+            <div class="reto-card-signal">
+              <span class="signal-dot signal-dot--yellow"></span>
+              <span>Dificulta la evaluación objetiva</span>
+            </div>
+          </div>
+
+          <div class="reto-card">
+            <div class="reto-card-top">
+              <div class="reto-card-icon reto-card-icon--orange">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </div>
+              <span class="reto-card-tag">Riesgo operacional</span>
+            </div>
+            <h3>Dependencias y continuidad</h3>
+            <p>La concentración de compras en pocos proveedores, las alternativas limitadas o la dependencia de suministros críticos aumentan la exposición ante cualquier interrupción del suministro.</p>
+            <div class="reto-card-signal">
+              <span class="signal-dot signal-dot--orange"></span>
+              <span>Aumenta la exposición al riesgo</span>
+            </div>
+          </div>
+
+          <div class="reto-card">
+            <div class="reto-card-top">
+              <div class="reto-card-icon reto-card-icon--red">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+              </div>
+              <span class="reto-card-tag">Riesgo de cumplimiento</span>
+            </div>
+            <h3>Requisitos que llegan desde los clientes</h3>
+            <p>Los requisitos ambientales, de trazabilidad o de documentación ESG se trasladan a los proveedores y requieren una respuesta coordinada entre compras, calidad y otras áreas de la organización.</p>
+            <div class="reto-card-signal">
+              <span class="signal-dot signal-dot--red"></span>
+              <span>Afecta a la competitividad comercial</span>
+            </div>
+          </div>
+        </div>
+        <div class="reto-insight">
+          <div class="reto-insight-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 16v-4m0-4h.01"/>
+            </svg>
+          </div>
+          <p>
+            <strong>Evaluar un proveedor no consiste solo en comprobar lo que cuesta.</strong>
+            Consiste en entender qué necesitas conocer antes de tomar una decisión — y qué señales de riesgo pueden estar pasando desapercibidas.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="evaluacion-section" id="que-hacemos" aria-labelledby="approach-title">
+      <div class="supplier-container">
+        <div class="evaluacion-header">
+          <span class="evaluacion-label">Evaluación de proveedores</span>
+          <h2 class="evaluacion-title" id="approach-title">
+            Convertimos la información sobre proveedores
+            en criterios útiles para decidir.
+          </h2>
+          <p class="evaluacion-intro">
+            Ayudamos a estructurar la evaluación incorporando criterios
+            de riesgo, información ambiental y necesidades operativas —
+            para identificar lo que merece atención y priorizar
+            las acciones que mejoran la toma de decisiones.
+          </p>
+        </div>
+        <div class="evaluacion-grid">
+          <div class="eval-column">
+            <div class="eval-column-header">
+              <div class="eval-column-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 010 7.75"/>
+                </svg>
+              </div>
+              <div>
+                <span class="eval-column-number">01</span>
+                <h3>Análisis y criticidad</h3>
+              </div>
+            </div>
+            <ul class="eval-list">
+              <li><span class="eval-list-dot"></span>Identificamos los proveedores o categorías de compra que conviene analizar prioritariamente.</li>
+              <li><span class="eval-list-dot"></span>Consideramos la criticidad del suministro, la dependencia y la disponibilidad de alternativas.</li>
+              <li><span class="eval-list-dot"></span>Definimos qué información es relevante para cada tipo de proveedor.</li>
+              <li><span class="eval-list-dot"></span>Adaptamos el análisis a la actividad y las prioridades de la empresa.</li>
+            </ul>
+            <div class="eval-column-output">
+              <span class="eval-output-label">Resultado</span>
+              <span class="eval-output-text">Mapa de proveedores con nivel de criticidad y prioridad de análisis</span>
+            </div>
+          </div>
+
+          <div class="eval-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+
+          <div class="eval-column">
+            <div class="eval-column-header">
+              <div class="eval-column-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+              </div>
+              <div>
+                <span class="eval-column-number">02</span>
+                <h3>Evaluación y criterios ESG</h3>
+              </div>
+            </div>
+            <ul class="eval-list">
+              <li><span class="eval-list-dot"></span>Revisamos la información disponible sobre el proveedor y su suministro.</li>
+              <li><span class="eval-list-dot"></span>Identificamos carencias documentales y aspectos que requieren aclaración.</li>
+              <li><span class="eval-list-dot"></span>Incorporamos criterios ambientales y de trazabilidad cuando son relevantes.</li>
+              <li><span class="eval-list-dot"></span>Estructuramos una evaluación proporcional al riesgo y a la importancia del suministro.</li>
+            </ul>
+            <div class="eval-column-output">
+              <span class="eval-output-label">Resultado</span>
+              <span class="eval-output-text">Evaluación estructurada con criterios de riesgo, carencias y aspectos ESG identificados</span>
+            </div>
+          </div>
+
+          <div class="eval-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+
+          <div class="eval-column eval-column--highlight">
+            <div class="eval-column-header">
+              <div class="eval-column-icon eval-column-icon--light">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <polyline points="23 4 23 10 17 10"/>
+                  <polyline points="1 20 1 14 7 14"/>
+                  <path d="M3.51 9a9 9 0 0114.85-3.36L23 10 M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                </svg>
+              </div>
+              <div>
+                <span class="eval-column-number eval-column-number--light">03</span>
+                <h3>Mejora y seguimiento</h3>
+              </div>
+            </div>
+            <ul class="eval-list eval-list--light">
+              <li><span class="eval-list-dot eval-list-dot--light"></span>Priorizamos las cuestiones que requieren revisión o actuación inmediata.</li>
+              <li><span class="eval-list-dot eval-list-dot--light"></span>Proponemos medidas de mejora y necesidades de información adicional.</li>
+              <li><span class="eval-list-dot eval-list-dot--light"></span>Ayudamos a definir criterios de seguimiento y actualización periódica.</li>
+              <li><span class="eval-list-dot eval-list-dot--light"></span>Facilitamos la integración de los resultados en los procesos de compras existentes.</li>
+            </ul>
+            <div class="eval-column-output eval-column-output--light">
+              <span class="eval-output-label">Resultado</span>
+              <span class="eval-output-text">Plan de acción priorizado e integrado en el proceso de compras</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="supplier-editorial soft" id="cadena-suministro" aria-labelledby="supply-title">
+      <div class="supplier-container supplier-editorial-grid">
+        <figure class="supplier-photo-slot wide">
+          <img src="images/compras-cadena-suministro.jpeg" alt="Profesional supervisa estanterías y existencias en un almacén de suministros industriales" loading="lazy">
+        </figure>
+        <div class="supplier-editorial-copy">
+          <span class="supplier-eyebrow">Compras y cadena de suministro</span>
+          <h2 id="supply-title">Conocer mejor a tus proveedores es una forma de proteger tus decisiones de compra.</h2>
+          <p>La información sobre los proveedores puede ayudar a detectar dependencias, necesidades de documentación y oportunidades de mejora antes de que se conviertan en problemas operativos o comerciales.</p>
+          <p>En función de cada empresa, el análisis puede centrarse en la criticidad del suministro, la trazabilidad de los materiales, la documentación disponible, los requisitos del cliente o la capacidad de respuesta del proveedor.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="proceso-section" id="como-trabajamos" aria-labelledby="process-title">
+      <div class="proceso-bg">
+        <img src="img/proceso-proveedores.jpg" alt="Materiales industriales en cadena de suministro" class="proceso-bg-img">
+        <div class="proceso-bg-overlay"></div>
+      </div>
+
+      <div class="supplier-container proceso-content">
+        <div class="proceso-header">
+          <span class="proceso-label">Proceso de trabajo</span>
+          <h2 class="proceso-title" id="process-title">
+            Un proceso adaptado a la realidad
+            de tus compras.
+          </h2>
+          <p class="proceso-subtitle">
+            El alcance, los criterios y los entregables
+            se acuerdan con cada empresa.
+          </p>
+        </div>
+        <div class="proceso-steps">
+          <div class="proceso-step">
+            <div class="proceso-step-top">
+              <span class="proceso-step-number">01</span>
+              <div class="proceso-step-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="11" cy="11" r="7"/>
+                  <path d="M21 21l-4.35-4.35"/>
+                </svg>
+              </div>
+            </div>
+            <h3>Comprender</h3>
+            <p>Analizamos la actividad, las prioridades de compras y las necesidades reales de la empresa.</p>
+            <div class="proceso-step-tag">Diagnóstico inicial</div>
+          </div>
+
+          <div class="proceso-connector">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+
+          <div class="proceso-step">
+            <div class="proceso-step-top">
+              <span class="proceso-step-number">02</span>
+              <div class="proceso-step-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+              </div>
+            </div>
+            <h3>Priorizar</h3>
+            <p>Identificamos los proveedores, categorías o riesgos que merecen mayor atención según su criticidad.</p>
+            <div class="proceso-step-tag">Mapa de criticidad</div>
+          </div>
+
+          <div class="proceso-connector">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+
+          <div class="proceso-step">
+            <div class="proceso-step-top">
+              <span class="proceso-step-number">03</span>
+              <div class="proceso-step-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path d="M9 11l3 3L22 4"/>
+                  <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+              </div>
+            </div>
+            <h3>Evaluar</h3>
+            <p>Revisamos la información disponible, los criterios relevantes y las posibles carencias documentales.</p>
+            <div class="proceso-step-tag">Evaluación ESG</div>
+          </div>
+
+          <div class="proceso-connector">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+
+          <div class="proceso-step proceso-step--final">
+            <div class="proceso-step-top">
+              <span class="proceso-step-number proceso-step-number--final">04</span>
+              <div class="proceso-step-icon proceso-step-icon--final">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+            </div>
+            <h3>Actuar</h3>
+            <p>Proponemos prioridades, acciones de mejora y criterios de seguimiento acordes con el alcance del trabajo.</p>
+            <div class="proceso-step-tag proceso-step-tag--final">Plan de acción</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="supplier-deliverables" id="entregables" aria-labelledby="deliverables-title">
+      <div class="supplier-container supplier-deliverables-grid">
+        <div class="supplier-section-heading">
+          <span class="supplier-eyebrow">Resultados del análisis</span>
+          <h2 id="deliverables-title">Más claridad sobre los proveedores y las decisiones que requieren atención.</h2>
+          <p>El resultado es una base de trabajo que ayuda a comprender mejor la situación de los proveedores analizados, organizar la información y definir las siguientes prioridades.</p>
+        </div>
+        <div>
+          <ul class="supplier-deliverables-list">
+            <li>Mapa inicial de proveedores o categorías de compra prioritarias.</li>
+            <li>Matriz de evaluación de proveedores.</li>
+            <li>Criterios de evaluación adaptados a la criticidad y al tipo de suministro.</li>
+            <li>Identificación de riesgos y carencias de información.</li>
+            <li>Revisión de la documentación ambiental disponible.</li>
+            <li>Relación de acciones de mejora y necesidades de seguimiento.</li>
+          </ul>
+          <p class="supplier-deliverables-note">Los resultados dependen de la información facilitada, el alcance del análisis y las características de los proveedores evaluados. Las conclusiones no sustituyen auditorías, certificaciones ni verificaciones independientes cuando estas sean necesarias.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="supplier-editorial soft" id="circularidad" aria-labelledby="circular-title">
+      <div class="supplier-container supplier-editorial-grid reverse">
+        <div class="supplier-editorial-copy">
+          <span class="supplier-eyebrow">Sostenibilidad y recursos</span>
+          <h2 id="circular-title">Una cadena de suministro más preparada también puede encontrar nuevas oportunidades.</h2>
+          <p>La evaluación de proveedores no sirve únicamente para identificar posibles riesgos. También puede ayudar a descubrir oportunidades de mejora en materiales, embalajes, durabilidad, reutilización y eficiencia de recursos.</p>
+          <p>Cuando resulta relevante para la actividad, incorporar criterios de circularidad a las decisiones de compra puede contribuir a reducir desperdicios, mejorar el uso de materiales y explorar alternativas con proveedores.</p>
+          <p>Estas oportunidades no son resultados garantizados ni sustituyen automáticamente los criterios de coste, calidad y continuidad del suministro.</p>
+        </div>
+        <figure class="supplier-photo-slot">
+          <img src="images/compras-decisiones-futuro.jpeg" alt="Profesionales revisan información y componentes con una planta industrial al fondo" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <section class="supplier-close" id="decidir" aria-labelledby="decisions-title">
+      <div class="supplier-container supplier-close-grid">
+        <div>
+          <span class="supplier-eyebrow">Decisiones con visión de futuro</span>
+          <h2 id="decisions-title">Comprar con criterio es anticiparse, no reaccionar tarde.</h2>
+          <p>No todos los proveedores requieren el mismo nivel de análisis ni todas las empresas necesitan el mismo sistema de evaluación. Lo importante es identificar qué información importa, dónde se encuentran las principales incertidumbres y qué decisiones merecen atención prioritaria.</p>
+          <p>LABAD te ayuda a convertir esas preguntas en un proceso de evaluación más estructurado, adaptado a tu empresa y a las necesidades de tu cadena de suministro.</p>
+        </div>
+        <figure class="supplier-photo-slot">
+          <img src="images/compras-economia-circular.jpeg" alt="Profesional analiza materiales y componentes para evaluar alternativas y mejoras de recursos" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <section class="cta-proveedores-section" id="contacto" aria-labelledby="contact-title">
+      <div class="cta-proveedores-bg">
+        <img src="img/cta-documentacion.jpg" alt="Persona revisando documentación y análisis en mesa de trabajo" class="cta-proveedores-bg-img">
+        <div class="cta-proveedores-overlay"></div>
+      </div>
+
+      <div class="supplier-container cta-proveedores-content">
+        <div class="cta-proveedores-inner">
+          <div class="cta-proveedores-text">
+            <span class="cta-proveedores-label">Hablemos</span>
+            <h2 class="cta-proveedores-title" id="contact-title">
+              ¿Sabes qué riesgos pueden estar
+              afectando a tus proveedores?
+            </h2>
+            <p class="cta-proveedores-desc">
+              Cuéntanos cómo gestionas actualmente tus compras,
+              qué información tienes de tus proveedores y qué
+              situaciones te gustaría analizar. Exploraremos
+              contigo qué aspectos conviene priorizar y qué tipo
+              de evaluación puede tener sentido para tu empresa.
+            </p>
+            <div class="cta-signals">
+              <div class="cta-signal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Sin compromiso previo</span>
+              </div>
+              <div class="cta-signal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Alcance acordado con cada empresa</span>
+              </div>
+              <div class="cta-signal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Adaptado a tu actividad real</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-proveedores-box">
+            <div class="cta-prov-box-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                <path d="M16 3.13a4 4 0 010 7.75"/>
+              </svg>
+            </div>
+            <h3 class="cta-prov-box-title">Hablemos de tus proveedores</h3>
+            <a href="index.html#contact" class="cta-prov-btn">
+              Empezar la conversación
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <div class="newsletter" id="newsletter">
+    <div class="container newsletter-inner">
+      <p>Suscríbete para recibir noticias sobre compras sostenibles y artículos como este.</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Tu email" required>
+        <button class="btn btn-fill" type="submit">Suscribirme</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="footer-main">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src="images/labad-brand.png" alt="LABAD">
+          <p class="footer-tagline">Sustainability Strategy &amp; Circular Economy Consulting</p>
+          <p class="footer-location">Bilbao, País Vasco</p>
+        </div>
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="index.html#top">Inicio</a></li>
+            <li><a href="index.html#services">Servicios</a></li>
+            <li><a href="quienes-somos.html">Quiénes somos</a></li>
+            <li><a href="index.html#metodologia">Metodología</a></li>
+            <li><a href="index.html#news">Artículos y novedades</a></li>
+            <li><a href="index.html#pis-pilot">PIA Pilot</a></li>
+            <li><a href="index.html#contact">Contacto</a></li>
+          </ul>
+        </nav>
+        <div class="footer-social">
+          <h4>Síguenos</h4>
+          <a href="https://www.linkedin.com/in/natia-omiadze/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 LABAD. Todos los derechos reservados.</div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('siteHeader');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    navToggle.addEventListener('click', function () {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+
+    navLinks.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 980 && link.classList.contains('nav-dropdown-toggle')) return;
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        if (dropdown && dropdownToggle) {
+          dropdown.classList.remove('active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+    const dropdown = document.querySelector('.nav-dropdown');
+    const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
+    if (dropdown && dropdownToggle) {
+      dropdownToggle.addEventListener('click', function (event) {
+        if (window.innerWidth <= 980) {
+          event.preventDefault();
+          const open = dropdown.classList.toggle('active');
+          dropdownToggle.setAttribute('aria-expanded', String(open));
+        }
+      });
+      document.addEventListener('click', function (event) {
+        if (!dropdown.contains(event.target)) {
+          dropdown.classList.remove('active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          dropdown.classList.remove('active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+          navLinks.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+          dropdownToggle.focus();
+        }
+      });
+    }
+
+    document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const input = event.currentTarget.querySelector('input');
+      const button = event.currentTarget.querySelector('button');
+      const original = button.textContent;
+      button.textContent = '¡Gracias!';
+      input.value = '';
+      setTimeout(function () { button.textContent = original; }, 2400);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servicios | LABAD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root { --sand:#F5F2EC; --primary:#1A3A2A; --sage:#6B8F71; --gold:#C9A96E; --body:#3D3D3D; --muted:#8A8A7A; --white:#fff; --line:rgba(26,58,42,.1); }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:'Inter',sans-serif;background:var(--sand);color:var(--body);line-height:1.7} a{text-decoration:none;color:inherit} p{margin:0 0 14px}.container{width:min(1180px,calc(100% - 48px));margin:0 auto} .brand-wordmark{font-family:'Playfair Display',serif;letter-spacing:.15em;text-transform:uppercase;font-size:28px;color:var(--primary)} .brand-sub{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);font-weight:600}
+    header{position:sticky;top:0;z-index:50;background:rgba(245,242,236,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)} .nav{display:flex;justify-content:space-between;align-items:center;min-height:92px;gap:16px}.brand{display:flex;flex-direction:column;gap:4px}.nav-links{display:flex;gap:26px;list-style:none;padding:0;margin:0;align-items:center;justify-content:center;flex:1}.nav-links a{font-size:14px;text-transform:uppercase;color:var(--primary);font-weight:500}.nav-cta a{background:var(--primary);color:var(--white);padding:12px 24px;border-radius:4px}.nav-cta a:hover{background:var(--gold);color:var(--primary)} .mobile{display:none}
+    .page-hero{background:var(--primary);padding:100px 0 72px;color:var(--white)} .page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(38px,4vw,56px);margin:0;color:var(--white)} .tagline{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,2.1vw,38px);font-style:italic;color:var(--gold);margin:12px 0 0}
+    .service-list{display:grid;gap:32px;padding:72px 0}.service-banner{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;background:rgba(255,255,255,.5);border:1px solid rgba(26,58,42,.1);border-radius:18px;padding:28px;align-items:center}.service-banner:nth-child(even){direction:rtl}.service-banner:nth-child(even)>*{direction:ltr}.service-banner h2{font-size:clamp(30px,2vw,40px);margin:0 0 18px;color:var(--primary)} .service-banner p{margin:0 0 14px;color:var(--body)}.service-banner ul{margin:0;padding-left:18px;color:var(--body)} .badge{display:inline-flex;padding:6px 12px;border-radius:999px;background:var(--gold);color:var(--primary);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:12px}.visual{min-height:220px;background:linear-gradient(135deg, rgba(26,58,42,.08), rgba(107,143,113,.2));display:grid;place-items:center;border:1px solid rgba(26,58,42,.08);border-radius:12px;color:var(--primary);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    footer{background:var(--primary);color:var(--white);padding:48px 0 22px}.footer-grid{display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12)} .footer-brand{font-family:'Playfair Display',serif;letter-spacing:.15em;text-transform:uppercase;font-size:38px}.footer-tag{font-family:'Cormorant Garamond',serif;font-size:30px;font-style:italic;color:var(--gold)} .footer-grid h3{color:var(--white);margin:0 0 12px;font-size:18px}.footer-grid p,.footer-grid li,.footer-grid a{color:rgba(255,255,255,.82)} .footer-links{list-style:none;padding:0;margin:0;display:grid;gap:8px}.footer-meta{text-align:center;padding-top:18px;color:rgba(255,255,255,.76);font-size:14px}
+    @media (max-width:900px){ .nav-links{display:none}. .mobile{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(26,58,42,.1);border-radius:6px;background:transparent;color:var(--primary);font-size:22px}. .nav.is-open .nav-links{display:flex;position:absolute;left:0;right:0;top:92px;background:rgba(245,242,236,.98);flex-direction:column;align-items:flex-start;padding:18px 24px;border-bottom:1px solid var(--line)} .nav-links a{display:block;width:100%}.service-banner,.footer-grid{grid-template-columns:1fr}} @media (max-width:640px){ .container{width:min(100% - 28px, 1180px)} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav" id="nav">
+      <a href="index.html" class="brand" aria-label="LABAD, página de inicio">
+        <div class="brand-wordmark">LABAD</div>
+        <div class="brand-sub">Sustainability Strategy &amp; Circular Economy Consulting</div>
+      </a>
+      <button class="mobile" id="menuBtn" aria-label="Abrir men?">?</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="servicios.html">Servicios</a></li>
+        <li><a href="quienes-somos.html">Qui?nes Somos</a></li>
+        <li><a href="index.html#como-trabajamos">C?mo Trabajamos</a></li>
+        <li><a href="index.html#articulos">Art?culos y Noticias</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+        <li class="nav-cta"><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Nuestros Servicios</h1>
+      <p class="tagline">Cada servicio transforma un riesgo en oportunidad.</p>
+    </div>
+  </section>
+
+  <main class="container service-list">
+    <article class="service-banner" id="descarbonizacion">
+      <div>
+        <h2>Descarbonizaci?n y Huella de Carbono</h2>
+        <p><strong>Qu? hacemos:</strong> Medici?n de huella de carbono (Scope 1, 2, 3), planes de reducci?n, reporting CSRD/GRI y hoja de ruta net-zero.</p>
+        <p><strong>Para qui?n:</strong> Empresas que necesitan cumplir regulaci?n europea o diferenciarse.</p>
+        <p><strong>Entregables:</strong> Informe de huella ? Plan de acci?n ? Dashboard de seguimiento</p>
+      </div>
+      <div class="visual">Huella</div>
+    </article>
+
+    <article class="service-banner" id="economia-circular">
+      <div>
+        <h2>Econom?a Circular</h2>
+        <p><strong>Qu? hacemos:</strong> Diagn?stico de flujos de materiales, dise?o de modelos circulares, gesti?n de residuos y an?lisis de ciclo de vida (LCA).</p>
+        <p><strong>Entregables:</strong> Mapa de circularidad ? Estrategia de residuos cero ? Reporting EU</p>
+      </div>
+      <div class="visual">Circular</div>
+    </article>
+
+    <article class="service-banner" id="compras-sostenibles">
+      <div>
+        <h2>Compras Sostenibles</h2>
+        <p><strong>Qu? hacemos:</strong> Evaluaci?n de proveedores ESG, due diligence CSDDD e integraci?n de criterios sostenibles en procurement.</p>
+        <p><strong>Entregables:</strong> Scorecard de proveedores ? Pol?tica de compras ? Plan de mejora</p>
+      </div>
+      <div class="visual">Compras</div>
+    </article>
+
+    <article class="service-banner" id="pia-pilot">
+      <div>
+        <div class="badge">Nuevo</div>
+        <h2>PIA Piloto</h2>
+        <p><strong>Qu? hacemos:</strong> Implementaci?n piloto de IA para inteligencia de compras y cumplimiento ESG automatizado.</p>
+        <p><strong>CTA:</strong> Solicitar demo del piloto</p>
+      </div>
+      <div class="visual">IA</div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand">LABAD</div>
+        <div class="footer-tag">Transformamos la sostenibilidad en ventaja competitiva.</div>
+        <p>Consultor?a focalizada en sostenibilidad, descarbonizaci?n y econom?a circular.</p>
+      </div>
+      <div>
+        <h3>Links r?pidos</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="quienes-somos.html">Qui?nes Somos</a></li>
+          <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contacto</h3>
+        <p>contacto@labad.es</p>
+        <p>LinkedIn: LABAD Consulting</p>
+        <p>Espa?a ? Europa</p>
+      </div>
+    </div>
+    <div class="container footer-meta">? 2024 LABAD. Todos los derechos reservados.</div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const btn = document.getElementById('menuBtn');
+    btn.addEventListener('click', () => nav.classList.toggle('is-open'));
+  </script>
+</body>
+</html>

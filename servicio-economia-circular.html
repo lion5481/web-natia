@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAFAF7">
+  <title>Economía circular y aprovechamiento de recursos | LABAD</title>
+  <meta name="description" content="Identificamos oportunidades para reducir residuos, aprovechar materiales y mejorar el uso de recursos en empresas industriales.">
+  <link rel="icon" href="images/labad-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --circular-white: #FAFAF7;
+      --circular-green: #1B4332;
+      --circular-green-medium: #2D6A4F;
+      --circular-green-soft: #E9F1EC;
+      --circular-beige: #F1EDE4;
+      --circular-charcoal: #303632;
+      --circular-muted: #5C625D;
+      --circular-line: rgba(27, 67, 50, .2);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      margin: 0;
+      color: var(--circular-charcoal);
+      background: var(--circular-white);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p, figure { margin: 0; }
+    .circular-icon { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .circular-container { width: min(100% - 64px, 1180px); margin: 0 auto; }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 900;
+      padding: 10px 0;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: box-shadow .25s ease, padding .25s ease;
+    }
+    .site-header.scrolled { padding: 8px 0; box-shadow: 0 2px 24px rgba(0, 0, 0, .07); }
+    .site-header .container { width: min(100% - 64px, 1180px); margin: 0 auto; }
+    .site-header .nav-wrap { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+    .site-header .brand { display: flex; flex: 0 0 auto; align-items: center; color: var(--circular-charcoal); line-height: 1; }
+    .site-header .brand-mark { display: block; width: 170px; height: auto; max-width: 100%; object-fit: contain; }
+    .site-header nav { min-width: 0; margin-left: auto; }
+    .site-header .nav-links { display: flex; align-items: center; justify-content: flex-end; gap: clamp(16px, 2vw, 28px); margin: 0; padding: 0; list-style: none; }
+    .site-header .nav-links a { position: relative; color: #263a32; font-size: 14px; font-weight: 500; transition: color .18s ease, background-color .18s ease; }
+    .site-header .nav-links a:hover { color: var(--circular-green-medium); }
+    .site-header .nav-dropdown { position: relative; }
+    .site-header .nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; }
+    .site-header .dropdown-arrow { width: 14px; height: 14px; flex-shrink: 0; transition: transform .25s ease; }
+    .site-header .nav-dropdown:hover .dropdown-arrow,
+    .site-header .nav-dropdown:focus-within .dropdown-arrow,
+    .site-header .nav-dropdown.active .dropdown-arrow { transform: rotate(180deg); }
+    .site-header .dropdown-menu { position: absolute; top: calc(100% + 10px); left: 50%; width: 300px; padding: 8px; border: 1px solid rgba(26,58,42,.1); border-radius: 12px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.1); opacity: 0; visibility: hidden; transform: translate(-50%,-6px); transition: opacity .2s ease,transform .2s ease,visibility .2s; z-index: 1000; }
+    .site-header .nav-dropdown:hover .dropdown-menu,
+    .site-header .nav-dropdown:focus-within .dropdown-menu,
+    .site-header .nav-dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translate(-50%,0); }
+    .site-header .nav-contact-button { display: inline-flex; align-items: center; justify-content: center; padding: 11px 20px; border-radius: 4px; background: var(--circular-green); color: #fff !important; font-size: 14px !important; font-weight: 600 !important; }
+    .site-header .nav-contact-button:hover { background: #16372a; color: #fff !important; }
+    .site-header .dropdown-item { display: block; padding: 10px 12px; border-radius: 8px; }
+    .site-header .dropdown-item:hover { background: #f3f8f5; }
+    .site-header .dropdown-item strong { display: block; color: #1a3a2e; font-size: .84rem; line-height: 1.25; }
+    .site-header .dropdown-item small { display: block; margin-top: 2px; color: #71887b; font-size: .72rem; line-height: 1.3; }
+    .site-header .nav-toggle { display: none; width: 42px; height: 42px; align-items: center; justify-content: center; border: 0; border-radius: 6px; background: transparent; color: var(--circular-charcoal); cursor: pointer; }
+    .site-header .nav-toggle:focus-visible { outline: 2px solid var(--circular-green-medium); outline-offset: 4px; }
+
+    .circular-service section { scroll-margin-top: 26px; }
+    .circular-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 17px;
+      color: var(--circular-green-medium);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .11em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+    .circular-eyebrow::before { width: 30px; height: 1px; background: currentColor; content: ""; }
+
+    .circular-hero {
+      position: relative;
+      display: flex;
+      min-height: min(820px, 92vh);
+      align-items: center;
+      overflow: hidden;
+      padding: 140px 0 90px;
+      background: var(--circular-green);
+      color: var(--circular-white);
+    }
+    .circular-hero-media, .circular-hero-shade { position: absolute; inset: 0; }
+    .circular-hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 54%; }
+    .circular-hero-shade { background: linear-gradient(90deg, rgba(15, 34, 26, .86) 0%, rgba(15, 34, 26, .65) 48%, rgba(15, 34, 26, .16) 100%); }
+    .circular-hero-copy { position: relative; z-index: 1; max-width: 800px; }
+    .circular-hero .circular-eyebrow { color: #E2ECE6; }
+    .circular-hero h1 {
+      max-width: 780px;
+      margin-bottom: 20px;
+      color: var(--circular-white);
+      font-size: clamp(44px, 6.3vw, 76px);
+      font-weight: 800;
+      letter-spacing: -.045em;
+      line-height: 1.03;
+    }
+    .circular-hero .hero-copy { max-width: 690px; color: #F3F5F1; font-size: clamp(17px, 1.55vw, 20px); line-height: 1.7; }
+    .circular-hero .hero-action { display: inline-flex; min-height: 52px; align-items: center; justify-content: center; gap: 10px; margin-top: 27px; padding: 14px 24px; border-radius: 3px; background: var(--circular-white); color: var(--circular-green); font-size: 14px; font-weight: 700; transition: background .18s ease, transform .18s ease; }
+    .circular-hero .hero-action:hover { transform: translateY(-1px); background: var(--circular-green-soft); }
+    .circular-hero-points { display: flex; flex-wrap: wrap; gap: 14px 25px; margin: 24px 0 0; padding: 0; list-style: none; }
+    .circular-hero-points li { display: flex; align-items: center; gap: 9px; color: #F3F5F1; font-size: 13px; font-weight: 500; }
+    .circular-hero-points .circular-icon { width: 18px; height: 18px; flex-basis: 18px; color: #D7E6DC; }
+
+    .circular-what { padding: 100px 0 108px; background: var(--circular-white); }
+    .circular-section-heading { max-width: 790px; margin-bottom: 44px; }
+    .circular-section-heading h2,
+    .circular-editorial-copy h2,
+    .circular-deliverables-copy h2 {
+      color: var(--circular-charcoal);
+      font-size: clamp(32px, 4.1vw, 48px);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.12;
+    }
+    .circular-editorial-copy > p,
+    .circular-deliverables-copy > p { margin-top: 16px; color: var(--circular-muted); font-size: 16px; line-height: 1.78; }
+    .circular-areas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--circular-line); }
+    .circular-area { min-width: 0; padding: 25px 28px 0 0; }
+    .circular-area + .circular-area { padding-left: 27px; border-left: 1px solid var(--circular-line); }
+    .circular-area h3 { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: var(--circular-green); font-size: 18px; font-weight: 700; line-height: 1.35; }
+    .circular-area h3 .circular-icon { color: var(--circular-green); }
+    .circular-area p { color: var(--circular-muted); font-size: 14px; line-height: 1.7; }
+
+    .circular-method { padding: 106px 0; background: var(--circular-beige); }
+    .circular-method-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); align-items: center; gap: clamp(40px, 7vw, 88px); }
+    .circular-photo { overflow: hidden; margin: 0; border-radius: 5px; background: var(--circular-green-soft); }
+    .circular-photo img { width: 100%; height: 100%; min-height: 450px; object-fit: cover; object-position: center; }
+    .circular-method-copy h2 { max-width: 540px; margin-bottom: 30px; color: var(--circular-charcoal); font-size: clamp(32px, 4vw, 46px); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; }
+    .circular-steps { margin: 0; padding: 0; list-style: none; }
+    .circular-step { display: grid; grid-template-columns: 24px 1fr; align-items: start; gap: 14px; padding: 16px 0; border-top: 1px solid var(--circular-line); }
+    .circular-step .circular-icon { margin-top: 1px; color: var(--circular-green); }
+    .circular-step h3 { margin-bottom: 4px; color: var(--circular-green); font-size: 16px; font-weight: 700; line-height: 1.4; }
+    .circular-step p { color: var(--circular-muted); font-size: 14px; line-height: 1.65; }
+
+    .circular-opportunities { padding: 108px 0; background: var(--circular-white); }
+    .circular-opportunity-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .93fr); align-items: center; gap: clamp(40px, 7vw, 92px); }
+    .circular-opportunity-copy h2 { margin-bottom: 17px; color: var(--circular-charcoal); font-size: clamp(32px, 4vw, 46px); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; }
+    .circular-opportunity-copy > p { color: var(--circular-muted); font-size: 16px; line-height: 1.78; }
+    .circular-outcomes { display: grid; gap: 0; margin: 25px 0 0; padding: 0; list-style: none; }
+    .circular-outcomes li { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-top: 1px solid var(--circular-line); color: var(--circular-charcoal); font-size: 14px; line-height: 1.55; }
+    .circular-outcomes .circular-icon { color: var(--circular-green); }
+    .circular-opportunity-grid .circular-photo img { min-height: 410px; }
+
+    .circular-deliverables { padding: 102px 0 0; background: var(--circular-beige); }
+    .circular-deliverables-grid { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); align-items: center; gap: clamp(40px, 7vw, 88px); }
+    .circular-deliverables-copy { padding-bottom: 98px; }
+    .circular-deliverables-copy h2 { margin-bottom: 0; }
+    .circular-deliverables-grid .circular-photo img { min-height: 420px; }
+    .circular-deliverable-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; margin: 26px 0 0; padding: 0; list-style: none; }
+    .circular-deliverable-list li { display: flex; align-items: flex-start; gap: 11px; padding: 14px 0; border-top: 1px solid var(--circular-line); color: var(--circular-charcoal); font-size: 13px; line-height: 1.55; }
+    .circular-deliverable-list .circular-icon { color: var(--circular-green); }
+    .cta-circular-section { position: relative; overflow: hidden; padding: 100px 0; }
+    .cta-circular-bg { position: absolute; inset: 0; z-index: 0; }
+    .cta-circular-bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center 45%; }
+    .cta-circular-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, rgba(6, 18, 12, 0.97) 0%, rgba(12, 32, 22, 0.90) 50%, rgba(6, 18, 12, 0.82) 100%);
+    }
+    .cta-circular-content { position: relative; z-index: 1; }
+    .cta-circular-inner { display: grid; grid-template-columns: 1fr 340px; gap: 72px; align-items: center; }
+    .cta-circular-label {
+      display: block;
+      margin-bottom: 16px;
+      color: #7ec8a0;
+      font-size: 0.70rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    .cta-circular-title { margin-bottom: 18px; color: #ffffff; font-size: 2rem; font-weight: 800; line-height: 1.2; }
+    .cta-circular-desc { max-width: 460px; margin: 0 0 28px; color: rgba(255, 255, 255, 0.60); font-size: 0.92rem; line-height: 1.70; }
+    .cta-circular-signals { display: flex; flex-direction: column; gap: 11px; }
+    .cta-circular-signal { display: flex; align-items: center; gap: 10px; color: rgba(255, 255, 255, 0.68); font-size: 0.84rem; font-weight: 500; }
+    .cta-circular-signal svg { flex-shrink: 0; color: #7ec8a0; }
+    .cta-circular-box {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 32px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .cta-circular-box-icon {
+      display: flex;
+      width: 48px;
+      height: 48px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: rgba(126, 200, 160, 0.12);
+      color: #7ec8a0;
+    }
+    .cta-circular-box-title { margin: 0; color: #ffffff; font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+    .cta-circular-box-desc { margin: 0; color: rgba(255, 255, 255, 0.48); font-size: 0.82rem; line-height: 1.55; }
+    .cta-circular-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #1a3a2e;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .cta-circular-btn:hover { transform: translateY(-2px); background: #f0faf4; }
+    .cta-circular-nota { margin: 0; color: rgba(255, 255, 255, 0.28); font-size: 0.72rem; text-align: center; }
+
+    .newsletter { padding: 36px 0; background: #1a1a1a; }
+    .newsletter-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .newsletter-inner, .footer-grid { width: min(100% - 64px, 1180px); margin-right: auto; margin-left: auto; }
+    .newsletter-inner p { color: #fff; font-size: 15.5px; font-weight: 600; }
+    .newsletter-form { display: flex; gap: 10px; flex: 1; max-width: 440px; min-width: 260px; }
+    .newsletter-form input { flex: 1; padding: 12px 16px; border: 1.5px solid #3A3A38; border-radius: 2px; background: #242422; color: #fff; font-size: 14.5px; }
+    .newsletter-form input::placeholder { color: #8A8985; }
+    .newsletter-form input:focus { outline: none; border-color: #3E7A5C; }
+    .newsletter-form button { flex-shrink: 0; padding: 12px 22px; border: 0; border-radius: 3px; background: #1B4332; color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .newsletter-form button:hover { background: #2D6A4F; }
+    footer { padding: 0; border-top: 1px solid #E5E7EB; background: #fff; }
+    .footer-main { padding: 48px 0; }
+    .footer-grid { display: grid; grid-template-columns: 1.1fr 1.5fr .7fr; align-items: start; }
+    .footer-brand, .footer-nav, .footer-social { min-height: 100%; padding: 0 32px; }
+    .footer-brand { padding-left: 0; border-right: 1px solid #E5E7EB; }
+    .footer-nav { border-right: 1px solid #E5E7EB; }
+    .footer-brand img { width: 170px; height: auto; max-width: 100%; margin-bottom: 16px; }
+    .footer-brand p { color: #6B7280; font-size: 13px; line-height: 1.6; }
+    .footer-brand .footer-tagline { max-width: 260px; margin-bottom: 8px; }
+    .footer-nav h4, .footer-social h4 { margin-bottom: 16px; color: #6B7280; font-size: 11px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; }
+    .footer-nav ul { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px 24px; list-style: none; margin: 0; padding: 0; }
+    .footer-nav a { color: #374151; font-size: 14px; transition: color .18s ease; }
+    .footer-nav a:hover, .footer-nav a:focus-visible { color: #2D6A4F; }
+    .footer-social a { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; color: #374151; transition: color .18s ease, transform .18s ease; }
+    .footer-social a:hover { transform: translateY(-2px); color: #2D6A4F; }
+    .footer-social svg { width: 24px; height: 24px; }
+    .footer-bottom { margin: 0; padding: 18px 20px; background: #1a1a2e; color: #D1D5DB; font-size: 12.5px; text-align: center; }
+    @media (max-width: 760px) {
+      .footer-main { padding: 40px 0; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .footer-brand, .footer-nav, .footer-social { padding: 0; border: 0; }
+      .footer-brand img { margin: 0 auto 16px; }
+      .footer-brand .footer-tagline { margin-right: auto; margin-left: auto; }
+      .footer-nav ul { grid-template-columns: 1fr; gap: 12px; }
+      .footer-social a { margin: 0 auto; }
+    }
+    a:focus-visible { outline: 2px solid var(--circular-green-medium); outline-offset: 4px; }
+
+    @media (max-width: 980px) {
+      .site-header nav { position: absolute; top: 100%; right: 0; left: 0; }
+      .site-header .nav-toggle { display: inline-flex; }
+      .site-header .nav-links { display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 20px 18px; border-bottom: 1px solid rgba(27, 67, 50, .1); background: #fff; box-shadow: 0 16px 24px -12px rgba(0, 0, 0, .12); }
+      .site-header .nav-links.open { display: flex; }
+      .site-header .nav-links > li > a { display: flex; align-items: center; min-height: 48px; padding: 10px 8px; }
+      .site-header .nav-links > li > a.nav-contact-button { justify-content: center; min-height: 46px; padding: 11px 20px; }
+      .site-header .dropdown-menu { position: static; display: none; width: auto; margin: 6px 8px 8px; padding: 4px; transform: none; border: 0; border-radius: 10px; background: #f3f8f5; box-shadow: none; }
+      .site-header .nav-dropdown.active .dropdown-menu { display: block; opacity: 1; visibility: visible; transform: none; }
+      .site-header .dropdown-menu::before { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      .circular-container { width: min(100% - 48px, 1180px); }
+      .site-header .container, .newsletter-inner, .footer-grid { width: min(100% - 48px, 1180px); margin-right: auto; margin-left: auto; }
+      .site-header .nav-wrap { align-items: center; flex-direction: row; gap: 12px; }
+      .site-header .nav-toggle { display: inline-flex; }
+      .site-header nav { position: absolute; top: 100%; left: 0; right: 0; }
+      .site-header .nav-links { display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 20px 18px; border-bottom: 1px solid rgba(27,67,50,.1); background: #fff; }
+      .site-header .nav-links.open { display: flex; }
+      .site-header .nav-links > li > a { display: flex; align-items: center; min-height: 48px; padding: 10px 8px; }
+      .site-header .dropdown-menu { position: static; display: none; width: auto; margin: 0 8px 8px; transform: none; border: 0; background: #f3f8f5; box-shadow: none; }
+      .site-header .nav-dropdown.active .dropdown-menu { display: block; opacity: 1; visibility: visible; transform: none; }
+      .circular-hero { min-height: 700px; padding: 130px 0 76px; }
+      .circular-hero-shade { background: linear-gradient(90deg, rgba(15, 34, 26, .88), rgba(15, 34, 26, .58)); }
+      .circular-method-grid, .circular-opportunity-grid, .circular-deliverables-grid { grid-template-columns: 1fr 1fr; gap: 34px; }
+      .circular-photo img, .circular-opportunity-grid .circular-photo img, .circular-deliverables-grid .circular-photo img { min-height: 360px; }
+      .circular-deliverable-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      html { scroll-padding-top: 140px; }
+      .circular-container { width: min(100% - 40px, 1180px); }
+      .site-header { padding: 13px 0; }
+      .site-header .container, .newsletter-inner, .footer-grid { width: min(100% - 40px, 1180px); margin-right: auto; margin-left: auto; }
+      .site-header .nav-wrap { gap: 8px; }
+      .site-header .brand-mark { width: 150px; }
+      .circular-hero { min-height: 670px; padding: 120px 0 68px; }
+      .circular-hero-shade { background: linear-gradient(90deg, rgba(15, 34, 26, .88), rgba(15, 34, 26, .65)); }
+      .circular-hero h1 { font-size: clamp(42px, 11vw, 56px); }
+      .circular-hero .hero-copy { font-size: 16px; }
+      .circular-hero-points { display: grid; gap: 11px; }
+      .circular-hero .hero-action { width: 100%; }
+      .circular-what, .circular-method, .circular-opportunities { padding: 76px 0; }
+      .circular-section-heading { margin-bottom: 30px; }
+      .circular-areas { grid-template-columns: 1fr; }
+      .circular-area, .circular-area + .circular-area { padding: 20px 0; border-left: 0; border-top: 1px solid var(--circular-line); }
+      .circular-area:first-child { border-top: 0; }
+      .circular-method-grid, .circular-opportunity-grid, .circular-deliverables-grid { grid-template-columns: 1fr; gap: 28px; }
+      .circular-photo img, .circular-opportunity-grid .circular-photo img, .circular-deliverables-grid .circular-photo img { min-height: 0; aspect-ratio: 1.25 / 1; }
+      .circular-method-copy h2, .circular-opportunity-copy h2, .circular-section-heading h2, .circular-editorial-copy h2, .circular-deliverables-copy h2 { font-size: clamp(30px, 8vw, 40px); }
+      .circular-deliverables { padding-top: 76px; }
+      .circular-deliverables-copy { padding-bottom: 0; }
+      .circular-deliverable-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .cta-circular-inner { grid-template-columns: 1fr; gap: 40px; }
+      .cta-circular-box { max-width: 460px; }
+      .cta-circular-title { font-size: 1.65rem; }
+    }
+    @media (max-width: 640px) {
+      .cta-circular-section { padding: 72px 0; }
+      .cta-circular-title { font-size: 1.35rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden;pointer-events:none">
+    <symbol id="circular-icon-resource" viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M6 17h12"/><path d="m8 7 4-4 4 4M9 17l3 4 3-4"/></symbol>
+    <symbol id="circular-icon-recycle" viewBox="0 0 24 24"><path d="m7 7 2-3a2 2 0 0 1 3 0l2 3M5 10l-2 4a2 2 0 0 0 2 3h4M16 8h3a2 2 0 0 1 2 3l-2 3M14 17l-2 3a2 2 0 0 1-3 0l-2-3"/><path d="m6 7 1 4 4-1M18 14l-4 1 2 4M16 7l-3 1 1 4"/></symbol>
+    <symbol id="circular-icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.2 1.2M14 11a5 5 0 0 0-7.1 0l-2 2a5 5 0 0 0 7.1 7.1l1.2-1.2"/></symbol>
+    <symbol id="circular-icon-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5M8 11h5M10.5 8.5v5"/></symbol>
+    <symbol id="circular-icon-focus" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="circular-icon-scale" viewBox="0 0 24 24"><path d="M12 3v18M5 6h14M7 6l-4 7h8L7 6ZM17 6l-4 7h8l-4-7ZM7 21h10"/></symbol>
+    <symbol id="circular-icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="circular-icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+
+  <header class="site-header" id="siteHeader"><div class="container nav-wrap">
+    <a class="brand" href="index.html" aria-label="LABAD, página de inicio"><img class="brand-mark" src="images/labad-brand.png" alt="LABAD — Sustainability Strategy &amp; Circular Economy Consulting"></a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+    <nav aria-label="Navegación principal"><ul class="nav-links" id="navLinks">
+      <li><a href="index.html#top">Inicio</a></li>
+      <li class="nav-dropdown">
+        <a href="index.html#services" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">Servicios <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="servicio-compras-proveedores.html"><strong>Compras y proveedores</strong><small>Evaluación ESG de cadena de suministro</small></a>
+          <a class="dropdown-item" href="servicio-documentacion-esg-licitaciones-clientes.html"><strong>Documentación ESG, licitaciones y clientes</strong><small>Requisitos ESG para clientes y pliegos</small></a>
+          <a class="dropdown-item" href="servicio-economia-circular.html"><strong>Economía circular</strong><small>Residuos, materiales y recursos industriales</small></a>
+          <a class="dropdown-item" href="servicio-huella-carbono-por-operacion.html"><strong>Huella de carbono</strong><small>Cálculo, informe y plan de reducción</small></a>
+        </div>
+      </li>
+      <li><a href="quienes-somos.html">Quiénes somos</a></li>
+      <li><a href="index.html#metodologia">Metodología</a></li>
+      <li><a href="index.html#news">Artículos y novedades</a></li>
+      <li><a href="pia-pilot.html">PIA Pilot</a></li>
+      <li><a class="nav-contact-button" href="index.html#contact">Contacto</a></li>
+    </ul></nav>
+  </div></header>
+
+  <main class="circular-service">
+    <section class="circular-hero" id="inicio" aria-labelledby="circular-hero-title">
+      <figure class="circular-hero-media" aria-hidden="true"><img src="images/economia-circular-industria-futuro.jpeg" alt="" fetchpriority="high"></figure>
+      <div class="circular-hero-shade" aria-hidden="true"></div>
+      <div class="circular-container circular-hero-copy">
+        <span class="circular-eyebrow">Economía circular · Industria · Recursos</span>
+        <h1 id="circular-hero-title">Menos recursos desperdiciados. Más valor para tu empresa.</h1>
+        <p class="hero-copy">Ayudamos a empresas industriales a identificar oportunidades para reducir residuos, aprovechar materiales y mejorar el uso de sus recursos, convirtiendo la economía circular en decisiones prácticas para el negocio.</p>
+        <a class="hero-action" href="#contacto">Identificar oportunidades <svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-arrow"></use></svg></a>
+        <ul class="circular-hero-points" aria-label="Ámbitos del servicio">
+          <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-resource"></use></svg>Optimización de recursos</li>
+          <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-recycle"></use></svg>Reducción de residuos</li>
+          <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-link"></use></svg>Nuevas oportunidades de valor</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="circular-what" id="que-hacemos" aria-labelledby="circular-what-title">
+      <div class="circular-container">
+        <header class="circular-section-heading">
+          <span class="circular-eyebrow">Qué hacemos</span>
+          <h2 id="circular-what-title">La circularidad empieza por entender cómo utilizas tus recursos.</h2>
+        </header>
+        <div class="circular-areas">
+          <article class="circular-area">
+            <h3><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-resource"></use></svg><span>01. Aprovechamiento de materiales</span></h3>
+            <p>Analizamos materiales, residuos y recursos utilizados para detectar oportunidades de reducción, reutilización y valorización.</p>
+          </article>
+          <article class="circular-area">
+            <h3><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-focus"></use></svg><span>02. Innovación y alternativas</span></h3>
+            <p>Identificamos alternativas de materiales, posibilidades de ecodiseño y mejoras que pueden integrarse en los procesos existentes.</p>
+          </article>
+          <article class="circular-area">
+            <h3><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-link"></use></svg><span>03. Colaboración industrial</span></h3>
+            <p>Exploramos oportunidades para aprovechar subproductos, compartir recursos o encontrar usos alternativos mediante colaboraciones con otras empresas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="circular-method" id="metodologia" aria-labelledby="circular-method-title">
+      <div class="circular-container circular-method-grid">
+        <figure class="circular-photo"><img src="images/economia-circular-innovacion-materiales.jpeg" alt="Vista de un complejo industrial con paneles solares en las cubiertas y zonas verdes conectadas" loading="lazy"></figure>
+        <div class="circular-method-copy">
+          <span class="circular-eyebrow">Cómo trabajamos</span>
+          <h2 id="circular-method-title">De la oportunidad a un plan de acción.</h2>
+          <ol class="circular-steps">
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-search"></use></svg><div><h3>01. Diagnosticar</h3><p>Entendemos los materiales, procesos, residuos y necesidades de tu empresa.</p></div></li>
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-focus"></use></svg><div><h3>02. Detectar</h3><p>Priorizamos oportunidades de reducción, reutilización, valorización e innovación.</p></div></li>
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-scale"></use></svg><div><h3>03. Evaluar</h3><p>Analizamos viabilidad operativa, económica y ambiental para comparar alternativas.</p></div></li>
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-arrow"></use></svg><div><h3>04. Activar</h3><p>Definimos acciones prioritarias, responsables y próximos pasos para avanzar.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="circular-opportunities" id="oportunidades" aria-labelledby="circular-opportunities-title">
+      <div class="circular-container circular-opportunity-grid">
+        <div class="circular-opportunity-copy">
+          <span class="circular-eyebrow">Simbiosis industrial</span>
+          <h2 id="circular-opportunities-title">Los recursos de una empresa pueden convertirse en oportunidades para otra.</h2>
+          <p>Exploramos cómo conectar materiales, procesos y necesidades entre empresas para reducir pérdidas de recursos, identificar usos alternativos y abrir nuevas posibilidades de colaboración industrial.</p>
+          <ul class="circular-outcomes">
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-recycle"></use></svg><span>Nuevos usos para materiales y subproductos</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-link"></use></svg><span>Oportunidades de colaboración entre empresas</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-resource"></use></svg><span>Alternativas para reducir desperdicios y consumo de recursos</span></li>
+          </ul>
+        </div>
+        <figure class="circular-photo"><img src="images/economia-circular-simbiosis-industrial.jpeg" alt="Profesional examina muestras de materiales y componentes para explorar su aprovechamiento" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="circular-deliverables" id="resultados" aria-labelledby="circular-results-title">
+      <div class="circular-container circular-deliverables-grid">
+        <figure class="circular-photo"><img src="images/economia-circular-valorizacion-recursos.jpeg" alt="Profesionales examinan componentes recuperados en un entorno industrial" loading="lazy"></figure>
+        <div class="circular-deliverables-copy">
+          <span class="circular-eyebrow">Qué obtiene tu empresa</span>
+          <h2 id="circular-results-title">Un punto de partida claro para tomar mejores decisiones.</h2>
+          <p>No se trata de aplicar soluciones circulares por tendencia, sino de identificar qué oportunidades tienen sentido para tu actividad y cómo empezar a desarrollarlas.</p>
+          <ul class="circular-deliverable-list">
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Diagnóstico de oportunidades de circularidad</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Mapa de materiales, residuos y recursos prioritarios</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Evaluación inicial de alternativas y viabilidad</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Plan de acción con medidas priorizadas y próximos pasos</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+      <section class="cta-circular-section" id="contacto">
+        <div class="cta-circular-bg">
+          <img src="img/economia-circular-bg.jpg"
+               alt="Economía circular e industria sostenible"
+               class="cta-circular-bg-img"/>
+          <div class="cta-circular-overlay"></div>
+        </div>
+
+        <div class="circular-container cta-circular-content">
+          <div class="cta-circular-inner">
+            <div class="cta-circular-left">
+              <span class="cta-circular-label">Hablemos</span>
+              <h2 class="cta-circular-title">
+                ¿Dónde puede generar más valor
+                la economía circular en tu empresa?
+              </h2>
+              <p class="cta-circular-desc">
+                Hablemos de tus procesos, tus materiales
+                y las oportunidades que merece la pena explorar.
+                Analizamos contigo qué flujos de residuos,
+                subproductos o recursos pueden aprovecharse mejor
+                y qué soluciones son viables para tu actividad.
+              </p>
+              <div class="cta-circular-signals">
+                <div class="cta-circular-signal">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>Diagnóstico de flujos de materiales y residuos</span>
+                </div>
+                <div class="cta-circular-signal">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>Oportunidades adaptadas a tu actividad industrial</span>
+                </div>
+                <div class="cta-circular-signal">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>Hoja de ruta con acciones priorizadas y viables</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cta-circular-box">
+              <div class="cta-circular-box-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="1.5">
+                  <polyline points="23 4 23 10 17 10"/>
+                  <polyline points="1 20 1 14 7 14"/>
+                  <path d="M3.51 9a9 9 0 0114.85-3.36L23 10
+                    M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                </svg>
+              </div>
+
+              <h3 class="cta-circular-box-title">
+                Primera conversación sin compromiso
+              </h3>
+
+              <p class="cta-circular-box-desc">
+                Para entender tu situación, identificar
+                qué tiene sentido analizar y valorar
+                el alcance del trabajo juntos.
+              </p>
+
+              <a href="index.html#contact" class="cta-circular-btn">
+                Hablar con LABAD
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+
+              <div class="cta-circular-nota">
+                Alcance acordado con cada empresa. Sin permanencia.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <section class="newsletter" id="newsletter">
+    <div class="newsletter-inner">
+      <p>Suscríbete para recibir noticias sobre compras sostenibles y artículos como este.</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Tu email" required>
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-main">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="images/labad-brand.png" alt="LABAD">
+          <p class="footer-tagline">Sustainability Strategy &amp; Circular Economy Consulting</p>
+          <p class="footer-location">Bilbao, País Vasco</p>
+        </div>
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="index.html#top">Inicio</a></li>
+            <li><a href="index.html#services">Servicios</a></li>
+            <li><a href="quienes-somos.html">Quiénes somos</a></li>
+            <li><a href="index.html#metodologia">Metodología</a></li>
+            <li><a href="index.html#news">Artículos y novedades</a></li>
+            <li><a href="index.html#pis-pilot">PIA Pilot</a></li>
+            <li><a href="index.html#contact">Contacto</a></li>
+          </ul>
+        </nav>
+        <div class="footer-social">
+          <h4>Síguenos</h4>
+          <a href="https://www.linkedin.com/in/natia-omiadze/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 LABAD. Todos los derechos reservados.</div>
+  </footer>
+  <script>
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const dropdown = document.querySelector('.nav-dropdown');
+    const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 12);
+    });
+    navToggle.addEventListener('click', function () {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(open));
+      if (!open) {
+        dropdown.classList.remove('active');
+        dropdownToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    navLinks.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        if (window.innerWidth <= 980 && link.classList.contains('nav-dropdown-toggle')) {
+          event.preventDefault();
+          const open = dropdown.classList.toggle('active');
+          dropdownToggle.setAttribute('aria-expanded', String(open));
+          return;
+        }
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        dropdown.classList.remove('active');
+        dropdownToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', function (event) {
+      if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove('active');
+        dropdownToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        dropdown.classList.remove('active');
+        dropdownToggle.setAttribute('aria-expanded', 'false');
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        dropdownToggle.focus();
+      }
+    });
+    document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const input = event.currentTarget.querySelector('input');
+      const button = event.currentTarget.querySelector('button');
+      const original = button.textContent;
+      button.textContent = '¡Gracias!';
+      input.value = '';
+      setTimeout(function () { button.textContent = original; }, 2400);
+    });
+  </script>
+</body>
+</html>

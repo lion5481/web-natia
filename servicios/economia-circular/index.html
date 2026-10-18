@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAFAF7">
+  <title>Economía circular y aprovechamiento de recursos | LABAD</title>
+  <meta name="description" content="Identificamos oportunidades para reducir residuos, aprovechar materiales y mejorar el uso de recursos en empresas industriales.">
+  <link rel="icon" href="../../images/labad-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --circular-white: #FAFAF7;
+      --circular-green: #1B4332;
+      --circular-green-medium: #2D6A4F;
+      --circular-green-soft: #E9F1EC;
+      --circular-beige: #F1EDE4;
+      --circular-charcoal: #303632;
+      --circular-muted: #5C625D;
+      --circular-line: rgba(27, 67, 50, .2);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      margin: 0;
+      color: var(--circular-charcoal);
+      background: var(--circular-white);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p, figure { margin: 0; }
+    .circular-icon { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .circular-container { width: min(100% - 64px, 1180px); margin: 0 auto; }
+
+    .site-header {
+      position: relative;
+      z-index: 10;
+      padding: 17px 0;
+      border-bottom: 1px solid rgba(27, 67, 50, .1);
+      background: rgba(250, 250, 247, .97);
+    }
+    .site-header .container { width: min(100% - 64px, 1180px); margin: 0 auto; }
+    .site-header .nav-wrap { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .site-header .brand { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 12px; color: var(--circular-green); }
+    .site-header .brand-mark { width: 39px; height: 39px; object-fit: contain; }
+    .site-header .brand-descriptor { font-size: 9px; font-weight: 700; letter-spacing: .065em; line-height: 1.45; }
+    .site-header nav { min-width: 0; }
+    .site-header .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 26px; margin: 0; padding: 0; list-style: none; }
+    .site-header .nav-links a { color: var(--circular-charcoal); font-size: 13px; font-weight: 600; transition: color .18s ease; }
+    .site-header .nav-links a:hover { color: var(--circular-green-medium); }
+
+    .circular-service section { scroll-margin-top: 26px; }
+    .circular-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 17px;
+      color: var(--circular-green-medium);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .11em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+    .circular-eyebrow::before { width: 30px; height: 1px; background: currentColor; content: ""; }
+
+    .circular-hero {
+      position: relative;
+      display: flex;
+      min-height: min(820px, 92vh);
+      align-items: center;
+      overflow: hidden;
+      padding: 140px 0 90px;
+      background: var(--circular-green);
+      color: var(--circular-white);
+    }
+    .circular-hero-media, .circular-hero-shade { position: absolute; inset: 0; }
+    .circular-hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 54%; }
+    .circular-hero-shade { background: linear-gradient(90deg, rgba(15, 34, 26, .86) 0%, rgba(15, 34, 26, .65) 48%, rgba(15, 34, 26, .16) 100%); }
+    .circular-hero-copy { position: relative; z-index: 1; max-width: 800px; }
+    .circular-hero .circular-eyebrow { color: #E2ECE6; }
+    .circular-hero h1 {
+      max-width: 780px;
+      margin-bottom: 20px;
+      color: var(--circular-white);
+      font-size: clamp(44px, 6.3vw, 76px);
+      font-weight: 800;
+      letter-spacing: -.045em;
+      line-height: 1.03;
+    }
+    .circular-hero .hero-copy { max-width: 690px; color: #F3F5F1; font-size: clamp(17px, 1.55vw, 20px); line-height: 1.7; }
+    .circular-hero .hero-action { display: inline-flex; min-height: 52px; align-items: center; justify-content: center; gap: 10px; margin-top: 27px; padding: 14px 24px; border-radius: 3px; background: var(--circular-white); color: var(--circular-green); font-size: 14px; font-weight: 700; transition: background .18s ease, transform .18s ease; }
+    .circular-hero .hero-action:hover { transform: translateY(-1px); background: var(--circular-green-soft); }
+    .circular-hero-points { display: flex; flex-wrap: wrap; gap: 14px 25px; margin: 24px 0 0; padding: 0; list-style: none; }
+    .circular-hero-points li { display: flex; align-items: center; gap: 9px; color: #F3F5F1; font-size: 13px; font-weight: 500; }
+    .circular-hero-points .circular-icon { width: 18px; height: 18px; flex-basis: 18px; color: #D7E6DC; }
+
+    .circular-what { padding: 100px 0 108px; background: var(--circular-white); }
+    .circular-section-heading { max-width: 790px; margin-bottom: 44px; }
+    .circular-section-heading h2,
+    .circular-editorial-copy h2,
+    .circular-deliverables-copy h2 {
+      color: var(--circular-charcoal);
+      font-size: clamp(32px, 4.1vw, 48px);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.12;
+    }
+    .circular-editorial-copy > p,
+    .circular-deliverables-copy > p { margin-top: 16px; color: var(--circular-muted); font-size: 16px; line-height: 1.78; }
+    .circular-areas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--circular-line); }
+    .circular-area { min-width: 0; padding: 25px 28px 0 0; }
+    .circular-area + .circular-area { padding-left: 27px; border-left: 1px solid var(--circular-line); }
+    .circular-area h3 { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: var(--circular-green); font-size: 18px; font-weight: 700; line-height: 1.35; }
+    .circular-area h3 .circular-icon { color: var(--circular-green); }
+    .circular-area p { color: var(--circular-muted); font-size: 14px; line-height: 1.7; }
+
+    .circular-method { padding: 106px 0; background: var(--circular-beige); }
+    .circular-method-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); align-items: center; gap: clamp(40px, 7vw, 88px); }
+    .circular-photo { overflow: hidden; margin: 0; border-radius: 5px; background: var(--circular-green-soft); }
+    .circular-photo img { width: 100%; height: 100%; min-height: 450px; object-fit: cover; object-position: center; }
+    .circular-method-copy h2 { max-width: 540px; margin-bottom: 30px; color: var(--circular-charcoal); font-size: clamp(32px, 4vw, 46px); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; }
+    .circular-steps { margin: 0; padding: 0; list-style: none; }
+    .circular-step { display: grid; grid-template-columns: 24px 1fr; align-items: start; gap: 14px; padding: 16px 0; border-top: 1px solid var(--circular-line); }
+    .circular-step .circular-icon { margin-top: 1px; color: var(--circular-green); }
+    .circular-step h3 { margin-bottom: 4px; color: var(--circular-green); font-size: 16px; font-weight: 700; line-height: 1.4; }
+    .circular-step p { color: var(--circular-muted); font-size: 14px; line-height: 1.65; }
+
+    .circular-opportunities { padding: 108px 0; background: var(--circular-white); }
+    .circular-opportunity-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .93fr); align-items: center; gap: clamp(40px, 7vw, 92px); }
+    .circular-opportunity-copy h2 { margin-bottom: 17px; color: var(--circular-charcoal); font-size: clamp(32px, 4vw, 46px); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; }
+    .circular-opportunity-copy > p { color: var(--circular-muted); font-size: 16px; line-height: 1.78; }
+    .circular-outcomes { display: grid; gap: 0; margin: 25px 0 0; padding: 0; list-style: none; }
+    .circular-outcomes li { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-top: 1px solid var(--circular-line); color: var(--circular-charcoal); font-size: 14px; line-height: 1.55; }
+    .circular-outcomes .circular-icon { color: var(--circular-green); }
+    .circular-opportunity-grid .circular-photo img { min-height: 410px; }
+
+    .circular-deliverables { padding: 102px 0 0; background: var(--circular-beige); }
+    .circular-deliverables-grid { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); align-items: center; gap: clamp(40px, 7vw, 88px); }
+    .circular-deliverables-copy { padding-bottom: 98px; }
+    .circular-deliverables-copy h2 { margin-bottom: 0; }
+    .circular-deliverables-grid .circular-photo img { min-height: 420px; }
+    .circular-deliverable-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; margin: 26px 0 0; padding: 0; list-style: none; }
+    .circular-deliverable-list li { display: flex; align-items: flex-start; gap: 11px; padding: 14px 0; border-top: 1px solid var(--circular-line); color: var(--circular-charcoal); font-size: 13px; line-height: 1.55; }
+    .circular-deliverable-list .circular-icon { color: var(--circular-green); }
+    .circular-cta { margin-top: 90px; padding: 76px 0; background: var(--circular-green); color: var(--circular-white); }
+    .circular-cta-inner { max-width: 820px; margin: 0 auto; text-align: center; }
+    .circular-cta h2 { margin: 0 auto 14px; color: var(--circular-white); font-size: clamp(31px, 4.1vw, 46px); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; }
+    .circular-cta p { margin: 0 auto 24px; color: #E5ECE7; font-size: 16px; line-height: 1.7; }
+    .circular-cta .cta-action { display: inline-flex; min-height: 50px; align-items: center; justify-content: center; padding: 13px 25px; border-radius: 3px; background: var(--circular-white); color: var(--circular-green); font-size: 14px; font-weight: 700; transition: background .18s ease, transform .18s ease; }
+    .circular-cta .cta-action:hover { transform: translateY(-1px); background: var(--circular-green-soft); }
+
+    .site-footer { padding: 22px 0; background: var(--circular-white); }
+    .site-footer .container { width: min(100% - 64px, 1180px); margin: 0 auto; }
+    .site-footer .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--circular-muted); font-size: 12px; }
+    .site-footer .footer-bottom a { color: var(--circular-green); font-weight: 600; }
+    .site-footer .footer-bottom a:hover { text-decoration: underline; }
+    a:focus-visible { outline: 2px solid var(--circular-green-medium); outline-offset: 4px; }
+
+    @media (max-width: 900px) {
+      .circular-container { width: min(100% - 48px, 1180px); }
+      .site-header .container, .site-footer .container { width: min(100% - 48px, 1180px); }
+      .site-header .nav-wrap { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .site-header .nav-links { justify-content: flex-start; gap: 12px 22px; }
+      .circular-hero { min-height: 700px; padding: 130px 0 76px; }
+      .circular-hero-shade { background: linear-gradient(90deg, rgba(15, 34, 26, .88), rgba(15, 34, 26, .58)); }
+      .circular-method-grid, .circular-opportunity-grid, .circular-deliverables-grid { grid-template-columns: 1fr 1fr; gap: 34px; }
+      .circular-photo img, .circular-opportunity-grid .circular-photo img, .circular-deliverables-grid .circular-photo img { min-height: 360px; }
+      .circular-deliverable-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      html { scroll-padding-top: 140px; }
+      .circular-container { width: min(100% - 40px, 1180px); }
+      .site-header { padding: 13px 0; }
+      .site-header .container, .site-footer .container { width: min(100% - 40px, 1180px); }
+      .site-header .nav-wrap { gap: 8px; }
+      .site-header .brand-mark { width: 33px; height: 33px; }
+      .site-header .brand-descriptor { font-size: 8px; }
+      .site-header .nav-links { gap: 8px 16px; }
+      .site-header .nav-links a { font-size: 11px; }
+      .circular-hero { min-height: 670px; padding: 120px 0 68px; }
+      .circular-hero-shade { background: linear-gradient(90deg, rgba(15, 34, 26, .88), rgba(15, 34, 26, .65)); }
+      .circular-hero h1 { font-size: clamp(42px, 11vw, 56px); }
+      .circular-hero .hero-copy { font-size: 16px; }
+      .circular-hero-points { display: grid; gap: 11px; }
+      .circular-hero .hero-action, .circular-cta .cta-action { width: 100%; }
+      .circular-what, .circular-method, .circular-opportunities { padding: 76px 0; }
+      .circular-section-heading { margin-bottom: 30px; }
+      .circular-areas { grid-template-columns: 1fr; }
+      .circular-area, .circular-area + .circular-area { padding: 20px 0; border-left: 0; border-top: 1px solid var(--circular-line); }
+      .circular-area:first-child { border-top: 0; }
+      .circular-method-grid, .circular-opportunity-grid, .circular-deliverables-grid { grid-template-columns: 1fr; gap: 28px; }
+      .circular-photo img, .circular-opportunity-grid .circular-photo img, .circular-deliverables-grid .circular-photo img { min-height: 0; aspect-ratio: 1.25 / 1; }
+      .circular-method-copy h2, .circular-opportunity-copy h2, .circular-section-heading h2, .circular-editorial-copy h2, .circular-deliverables-copy h2 { font-size: clamp(30px, 8vw, 40px); }
+      .circular-deliverables { padding-top: 76px; }
+      .circular-deliverables-copy { padding-bottom: 0; }
+      .circular-deliverable-list { grid-template-columns: 1fr; }
+      .circular-cta { margin-top: 70px; padding: 64px 0; }
+      .circular-cta h2 { font-size: clamp(30px, 8vw, 40px); }
+      .site-footer .footer-bottom { align-items: flex-start; flex-direction: column; gap: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden;pointer-events:none">
+    <symbol id="circular-icon-resource" viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M6 17h12"/><path d="m8 7 4-4 4 4M9 17l3 4 3-4"/></symbol>
+    <symbol id="circular-icon-recycle" viewBox="0 0 24 24"><path d="m7 7 2-3a2 2 0 0 1 3 0l2 3M5 10l-2 4a2 2 0 0 0 2 3h4M16 8h3a2 2 0 0 1 2 3l-2 3M14 17l-2 3a2 2 0 0 1-3 0l-2-3"/><path d="m6 7 1 4 4-1M18 14l-4 1 2 4M16 7l-3 1 1 4"/></symbol>
+    <symbol id="circular-icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.2 1.2M14 11a5 5 0 0 0-7.1 0l-2 2a5 5 0 0 0 7.1 7.1l1.2-1.2"/></symbol>
+    <symbol id="circular-icon-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5M8 11h5M10.5 8.5v5"/></symbol>
+    <symbol id="circular-icon-focus" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="circular-icon-scale" viewBox="0 0 24 24"><path d="M12 3v18M5 6h14M7 6l-4 7h8L7 6ZM17 6l-4 7h8l-4-7ZM7 21h10"/></symbol>
+    <symbol id="circular-icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="circular-icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+
+  <header class="site-header"><div class="container nav-wrap">
+    <a class="brand" href="../../index.html#top" aria-label="LABAD, inicio"><img class="brand-mark" src="../../images/labad-logo.svg" alt="LABAD"><span class="brand-descriptor">SUSTAINABILITY STRATEGY<br>&amp; CIRCULAR ECONOMY CONSULTING</span></a>
+    <nav aria-label="Navegación principal"><ul class="nav-links open"><li><a href="../../index.html#servicios">Qué hacemos</a></li><li><a href="../../index.html#proceso">Cómo trabajamos</a></li><li><a href="../../index.html#sobre-labad">Sobre LABAD</a></li><li><a href="../../index.html#contacto">Contacto</a></li></ul></nav>
+  </div></header>
+
+  <main class="circular-service">
+    <section class="circular-hero" id="inicio" aria-labelledby="circular-hero-title">
+      <figure class="circular-hero-media" aria-hidden="true"><img src="../../images/economia-circular-industria-futuro.jpeg" alt="" fetchpriority="high"></figure>
+      <div class="circular-hero-shade" aria-hidden="true"></div>
+      <div class="circular-container circular-hero-copy">
+        <span class="circular-eyebrow">Economía circular · Industria · Recursos</span>
+        <h1 id="circular-hero-title">Menos recursos desperdiciados. Más valor para tu empresa.</h1>
+        <p class="hero-copy">Ayudamos a empresas industriales a identificar oportunidades para reducir residuos, aprovechar materiales y mejorar el uso de sus recursos, convirtiendo la economía circular en decisiones prácticas para el negocio.</p>
+        <a class="hero-action" href="#contacto">Identificar oportunidades <svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-arrow"></use></svg></a>
+        <ul class="circular-hero-points" aria-label="Ámbitos del servicio">
+          <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-resource"></use></svg>Optimización de recursos</li>
+          <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-recycle"></use></svg>Reducción de residuos</li>
+          <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-link"></use></svg>Nuevas oportunidades de valor</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="circular-what" id="que-hacemos" aria-labelledby="circular-what-title">
+      <div class="circular-container">
+        <header class="circular-section-heading">
+          <span class="circular-eyebrow">Qué hacemos</span>
+          <h2 id="circular-what-title">La circularidad empieza por entender cómo utilizas tus recursos.</h2>
+        </header>
+        <div class="circular-areas">
+          <article class="circular-area">
+            <h3><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-resource"></use></svg><span>01. Aprovechamiento de materiales</span></h3>
+            <p>Analizamos materiales, residuos y recursos utilizados para detectar oportunidades de reducción, reutilización y valorización.</p>
+          </article>
+          <article class="circular-area">
+            <h3><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-focus"></use></svg><span>02. Innovación y alternativas</span></h3>
+            <p>Identificamos alternativas de materiales, posibilidades de ecodiseño y mejoras que pueden integrarse en los procesos existentes.</p>
+          </article>
+          <article class="circular-area">
+            <h3><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-link"></use></svg><span>03. Colaboración industrial</span></h3>
+            <p>Exploramos oportunidades para aprovechar subproductos, compartir recursos o encontrar usos alternativos mediante colaboraciones con otras empresas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="circular-method" id="metodologia" aria-labelledby="circular-method-title">
+      <div class="circular-container circular-method-grid">
+        <figure class="circular-photo"><img src="../../images/economia-circular-innovacion-materiales.jpeg" alt="Vista de un complejo industrial con paneles solares en las cubiertas y zonas verdes conectadas" loading="lazy"></figure>
+        <div class="circular-method-copy">
+          <span class="circular-eyebrow">Cómo trabajamos</span>
+          <h2 id="circular-method-title">De la oportunidad a un plan de acción.</h2>
+          <ol class="circular-steps">
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-search"></use></svg><div><h3>01. Diagnosticar</h3><p>Entendemos los materiales, procesos, residuos y necesidades de tu empresa.</p></div></li>
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-focus"></use></svg><div><h3>02. Detectar</h3><p>Priorizamos oportunidades de reducción, reutilización, valorización e innovación.</p></div></li>
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-scale"></use></svg><div><h3>03. Evaluar</h3><p>Analizamos viabilidad operativa, económica y ambiental para comparar alternativas.</p></div></li>
+            <li class="circular-step"><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-arrow"></use></svg><div><h3>04. Activar</h3><p>Definimos acciones prioritarias, responsables y próximos pasos para avanzar.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="circular-opportunities" id="oportunidades" aria-labelledby="circular-opportunities-title">
+      <div class="circular-container circular-opportunity-grid">
+        <div class="circular-opportunity-copy">
+          <span class="circular-eyebrow">Simbiosis industrial</span>
+          <h2 id="circular-opportunities-title">Los recursos de una empresa pueden convertirse en oportunidades para otra.</h2>
+          <p>Exploramos cómo conectar materiales, procesos y necesidades entre empresas para reducir pérdidas de recursos, identificar usos alternativos y abrir nuevas posibilidades de colaboración industrial.</p>
+          <ul class="circular-outcomes">
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-recycle"></use></svg><span>Nuevos usos para materiales y subproductos</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-link"></use></svg><span>Oportunidades de colaboración entre empresas</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-resource"></use></svg><span>Alternativas para reducir desperdicios y consumo de recursos</span></li>
+          </ul>
+        </div>
+        <figure class="circular-photo"><img src="../../images/economia-circular-simbiosis-industrial.jpeg" alt="Profesional examina muestras de materiales y componentes para explorar su aprovechamiento" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="circular-deliverables" id="resultados" aria-labelledby="circular-results-title">
+      <div class="circular-container circular-deliverables-grid">
+        <figure class="circular-photo"><img src="../../images/economia-circular-valorizacion-recursos.jpeg" alt="Profesionales examinan componentes recuperados en un entorno industrial" loading="lazy"></figure>
+        <div class="circular-deliverables-copy">
+          <span class="circular-eyebrow">Qué obtiene tu empresa</span>
+          <h2 id="circular-results-title">Un punto de partida claro para tomar mejores decisiones.</h2>
+          <p>No se trata de aplicar soluciones circulares por tendencia, sino de identificar qué oportunidades tienen sentido para tu actividad y cómo empezar a desarrollarlas.</p>
+          <ul class="circular-deliverable-list">
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Diagnóstico de oportunidades de circularidad</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Mapa de materiales, residuos y recursos prioritarios</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Evaluación inicial de alternativas y viabilidad</span></li>
+            <li><svg class="circular-icon" aria-hidden="true"><use href="#circular-icon-check"></use></svg><span>Plan de acción con medidas priorizadas y próximos pasos</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="circular-cta" id="contacto">
+        <div class="circular-container circular-cta-inner">
+          <h2>¿Dónde puede generar más valor la economía circular en tu empresa?</h2>
+          <p>Hablemos de tus procesos, tus materiales y las oportunidades que merece la pena explorar.</p>
+          <a class="cta-action" href="../../index.html#contact">Hablar con LABAD</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-bottom"><span>LABAD | Sustainability Strategy &amp; Circular Economy Consulting · Bilbao · Bizkaia</span><a href="../../index.html#services">Volver a servicios</a></div></footer>
+</body>
+</html>
