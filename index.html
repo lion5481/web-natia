@@ -1790,24 +1790,12 @@ function createChatId(){
   return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 }
 
-function createChatSecret(){
-  if(!window.crypto || typeof window.crypto.getRandomValues !== 'function'){
-    throw new Error('Este chat necesita una conexión segura para iniciar.');
-  }
-  const bytes = new Uint8Array(32);
-  window.crypto.getRandomValues(bytes);
-  return Array.from(bytes, value=>value.toString(16).padStart(2, '0')).join('');
-}
-
 const chatConversation = {
   id: createChatId(),
-  secret: createChatSecret(),
   status: 'new',
   messages: [],
   contactRequest: null,
-  serviceCategory: null,
-  registered: false,
-  lastTelegramUpdate: 0
+  serviceCategory: null
 };
 chatWindow.dataset.conversationId = chatConversation.id;
 
@@ -1840,15 +1828,11 @@ async function sendTelegramEvent(payload){
     return pendingTelegramEvents.get(payload.eventId);
   }
 
-  const requestPayload = {
-    ...payload,
-    conversationSecret:chatConversation.secret
-  };
   const request = (async ()=>{
     const response = await fetch('/.netlify/functions/telegram', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(requestPayload)
+      body:JSON.stringify(payload)
     });
     let result;
     try {
@@ -1860,10 +1844,6 @@ async function sendTelegramEvent(payload){
       throw new Error(typeof result.error === 'string' ? result.error : 'No se pudo confirmar el envío.');
     }
     sentTelegramEvents.add(payload.eventId);
-    if(payload.conversationId === chatConversation.id && chatConversation.status !== 'closed'){
-      chatConversation.registered = true;
-      if(chatWindow.classList.contains('open')) scheduleAgentPoll();
-    }
   })();
 
   pendingTelegramEvents.set(payload.eventId, request);
@@ -1871,105 +1851,6 @@ async function sendTelegramEvent(payload){
     await request;
   } finally {
     pendingTelegramEvents.delete(payload.eventId);
-  }
-}
-
-let agentPollTimer = null;
-let agentPollController = null;
-let agentPollInFlight = false;
-
-function stopAgentPolling(){
-  if(agentPollTimer !== null){
-    clearTimeout(agentPollTimer);
-    agentPollTimer = null;
-  }
-  if(agentPollController){
-    agentPollController.abort();
-    agentPollController = null;
-  }
-}
-
-function scheduleAgentPoll(delay = 0){
-  if(agentPollTimer !== null
-    || !chatConversation.registered
-    || chatConversation.status === 'closed'
-    || !chatWindow.classList.contains('open')
-    || document.visibilityState !== 'visible'){
-    return;
-  }
-  agentPollTimer = setTimeout(()=>{
-    agentPollTimer = null;
-    pollForAgentReplies();
-  }, delay);
-}
-
-async function pollForAgentReplies(){
-  if(agentPollInFlight
-    || !chatConversation.registered
-    || chatConversation.status === 'closed'
-    || !chatWindow.classList.contains('open')
-    || document.visibilityState !== 'visible'){
-    return;
-  }
-
-  agentPollInFlight = true;
-  const controller = new AbortController();
-  agentPollController = controller;
-  const conversationId = chatConversation.id;
-  try {
-    const response = await fetch('/.netlify/functions/telegram-replies', {
-      method:'POST',
-      headers:{
-        'Accept':'application/json',
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        conversationId,
-        conversationSecret:chatConversation.secret,
-        after:chatConversation.lastTelegramUpdate
-      }),
-      cache:'no-store',
-      signal:controller.signal
-    });
-    let result;
-    try {
-      result = await response.json();
-    } catch {
-      throw new Error('Respuesta inválida del servicio de chat.');
-    }
-    if(response.status === 410){
-      chatConversation.registered = false;
-      return;
-    }
-    if(!response.ok || result.ok !== true || !Array.isArray(result.replies)){
-      throw new Error('No se pudieron consultar las respuestas.');
-    }
-    if(conversationId !== chatConversation.id || chatConversation.status === 'closed') return;
-
-    result.replies.forEach(reply=>{
-      if(!Number.isSafeInteger(reply.updateId)
-        || reply.updateId <= chatConversation.lastTelegramUpdate
-        || typeof reply.text !== 'string'
-        || !reply.text.trim()){
-        return;
-      }
-      addChatMessage(reply.text, 'agent');
-      chatConversation.lastTelegramUpdate = reply.updateId;
-    });
-    if(Number.isSafeInteger(result.lastUpdateId)){
-      chatConversation.lastTelegramUpdate = Math.max(
-        chatConversation.lastTelegramUpdate,
-        result.lastUpdateId
-      );
-    }
-  } catch (error) {
-    if(error.name !== 'AbortError' && chatWindow.classList.contains('open')){
-      console.warn('Fallo temporal al consultar respuestas del chat.');
-    }
-  } finally {
-    if(agentPollController === controller) agentPollController = null;
-    agentPollInFlight = false;
-    scheduleAgentPoll(8000);
   }
 }
 
@@ -2001,8 +1882,8 @@ function sendVisitorMessageToTelegram(message){
     try {
       await sendTelegramEvent(payload);
       notice.remove();
-    } catch (error) {
-      status.textContent = error.message || 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
+    } catch {
+      status.textContent = 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
       retry.textContent = 'Reintentar envío';
       retry.disabled = false;
     }
@@ -2012,9 +1893,9 @@ function sendVisitorMessageToTelegram(message){
 
   sendTelegramEvent(payload).then(()=>{
     notice.remove();
-  }).catch(error=>{
+  }).catch(()=>{
     notice.hidden = false;
-    status.textContent = error.message || 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
+    status.textContent = 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
     retry.hidden = false;
     chatBody.scrollTop = chatBody.scrollHeight;
   });
@@ -2191,9 +2072,9 @@ function showContactForm(){
     }).then(()=>{
       isSent = true;
       status.textContent = '¡Muchas gracias por tu consulta! Hemos recibido tu solicitud y te contactaremos en un plazo máximo de 24 horas hábiles. ¡Que tengas un buen día!';
-    }).catch(error=>{
+    }).catch(()=>{
       status.setAttribute('role', 'alert');
-      status.textContent = error.message || 'No se pudo enviar tu solicitud. Comprueba la conexión e inténtalo de nuevo; tus datos siguen en el formulario.';
+      status.textContent = 'No se pudo enviar tu solicitud. Comprueba la conexión e inténtalo de nuevo; tus datos siguen en el formulario.';
     }).finally(()=>{
       isSubmitting = false;
       submit.disabled = isSent;
@@ -2272,7 +2153,7 @@ function handleChatSend(){
 }
 
 window.LabadChat = Object.freeze({
-  get conversationId(){ return chatConversation.id; },
+  conversationId: chatConversation.id,
   getMessages: ()=>chatConversation.messages.map(message=>({...message})),
   getConversation: ()=>({
     id: chatConversation.id,
@@ -2289,78 +2170,19 @@ window.LabadChat = Object.freeze({
   }
 });
 
-function notifyConversationClosed(conversationId, conversationSecret, keepalive = true){
-  return fetch('/.netlify/functions/telegram-close', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({conversationId, conversationSecret}),
-    keepalive
-  }).catch(()=>console.warn('No se pudo notificar el cierre de la conversación.'));
-}
-
-function closeChatConversation(){
-  const closingConversationId = chatConversation.id;
-  const closingSecret = chatConversation.secret;
-  notifyConversationClosed(closingConversationId, closingSecret);
-
-  chatConversation.status = 'closed';
-  chatConversation.registered = false;
-  stopAgentPolling();
-  chatBody.replaceChildren();
-  chatInput.value = '';
-  chatInputRow.hidden = false;
-  chatConversation.id = createChatId();
-  chatConversation.secret = createChatSecret();
-  chatConversation.status = 'new';
-  chatConversation.messages = [];
-  chatConversation.contactRequest = null;
-  chatConversation.serviceCategory = null;
-  chatConversation.lastTelegramUpdate = 0;
-  chatWindow.dataset.conversationId = chatConversation.id;
-  sentTelegramEvents.clear();
-
-  chatWindow.classList.remove('open');
-  chatFab.setAttribute('aria-expanded', 'false');
-  chatFab.focus();
-}
-
 chatBody.addEventListener('click', event=>{
   const button = event.target.closest('[data-chat-choice]');
   if(button) handleChatChoice(button.dataset.chatChoice);
 });
 chatFab.addEventListener('click', ()=>{
-  const open = !chatWindow.classList.contains('open');
-  if(open){
-    chatWindow.classList.add('open');
-    chatFab.setAttribute('aria-expanded', 'true');
-    startChat();
-    scheduleAgentPoll();
-  } else {
-    closeChatConversation();
-  }
+  const open = chatWindow.classList.toggle('open');
+  chatFab.setAttribute('aria-expanded', String(open));
+  if(chatWindow.classList.contains('open')) startChat();
 });
 chatClose.addEventListener('click', ()=>{
-  closeChatConversation();
-});
-document.addEventListener('visibilitychange', ()=>{
-  if(document.visibilityState === 'hidden'){
-    stopAgentPolling();
-  } else if(chatWindow.classList.contains('open')){
-    scheduleAgentPoll();
-  }
-});
-window.addEventListener('pagehide', event=>{
-  stopAgentPolling();
-  if(!event.persisted
-    && chatConversation.status !== 'new'
-    && (chatConversation.registered || pendingTelegramEvents.size > 0)){
-    notifyConversationClosed(chatConversation.id, chatConversation.secret, true);
-  }
-});
-window.addEventListener('pageshow', event=>{
-  if(event.persisted && chatWindow.classList.contains('open')){
-    scheduleAgentPoll();
-  }
+  chatWindow.classList.remove('open');
+  chatFab.setAttribute('aria-expanded', 'false');
+  chatFab.focus();
 });
 chatSend.addEventListener('click', handleChatSend);
 chatInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') handleChatSend(); });
