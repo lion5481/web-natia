@@ -1,5 +1,5 @@
-const {createHash} = require('crypto');
-const {STORE, getJson} = require('./chat-storage');
+import {createHash} from 'node:crypto';
+import {STORE, getJson} from './chat-storage.js';
 
 async function refreshExpiryIndex(indexKey, recordKey, expiresAt){
   const bucket = Math.floor(expiresAt / (60 * 60 * 1000));
@@ -27,7 +27,7 @@ async function refreshExpiryIndex(indexKey, recordKey, expiresAt){
   if(refreshedKey !== indexKey) await STORE.delete(indexKey);
 }
 
-exports.handler = async () => {
+export const handler = async () => {
   const now = Date.now();
   const hour = 60 * 60 * 1000;
   const currentBucket = Math.floor(now / hour);
