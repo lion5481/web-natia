@@ -1,4 +1,4 @@
-const {
+import {
   STORE,
   checkConversationRateLimit,
   checkIpRateLimit,
@@ -9,11 +9,11 @@ const {
   jsonResponse,
   parseJsonBody,
   validateOrigin
-} = require('./chat-storage');
+} from './chat-storage.js';
 
 const MAX_REPLIES_PER_RESPONSE = 50;
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if(event.httpMethod !== 'POST'){
     return jsonResponse(405, {ok:false, error:'Método no permitido.'}, {Allow:'POST'});
   }
