@@ -1774,6 +1774,11 @@ function handleChatSend(){
     setTimeout(()=>addMsg(chatFlow[chatStep], 'bot'), 350);
   } else {
     setTimeout(()=>addMsg('Gracias. Natia responde en menos de 24h.', 'bot'), 350);
+    fetch('/.netlify/functions/telegram', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({answers: chatAnswers})
+    });
   }
 }
 chatFab.addEventListener('click', ()=>{
