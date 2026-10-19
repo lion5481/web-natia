@@ -1,10 +1,10 @@
-const {
+import {
   CHAT_TTL_MS,
   STORE,
   getJson,
   getConversationById,
   setJson
-} = require('./chat-storage');
+} from './chat-storage.js';
 
 const TELEGRAM_CHAT_ID = '8544499790';
 
@@ -196,7 +196,7 @@ async function processPendingTelegramReplies(messageId){
   }
 }
 
-module.exports = {
+export {
   processPendingTelegramReplies,
   storeAndProcessTelegramReply
 };
