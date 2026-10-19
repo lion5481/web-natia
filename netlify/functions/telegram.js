@@ -1,5 +1,5 @@
-const {createHash} = require('crypto');
-const {
+import {createHash} from 'node:crypto';
+import {
   STORE,
   checkConversationRateLimit,
   checkIpRateLimit,
@@ -12,10 +12,10 @@ const {
   parseJsonBody,
   setJson,
   validateOrigin
-} = require('./chat-storage');
-const {
+} from './chat-storage.js';
+import {
   processPendingTelegramReplies
-} = require('./telegram-reply-storage');
+} from './telegram-reply-storage.js';
 
 const TELEGRAM_CHAT_ID = '8544499790';
 const MAX_REQUEST_BYTES = 12000;
@@ -369,7 +369,7 @@ async function processEvent(payload){
   return jsonResponse(200, {ok:true});
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if(event.httpMethod !== 'POST'){
     return jsonResponse(405, {ok:false, error:'Método no permitido.'}, {Allow:'POST'});
   }
