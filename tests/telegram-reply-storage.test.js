@@ -1,8 +1,6 @@
-const {after, beforeEach, test} = require('node:test');
-const assert = require('node:assert/strict');
-const Module = require('node:module');
+import {after, beforeEach, test} from 'node:test';
+import assert from 'node:assert/strict';
 
-const originalLoad = Module._load;
 const originalFetch = global.fetch;
 const originalEnv = {
   URL:process.env.URL,
@@ -11,12 +9,18 @@ const originalEnv = {
   TELEGRAM_WEBHOOK_SECRET:process.env.TELEGRAM_WEBHOOK_SECRET
 };
 
+process.env.URL = 'https://labad.test';
+process.env.RATE_LIMIT_HMAC_SECRET = 'test-rate-limit-secret-at-least-32-bytes';
+process.env.TELEGRAM_TOKEN = 'test-token';
+process.env.TELEGRAM_WEBHOOK_SECRET = 'test-webhook-secret';
+
+const storage = await import('../netlify/functions/chat-storage.js');
+const replyStorage = await import('../netlify/functions/telegram-reply-storage.js');
+const webhook = await import('../netlify/functions/telegram-webhook.js');
+const sender = await import('../netlify/functions/telegram.js');
+const closer = await import('../netlify/functions/telegram-close.js');
+
 let state;
-let storage;
-let replyStorage;
-let webhook;
-let sender;
-let closer;
 
 const store = {
   async getWithMetadata(key, options = {}){
@@ -55,19 +59,6 @@ const store = {
     yield {blobs};
   }
 };
-
-Module._load = function(request, parent, isMain){
-  if(request === '@netlify/blobs'){
-    return {getStore:()=>store};
-  }
-  return originalLoad.call(this, request, parent, isMain);
-};
-
-function reload(modulePath){
-  const resolved = require.resolve(modulePath);
-  delete require.cache[resolved];
-  return require(resolved);
-}
 
 function makeId(value){
   return `${String(value).padStart(8, '0')}-1234-4234-9876-123456789012`;
@@ -117,20 +108,10 @@ beforeEach(()=>{
     beforeWrite:null,
     failWrite:null
   };
-  process.env.URL = 'https://labad.test';
-  process.env.RATE_LIMIT_HMAC_SECRET = 'test-rate-limit-secret-at-least-32-bytes';
-  process.env.TELEGRAM_TOKEN = 'test-token';
-  process.env.TELEGRAM_WEBHOOK_SECRET = 'test-webhook-secret';
-
-  storage = reload('../netlify/functions/chat-storage.js');
-  replyStorage = reload('../netlify/functions/telegram-reply-storage.js');
-  webhook = reload('../netlify/functions/telegram-webhook.js');
-  sender = reload('../netlify/functions/telegram.js');
-  closer = reload('../netlify/functions/telegram-close.js');
+  storage.setStoreForTesting(store);
 });
 
 after(()=>{
-  Module._load = originalLoad;
   global.fetch = originalFetch;
   for(const [key, value] of Object.entries(originalEnv)){
     if(value === undefined) delete process.env[key];
