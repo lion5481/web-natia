@@ -1,4 +1,4 @@
-const {
+import {
   CHAT_TTL_MS,
   STORE,
   checkConversationRateLimit,
@@ -12,9 +12,9 @@ const {
   parseJsonBody,
   setJson,
   validateOrigin
-} = require('./chat-storage');
+} from './chat-storage.js';
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if(event.httpMethod !== 'POST'){
     return jsonResponse(405, {ok:false, error:'Método no permitido.'}, {Allow:'POST'});
   }
