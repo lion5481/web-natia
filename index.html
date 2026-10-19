@@ -1776,6 +1776,7 @@ const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 const chatInputRow = document.getElementById('chatInputRow');
+chatInput.maxLength = 3500;
 
 function createChatId(){
   if(window.crypto && typeof window.crypto.randomUUID === 'function'){
@@ -1818,6 +1819,88 @@ function addChatMessage(text, role){
   return message;
 }
 
+const sentTelegramEvents = new Set();
+const pendingTelegramEvents = new Map();
+
+async function sendTelegramEvent(payload){
+  if(sentTelegramEvents.has(payload.eventId)) return;
+  if(pendingTelegramEvents.has(payload.eventId)){
+    return pendingTelegramEvents.get(payload.eventId);
+  }
+
+  const request = (async ()=>{
+    const response = await fetch('/.netlify/functions/telegram', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error('El servicio devolvió una respuesta no válida.');
+    }
+    if(!response.ok || result.ok !== true){
+      throw new Error(typeof result.error === 'string' ? result.error : 'No se pudo confirmar el envío.');
+    }
+    sentTelegramEvents.add(payload.eventId);
+  })();
+
+  pendingTelegramEvents.set(payload.eventId, request);
+  try {
+    await request;
+  } finally {
+    pendingTelegramEvents.delete(payload.eventId);
+  }
+}
+
+function sendVisitorMessageToTelegram(message){
+  const payload = {
+    type:'visitor_message',
+    eventId:message.id,
+    conversationId:chatConversation.id,
+    serviceCategory:chatConversation.serviceCategory,
+    message:{
+      text:message.text,
+      createdAt:message.createdAt
+    }
+  };
+  const notice = document.createElement('div');
+  notice.className = 'chat-msg bot';
+  notice.setAttribute('role', 'alert');
+  notice.hidden = true;
+  const status = document.createElement('span');
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.className = 'chat-option-button';
+  retry.textContent = 'Reintentar envío';
+  retry.hidden = true;
+  retry.addEventListener('click', async ()=>{
+    retry.disabled = true;
+    retry.textContent = 'Enviando...';
+    status.textContent = 'Enviando el mensaje...';
+    try {
+      await sendTelegramEvent(payload);
+      notice.remove();
+    } catch {
+      status.textContent = 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
+      retry.textContent = 'Reintentar envío';
+      retry.disabled = false;
+    }
+  });
+  notice.append(status, retry);
+  chatBody.appendChild(notice);
+
+  sendTelegramEvent(payload).then(()=>{
+    notice.remove();
+  }).catch(()=>{
+    notice.hidden = false;
+    status.textContent = 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
+    retry.hidden = false;
+    chatBody.scrollTop = chatBody.scrollHeight;
+  });
+}
+
 function showChatChoices(choices){
   const options = document.createElement('div');
   options.className = 'chat-options';
@@ -1848,6 +1931,10 @@ function makeContactField({id, label, type, help, required, multiline}){
   field.id = id;
   if(!multiline) field.type = type;
   field.required = required;
+  field.maxLength = id === 'contactName' ? 200
+    : id === 'contactEmail' ? 254
+    : id === 'contactPhone' ? 60
+    : 1500;
   field.autocomplete = id === 'contactName' ? 'name' : id === 'contactEmail' ? 'email' : id === 'contactPhone' ? 'tel' : 'off';
   field.setAttribute('aria-describedby', id + 'Help ' + id + 'Error');
 
@@ -1897,7 +1984,7 @@ function showContactForm(){
   const status = document.createElement('p');
   status.className = 'chat-contact-status';
   status.setAttribute('role', 'status');
-  status.textContent = 'Tus datos no se enviarán hasta que el formulario esté conectado al servicio de contacto.';
+  status.textContent = 'Tus datos se enviarán a LABAD para gestionar tu solicitud.';
 
   const submit = document.createElement('button');
   submit.type = 'submit';
@@ -1909,9 +1996,10 @@ function showContactForm(){
   fields.name.field.focus();
 
   let isSubmitting = false;
+  let isSent = false;
   form.addEventListener('submit', event=>{
     event.preventDefault();
-    if(isSubmitting) return;
+    if(isSubmitting || isSent) return;
 
     Object.values(fields).forEach(({field, error})=>{
       error.textContent = '';
@@ -1946,7 +2034,7 @@ function showContactForm(){
 
     isSubmitting = true;
     submit.disabled = true;
-    chatConversation.contactRequest = {
+    const contactData = {
       conversationId: chatConversation.id,
       name: fields.name.field.value.trim(),
       email,
@@ -1954,11 +2042,44 @@ function showContactForm(){
       comment: fields.comment.field.value.trim(),
       createdAt: new Date().toISOString()
     };
-    status.setAttribute('role', 'alert');
-    status.textContent = 'El envío de solicitudes todavía no está conectado. Tus datos siguen en el formulario; podrás volver a intentarlo cuando el servicio esté disponible.';
-    submit.disabled = false;
-    isSubmitting = false;
-    chatBody.scrollTop = chatBody.scrollHeight;
+    const previousRequest = chatConversation.contactRequest;
+    const sameContactData = previousRequest
+      && previousRequest.name === contactData.name
+      && previousRequest.email === contactData.email
+      && previousRequest.phone === contactData.phone
+      && previousRequest.comment === contactData.comment;
+    const contactRequest = {
+      ...contactData,
+      eventId:sameContactData ? previousRequest.eventId : createChatId(),
+      createdAt:sameContactData ? previousRequest.createdAt : contactData.createdAt
+    };
+    chatConversation.contactRequest = contactRequest;
+    status.setAttribute('role', 'status');
+    status.textContent = 'Enviando tu solicitud...';
+
+    sendTelegramEvent({
+      type:'contact_request',
+      eventId:contactRequest.eventId,
+      conversationId:chatConversation.id,
+      serviceCategory:chatConversation.serviceCategory,
+      contact:{
+        name:contactRequest.name,
+        email:contactRequest.email,
+        phone:contactRequest.phone,
+        comment:contactRequest.comment,
+        createdAt:contactRequest.createdAt
+      }
+    }).then(()=>{
+      isSent = true;
+      status.textContent = '¡Muchas gracias por tu consulta! Hemos recibido tu solicitud y te contactaremos en un plazo máximo de 24 horas hábiles. ¡Que tengas un buen día!';
+    }).catch(()=>{
+      status.setAttribute('role', 'alert');
+      status.textContent = 'No se pudo enviar tu solicitud. Comprueba la conexión e inténtalo de nuevo; tus datos siguen en el formulario.';
+    }).finally(()=>{
+      isSubmitting = false;
+      submit.disabled = isSent;
+      chatBody.scrollTop = chatBody.scrollHeight;
+    });
   });
 }
 
@@ -2017,7 +2138,8 @@ function handleChatSend(){
   const text = chatInput.value.trim();
   if(!text) return;
 
-  addChatMessage(text, 'visitor');
+  const message = addChatMessage(text, 'visitor');
+  sendVisitorMessageToTelegram(message);
   chatInput.value = '';
   if(chatConversation.status === 'greeting'){
     chatConversation.status = 'choosing';
