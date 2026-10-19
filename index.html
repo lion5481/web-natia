@@ -1002,14 +1002,48 @@ footer{padding:0;background:#fff;border-top:1px solid #E5E7EB;}
 .chat-head{background:var(--green);color:#fff;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
 .chat-head span{font-weight:700;font-size:14.5px;}
 .chat-head button{color:#fff;font-size:16px;}
-.chat-body{padding:18px;max-height:340px;overflow-y:auto;font-size:14px;}
-.chat-msg{margin-bottom:14px;line-height:1.5;}
+.chat-body{padding:18px;min-height:220px;max-height:420px;overflow-y:auto;font-size:14px;}
+.chat-msg{margin-bottom:14px;line-height:1.5;white-space:pre-line;}
 .chat-msg.bot{color:var(--charcoal);}
 .chat-msg.user{color:var(--green-light);font-weight:600;text-align:right;}
+.chat-msg.agent{color:var(--green);font-weight:600;}
 .chat-input-row{display:flex;border-top:1px solid var(--gray-border);}
 .chat-input-row input{flex:1;border:none;padding:12px 14px;font-size:14px;font-family:inherit;}
 .chat-input-row input:focus{outline:none;}
 .chat-input-row button{padding:0 16px;color:var(--green);font-size:16px;}
+.chat-input-row[hidden],.chat-options[hidden]{display:none;}
+.chat-options{display:grid;gap:10px;margin-top:8px;}
+.chat-option-button,.chat-contact-submit{
+  width:100%;padding:11px 14px;border:1px solid var(--green);border-radius:4px;
+  background:var(--green);color:var(--white);font-family:inherit;font-size:13px;
+  font-weight:600;line-height:1.4;
+  text-align:center;transition:background .2s ease,color .2s ease;
+}
+.chat-option-button:hover,.chat-contact-submit:hover:not(:disabled){background:var(--green-light);}
+.chat-option-button:focus-visible,.chat-contact-submit:focus-visible,.chat-contact-form input:focus-visible,.chat-contact-form textarea:focus-visible{
+  outline:2px solid var(--green-light);outline-offset:2px;
+}
+.chat-contact-form{display:grid;gap:12px;margin-top:8px;}
+.chat-contact-field{display:grid;gap:4px;}
+.chat-contact-field label{font-size:12px;font-weight:600;color:var(--charcoal);}
+.chat-contact-field input,.chat-contact-field textarea{
+  width:100%;padding:9px 10px;border:1px solid var(--gray-border);border-radius:4px;
+  color:var(--charcoal);font-family:inherit;font-size:14px;
+}
+.chat-contact-field textarea{min-height:68px;resize:vertical;}
+.chat-contact-help{font-size:11px;color:var(--text-muted);}
+.chat-contact-error{min-height:0;color:#9B1C1C;font-size:12px;}
+.chat-contact-error:empty{display:none;}
+.chat-contact-status{font-size:12px;color:var(--text-muted);}
+.chat-contact-submit:disabled{cursor:wait;opacity:.7;}
+@media (max-width:480px){
+  .chat-fab{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));}
+  .chat-window{
+    left:16px;right:16px;bottom:calc(86px + env(safe-area-inset-bottom,0px));
+    width:auto;max-width:none;max-height:calc(100dvh - 110px);
+  }
+  .chat-body{min-height:min(220px,calc(100dvh - 250px));max-height:min(420px,calc(100dvh - 250px));}
+}
 
 /* ============ METHODOLOGY ============ */
 .metodologia-section{
@@ -1576,16 +1610,16 @@ footer{padding:0;background:#fff;border-top:1px solid #E5E7EB;}
 </footer>
 
 <!-- ============ CHATBOT ============ -->
-<button class="chat-fab" id="chatFab" aria-label="Abrir chat"><i class="fa-solid fa-comment-dots"></i></button>
-<div class="chat-window" id="chatWindow">
+<button class="chat-fab" id="chatFab" aria-label="Abrir chat" aria-controls="chatWindow" aria-expanded="false"><i class="fa-solid fa-comment-dots"></i></button>
+<div class="chat-window" id="chatWindow" role="dialog" aria-label="Chat de LABAD Consultoría">
   <div class="chat-head">
     <span>¿Hablamos?</span>
     <button id="chatClose" aria-label="Cerrar chat"><i class="fa-solid fa-xmark"></i></button>
   </div>
-  <div class="chat-body" id="chatBody"></div>
-  <div class="chat-input-row">
-    <input id="chatInput" type="text" placeholder="Escribe aquí...">
-    <button id="chatSend" aria-label="Enviar"><i class="fa-solid fa-paper-plane"></i></button>
+  <div class="chat-body" id="chatBody" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <div class="chat-input-row" id="chatInputRow">
+    <input id="chatInput" type="text" placeholder="Escribe aquí..." aria-label="Escribe tu mensaje" autocomplete="off">
+    <button id="chatSend" type="button" aria-label="Enviar mensaje"><i class="fa-solid fa-paper-plane"></i></button>
   </div>
 </div>
 
@@ -1741,51 +1775,293 @@ const chatClose = document.getElementById('chatClose');
 const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
+const chatInputRow = document.getElementById('chatInputRow');
 
-const chatFlow = [
-  '¡Hola! Soy el asistente de Natia. Para conocer mejor tu situación — ¿cuántos proveedores tiene tu empresa aproximadamente?',
-  '¿Cuál es tu mayor reto ahora mismo en compras o sostenibilidad?',
-  'Por último, ¿tu nombre y email para que Natia pueda contactarte?'
-];
-let chatStep = 0;
-let chatStarted = false;
-const chatAnswers = [];
+function createChatId(){
+  if(window.crypto && typeof window.crypto.randomUUID === 'function'){
+    return window.crypto.randomUUID();
+  }
+  if(window.crypto && typeof window.crypto.getRandomValues === 'function'){
+    const values = new Uint32Array(4);
+    window.crypto.getRandomValues(values);
+    return Array.from(values, value=>value.toString(16).padStart(8, '0')).join('-');
+  }
+  return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+}
 
-function addMsg(text, who){
+const chatConversation = {
+  id: createChatId(),
+  status: 'new',
+  messages: [],
+  contactRequest: null,
+  serviceCategory: null
+};
+chatWindow.dataset.conversationId = chatConversation.id;
+
+function addChatMessage(text, role){
+  const message = {
+    id: createChatId(),
+    conversationId: chatConversation.id,
+    role,
+    text,
+    createdAt: new Date().toISOString()
+  };
+  chatConversation.messages.push(message);
+
   const div = document.createElement('div');
-  div.className = 'chat-msg ' + who;
+  div.className = 'chat-msg ' + (role === 'visitor' ? 'user' : role === 'agent' ? 'agent' : 'bot');
+  div.dataset.messageId = message.id;
+  div.dataset.sender = role;
   div.textContent = text;
   chatBody.appendChild(div);
   chatBody.scrollTop = chatBody.scrollHeight;
+  return message;
 }
-function startChat(){
-  if(chatStarted) return;
-  chatStarted = true;
-  addMsg(chatFlow[0], 'bot');
+
+function showChatChoices(choices){
+  const options = document.createElement('div');
+  options.className = 'chat-options';
+  options.id = 'chatOptions';
+
+  choices.forEach(({choice, label})=>{
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'chat-option-button';
+    button.dataset.chatChoice = choice;
+    button.textContent = label;
+    options.appendChild(button);
+  });
+
+  chatBody.appendChild(options);
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
-function handleChatSend(){
-  const val = chatInput.value.trim();
-  if(!val) return;
-  addMsg(val, 'user');
-  chatAnswers.push(val);
-  chatInput.value = '';
-  chatStep++;
-  if(chatStep < chatFlow.length){
-    setTimeout(()=>addMsg(chatFlow[chatStep], 'bot'), 350);
-  } else {
-    setTimeout(()=>addMsg('Gracias. Natia responde en menos de 24h.', 'bot'), 350);
-    fetch('/.netlify/functions/telegram', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({answers: chatAnswers})
+
+function makeContactField({id, label, type, help, required, multiline}){
+  const wrapper = document.createElement('div');
+  wrapper.className = 'chat-contact-field';
+
+  const fieldLabel = document.createElement('label');
+  fieldLabel.htmlFor = id;
+  fieldLabel.textContent = label + (required ? ' *' : '');
+
+  const field = document.createElement(multiline ? 'textarea' : 'input');
+  field.id = id;
+  if(!multiline) field.type = type;
+  field.required = required;
+  field.autocomplete = id === 'contactName' ? 'name' : id === 'contactEmail' ? 'email' : id === 'contactPhone' ? 'tel' : 'off';
+  field.setAttribute('aria-describedby', id + 'Help ' + id + 'Error');
+
+  const helpText = document.createElement('span');
+  helpText.className = 'chat-contact-help';
+  helpText.id = id + 'Help';
+  helpText.textContent = help;
+
+  const error = document.createElement('span');
+  error.className = 'chat-contact-error';
+  error.id = id + 'Error';
+  error.setAttribute('aria-live', 'polite');
+
+  wrapper.append(fieldLabel, field, helpText, error);
+  return {wrapper, field, error};
+}
+
+function showContactForm(){
+  addChatMessage('Déjanos tus datos y nos pondremos en contacto contigo.', 'system');
+  chatInputRow.hidden = true;
+
+  const form = document.createElement('form');
+  form.className = 'chat-contact-form';
+  form.noValidate = true;
+
+  const fields = {
+    name: makeContactField({
+      id:'contactName', label:'Nombre y apellidos', type:'text',
+      help:'Opcional.', required:false
+    }),
+    email: makeContactField({
+      id:'contactEmail', label:'Correo electrónico', type:'email',
+      help:'Obligatorio. Usaremos este correo para responderte.', required:true
+    }),
+    phone: makeContactField({
+      id:'contactPhone', label:'Número de teléfono', type:'tel',
+      help:'Obligatorio. No incluyas solo espacios.', required:true
+    }),
+    comment: makeContactField({
+      id:'contactComment', label:'Comentario', type:'text',
+      help:'Opcional. Cuéntanos brevemente cómo podemos ayudarte.', required:false, multiline:true
+    })
+  };
+
+  Object.values(fields).forEach(({wrapper})=>form.appendChild(wrapper));
+
+  const status = document.createElement('p');
+  status.className = 'chat-contact-status';
+  status.setAttribute('role', 'status');
+  status.textContent = 'Tus datos no se enviarán hasta que el formulario esté conectado al servicio de contacto.';
+
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.className = 'chat-contact-submit';
+  submit.textContent = 'Enviar solicitud';
+  form.append(status, submit);
+  chatBody.appendChild(form);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  fields.name.field.focus();
+
+  let isSubmitting = false;
+  form.addEventListener('submit', event=>{
+    event.preventDefault();
+    if(isSubmitting) return;
+
+    Object.values(fields).forEach(({field, error})=>{
+      error.textContent = '';
+      field.removeAttribute('aria-invalid');
     });
+
+    const email = fields.email.field.value.trim();
+    const phone = fields.phone.field.value.trim();
+    let firstInvalidField = null;
+
+    if(!email){
+      fields.email.error.textContent = 'Introduce tu correo electrónico.';
+      firstInvalidField = fields.email.field;
+    } else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      fields.email.error.textContent = 'Escribe un correo electrónico válido.';
+      firstInvalidField = fields.email.field;
+    }
+
+    if(!phone){
+      fields.phone.error.textContent = 'Introduce tu número de teléfono.';
+      if(!firstInvalidField) firstInvalidField = fields.phone.field;
+    }
+
+    [fields.email, fields.phone].forEach(({field, error})=>{
+      if(error.textContent) field.setAttribute('aria-invalid', 'true');
+    });
+
+    if(firstInvalidField){
+      firstInvalidField.focus();
+      return;
+    }
+
+    isSubmitting = true;
+    submit.disabled = true;
+    chatConversation.contactRequest = {
+      conversationId: chatConversation.id,
+      name: fields.name.field.value.trim(),
+      email,
+      phone,
+      comment: fields.comment.field.value.trim(),
+      createdAt: new Date().toISOString()
+    };
+    status.setAttribute('role', 'alert');
+    status.textContent = 'El envío de solicitudes todavía no está conectado. Tus datos siguen en el formulario; podrás volver a intentarlo cuando el servicio esté disponible.';
+    submit.disabled = false;
+    isSubmitting = false;
+    chatBody.scrollTop = chatBody.scrollHeight;
+  });
+}
+
+function handleChatChoice(choice){
+  if(chatConversation.status !== 'choosing' && chatConversation.status !== 'service-choosing') return;
+  document.getElementById('chatOptions')?.remove();
+
+  if(chatConversation.status === 'service-choosing'){
+    const services = {
+      decarbonizacion: 'Descarbonización',
+      licitaciones: 'Preparación para licitaciones',
+      'compras-sostenibles': 'Compras sostenibles y estrategia de sostenibilidad',
+      'economia-circular': 'Economía circular',
+      'otra-consulta': 'Otra consulta'
+    };
+    const serviceCategory = services[choice];
+    if(!serviceCategory) return;
+
+    chatConversation.serviceCategory = serviceCategory;
+    chatConversation.status = 'waiting';
+    addChatMessage(
+      choice === 'otra-consulta'
+        ? 'Escribe tu consulta aquí y te atenderemos personalmente lo antes posible.'
+        : 'Cuéntanos brevemente qué necesitas y te atenderemos personalmente lo antes posible.',
+      'system'
+    );
+    chatInputRow.hidden = false;
+    chatInput.focus();
+  } else if(choice === 'wait'){
+    chatConversation.status = 'service-choosing';
+    addChatMessage('Agente humano', 'visitor');
+    addChatMessage('¿Sobre qué servicio de LABAD te gustaría recibir información?', 'system');
+    showChatChoices([
+      {choice:'decarbonizacion', label:'Descarbonización'},
+      {choice:'licitaciones', label:'Preparación para licitaciones'},
+      {choice:'compras-sostenibles', label:'Compras sostenibles y estrategia de sostenibilidad'},
+      {choice:'economia-circular', label:'Economía circular'},
+      {choice:'otra-consulta', label:'Otra consulta'}
+    ]);
+  } else if(choice === 'contact'){
+    chatConversation.status = 'contact';
+    showContactForm();
+  } else {
+    return;
   }
 }
+
+function startChat(){
+  if(chatConversation.status !== 'new') return;
+  chatConversation.status = 'greeting';
+  addChatMessage('¡Hola! Bienvenido/a a LABAD Consultoría. ¿Cómo podemos ayudarte?', 'system');
+}
+
+function handleChatSend(){
+  if(chatConversation.status !== 'greeting' && chatConversation.status !== 'waiting') return;
+  const text = chatInput.value.trim();
+  if(!text) return;
+
+  addChatMessage(text, 'visitor');
+  chatInput.value = '';
+  if(chatConversation.status === 'greeting'){
+    chatConversation.status = 'choosing';
+    chatInputRow.hidden = true;
+    addChatMessage('Gracias por escribirnos. ¿Cómo prefieres continuar?', 'system');
+    showChatChoices([
+      {choice:'wait', label:'Esperar a un agente humano'},
+      {choice:'contact', label:'Solicitar que me contacten'}
+    ]);
+  }
+}
+
+window.LabadChat = Object.freeze({
+  conversationId: chatConversation.id,
+  getMessages: ()=>chatConversation.messages.map(message=>({...message})),
+  getConversation: ()=>({
+    id: chatConversation.id,
+    status: chatConversation.status,
+    serviceCategory: chatConversation.serviceCategory,
+    messages: chatConversation.messages.map(message=>({...message}))
+  }),
+  getContactRequest: ()=>chatConversation.contactRequest ? {...chatConversation.contactRequest} : null,
+  receiveAgentMessage(text){
+    if(typeof text !== 'string' || !text.trim()){
+      throw new TypeError('El mensaje del agente debe contener texto.');
+    }
+    return addChatMessage(text.trim(), 'agent');
+  }
+});
+
+chatBody.addEventListener('click', event=>{
+  const button = event.target.closest('[data-chat-choice]');
+  if(button) handleChatChoice(button.dataset.chatChoice);
+});
 chatFab.addEventListener('click', ()=>{
-  chatWindow.classList.toggle('open');
+  const open = chatWindow.classList.toggle('open');
+  chatFab.setAttribute('aria-expanded', String(open));
   if(chatWindow.classList.contains('open')) startChat();
 });
-chatClose.addEventListener('click', ()=> chatWindow.classList.remove('open'));
+chatClose.addEventListener('click', ()=>{
+  chatWindow.classList.remove('open');
+  chatFab.setAttribute('aria-expanded', 'false');
+  chatFab.focus();
+});
 chatSend.addEventListener('click', handleChatSend);
 chatInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') handleChatSend(); });
 </script>
