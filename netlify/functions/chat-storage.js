@@ -1,8 +1,27 @@
-const {createHash, createHmac, timingSafeEqual} = require('crypto');
-const {getStore} = require('@netlify/blobs');
+import {createHash, createHmac, timingSafeEqual} from 'node:crypto';
+import {getStore} from '@netlify/blobs';
 
 const CHAT_TTL_MS = 24 * 60 * 60 * 1000;
-const STORE = getStore('labad-chat-transient');
+let activeStore;
+export let STORE;
+
+function getActiveStore(){
+  if(!activeStore) activeStore = getStore('labad-chat-transient');
+  return activeStore;
+}
+
+STORE = {
+  getWithMetadata: (...args)=>getActiveStore().getWithMetadata(...args),
+  setJSON: (...args)=>getActiveStore().setJSON(...args),
+  delete: (...args)=>getActiveStore().delete(...args),
+  async *list(...args){
+    yield* getActiveStore().list(...args);
+  }
+};
+
+export function setStoreForTesting(store){
+  activeStore = store;
+}
 
 function jsonResponse(statusCode, body, headers = {}){
   return {
@@ -252,9 +271,8 @@ async function deleteConversationRecords(conversationId){
   await STORE.delete(`conversation:${conversationId}`);
 }
 
-module.exports = {
+export {
   CHAT_TTL_MS,
-  STORE,
   checkConversationRateLimit,
   checkIpRateLimit,
   createOrGetConversation,
