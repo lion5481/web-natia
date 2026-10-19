@@ -1,10 +1,11 @@
-const {
+import {timingSafeEqual} from 'node:crypto';
+import {
   getJson,
   jsonResponse
-} = require('./chat-storage');
-const {
+} from './chat-storage.js';
+import {
   storeAndProcessTelegramReply
-} = require('./telegram-reply-storage');
+} from './telegram-reply-storage.js';
 
 const TELEGRAM_CHAT_ID = '8544499790';
 
@@ -15,8 +16,7 @@ function equalSecret(actual, expected){
     || actual.length !== expected.length){
     return false;
   }
-  const crypto = require('crypto');
-  return crypto.timingSafeEqual(Buffer.from(actual), Buffer.from(expected));
+  return timingSafeEqual(Buffer.from(actual), Buffer.from(expected));
 }
 
 function readHeader(headers, name){
@@ -65,7 +65,7 @@ function getReply(update){
   };
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if(event.httpMethod !== 'POST'){
     return jsonResponse(405, {ok:false}, {Allow:'POST'});
   }
