@@ -1005,7 +1005,11 @@ footer{padding:0;background:#fff;border-top:1px solid #E5E7EB;}
 .chat-body{padding:18px;min-height:220px;max-height:420px;overflow-y:auto;font-size:14px;}
 .chat-msg{margin-bottom:14px;line-height:1.5;white-space:pre-line;}
 .chat-msg.bot{color:var(--charcoal);}
-.chat-msg.user{color:var(--green-light);font-weight:600;text-align:right;}
+.chat-msg.user{
+  width:fit-content;max-width:88%;margin-left:auto;padding:9px 12px;
+  border-radius:12px 12px 2px 12px;background:var(--green-light);
+  color:var(--white);font-weight:600;text-align:left;
+}
 .chat-msg.agent{color:var(--green);font-weight:600;}
 .chat-input-row{display:flex;border-top:1px solid var(--gray-border);}
 .chat-input-row input{flex:1;border:none;padding:12px 14px;font-size:14px;font-family:inherit;}
@@ -2037,10 +2041,10 @@ function showContactForm(){
     };
     chatConversation.status = 'additional-choice';
     form.remove();
-    addChatMessage('¿Quieres añadir algún detalle más que nos ayude a comprender mejor tu necesidad?', 'system');
+    addChatMessage('Gracias por la información. ¿Quieres añadir algún detalle más sobre tu consulta?', 'system');
     showChatChoices([
       {choice:'add-information', label:'Sí, añadir información'},
-      {choice:'finish', label:'No, continuar'}
+      {choice:'finish', label:'No, finalizar'}
     ]);
   });
 }
@@ -2061,15 +2065,16 @@ function getAdditionalInformationRemaining(){
 function showAdditionalInformationPrompt(){
   chatConversation.status = 'additional-choice';
   chatInputRow.hidden = true;
-  addChatMessage('¿Quieres añadir algún detalle más que nos ayude a comprender mejor tu necesidad?', 'system');
   const hasRoom = getAdditionalInformationRemaining() > 0;
   showChatChoices([
     ...(hasRoom ? [{choice:'add-information', label:'Sí, añadir información'}] : []),
-    {choice:'finish', label:'No, continuar'}
+    {choice:'finish', label:'No, finalizar'}
   ]);
 }
 
 async function sendContactRequest(){
+  if(!['additional-choice', 'additional-information', 'send-failed'].includes(chatConversation.status)) return;
+
   const existingRequest = chatConversation.contactRequest;
   const comment = getContactComment();
   const sameRequest = existingRequest.comment === comment;
@@ -2083,7 +2088,6 @@ async function sendContactRequest(){
   chatConversation.status = 'sending';
   document.getElementById('chatOptions')?.remove();
   chatInputRow.hidden = true;
-  addChatMessage('Enviando tu solicitud...', 'system');
 
   try {
     await sendTelegramEvent({
@@ -2101,21 +2105,22 @@ async function sendContactRequest(){
     });
     chatConversation.status = 'complete';
     addChatMessage(
-      `Muchas gracias por contactar con LABAD Consultoría, ${chatConversation.name}. Hemos registrado tu solicitud y tus datos de contacto. Nuestro equipo revisará la información y se pondrá en contacto contigo lo antes posible.\n\nTe agradecemos tu interés. ¡Que tengas un buen día!`,
+      `Muchas gracias por contactar con LABAD Consultoría, ${chatConversation.name}. Hemos registrado tu solicitud y nos pondremos en contacto contigo lo antes posible. Te agradecemos tu interés. ¡Que tengas un buen día!`,
       'system'
     );
   } catch {
-    chatConversation.status = 'additional-choice';
+    chatConversation.status = 'send-failed';
     const notice = document.createElement('div');
     notice.className = 'chat-msg bot';
     notice.setAttribute('role', 'alert');
-    notice.textContent = 'No se pudo enviar tu solicitud. Comprueba la conexión e inténtalo de nuevo.';
+    notice.textContent = 'No se pudo enviar tu solicitud. Comprueba la conexión y reintenta; tus respuestas y datos se conservarán.';
     const retry = document.createElement('button');
     retry.type = 'button';
     retry.className = 'chat-option-button';
     retry.textContent = 'Reintentar envío';
     retry.addEventListener('click', ()=>{
       notice.remove();
+      chatConversation.status = 'send-failed';
       sendContactRequest();
     });
     notice.appendChild(retry);
@@ -2140,8 +2145,12 @@ function handleChatChoice(choice){
     if(!serviceCategory) return;
 
     chatConversation.serviceCategory = serviceCategory;
+    addChatMessage(serviceCategory, 'visitor');
     chatConversation.status = 'consultation';
-    addChatMessage('Perfecto. Cuéntame brevemente qué necesitas, cuál es tu situación actual o qué reto te gustaría resolver.', 'system');
+    addChatMessage(
+      `Perfecto, ${chatConversation.name}. Has seleccionado ${serviceCategory}. Cuéntame qué necesitas o qué reto te gustaría resolver en esta área.`,
+      'system'
+    );
     chatInputRow.hidden = false;
     chatInput.maxLength = 1000;
     chatInput.focus();
@@ -2177,14 +2186,13 @@ function handleChatSend(){
 
   const currentStatus = chatConversation.status;
   const message = addChatMessage(text, 'visitor');
-  sendVisitorMessageToTelegram(message);
   chatInput.value = '';
 
   if(currentStatus === 'greeting'){
     chatConversation.name = text.slice(0, 200);
     chatConversation.status = 'service-choosing';
     addChatMessage(
-      `Muchas gracias, ${chatConversation.name}. Para poder orientarte mejor, selecciona el área sobre la que deseas realizar tu consulta.`,
+      `Muchas gracias, ${chatConversation.name}. ¿Sobre qué área necesitas asesoramiento?`,
       'system'
     );
     showChatChoices([
@@ -2200,7 +2208,7 @@ function handleChatSend(){
     showContactForm();
   } else if(currentStatus === 'additional-information'){
     chatConversation.additionalInformation.push(text);
-    showAdditionalInformationPrompt();
+    sendContactRequest();
   }
 }
 
