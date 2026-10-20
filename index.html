@@ -839,6 +839,8 @@ header.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.07);padding:8px 0;}
 .contact-submit:focus-visible{outline:2px solid #86efac;outline-offset:3px;}
 .form-msg{display:none;margin-top:14px;color:#86efac;font-size:14px;font-weight:600;}
 .form-msg.show{display:block;}
+.form-msg.error{color:#fca5a5;}
+.contact-submit:disabled{cursor:wait;opacity:.7;}
 .contact-info{min-width:0;padding-top:36px;}
 .ci-title{margin-bottom:32px;color:#fff;font-size:22px;font-weight:700;}
 .ci-rows{display:flex;flex-direction:column;gap:24px;}
@@ -1542,7 +1544,7 @@ footer{padding:0;background:#fff;border-top:1px solid #E5E7EB;}
         </div>
         <div class="field"><label for="c-challenge">¿Cuál es tu mayor reto ahora mismo? <span class="req">*</span></label><textarea id="c-challenge" name="challenge" rows="4" placeholder="Cuéntame brevemente tu situación..." required></textarea></div>
         <button type="submit" class="contact-submit">Enviar mensaje →</button>
-        <p class="form-msg" id="formMsg">Gracias — abriendo tu cliente de correo con el mensaje listo para enviar.</p>
+        <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
       </form>
       <div class="contact-info">
         <h3 class="ci-title">Prefiero el contacto directo</h3>
@@ -1747,18 +1749,51 @@ services.forEach((s)=>{
   grid.appendChild(card);
 });
 
-/* ============ CONTACT FORM (mailto) ============ */
-document.getElementById('contactForm').addEventListener('submit', function(e){
+/* ============ CONTACT FORM ============ */
+document.getElementById('contactForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const f = e.target;
-  const name = f.name.value.trim();
-  const company = f.company.value.trim();
-  const email = f.email.value.trim();
-  const suppliers = f.suppliers.value;
-  const challenge = f.challenge.value.trim();
-  const body = `Nombre: ${name}%0AEmpresa: ${company}%0AEmail: ${email}%0ANúmero de proveedores: ${suppliers}%0A%0AMayor reto:%0A${challenge}`;
-  window.location.href = `mailto:info@labadcolsultoria.es?subject=${encodeURIComponent('Contacto desde la web — '+name)}&body=${body}`;
-  document.getElementById('formMsg').classList.add('show');
+  const status = document.getElementById('formMsg');
+  const submit = f.querySelector('[type="submit"]');
+  const payload = {
+    name:f.elements.namedItem('name').value.trim(),
+    company:f.elements.namedItem('company').value.trim(),
+    email:f.elements.namedItem('email').value.trim(),
+    suppliers:f.elements.namedItem('suppliers').value.trim(),
+    challenge:f.elements.namedItem('challenge').value.trim()
+  };
+
+  submit.disabled = true;
+  status.classList.remove('error');
+  status.setAttribute('role', 'status');
+  status.textContent = 'Enviando tu mensaje...';
+  status.classList.add('show');
+
+  try {
+    const response = await fetch('/.netlify/functions/contact', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error('El servicio devolvió una respuesta no válida.');
+    }
+    if(!response.ok || result.ok !== true){
+      throw new Error(typeof result.error === 'string' ? result.error : 'No se pudo enviar el mensaje.');
+    }
+
+    status.textContent = 'Gracias. Hemos recibido tu mensaje y nos pondremos en contacto contigo.';
+    f.reset();
+  } catch {
+    status.setAttribute('role', 'alert');
+    status.classList.add('error');
+    status.textContent = 'No se pudo enviar tu mensaje. Comprueba la conexión e inténtalo de nuevo; tus datos siguen en el formulario.';
+  } finally {
+    submit.disabled = false;
+  }
 });
 
 /* ============ NEWSLETTER ============ */
