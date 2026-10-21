@@ -1,3 +1,6 @@
+[build]
+  command = "node generate-sitemap.js"
+
 [functions]
   directory = "netlify/functions"
   
