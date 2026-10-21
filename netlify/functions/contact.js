@@ -18,6 +18,21 @@ function isNonEmptyString(value, maxLength){
     && value.trim().length <= maxLength;
 }
 
+function sanitizeLogValue(value, payload){
+  if(typeof value !== 'string') return undefined;
+  const submittedValues = Object.values(payload)
+    .filter(value=>typeof value === 'string' && value.length > 0);
+  if(submittedValues.some(submitted=>value.toLowerCase().includes(submitted.toLowerCase()))){
+    return '[message omitted: may contain submitted data]';
+  }
+  return value
+    .replace(/[\r\n\t]+/g, ' ')
+    .replace(/\bBearer\s+\S+/gi, 'Bearer [redacted]')
+    .replace(/\bre_[A-Za-z0-9_-]+\b/g, '[redacted]')
+    .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, '[email redacted]')
+    .slice(0, 500);
+}
+
 function parseRequestBody(event){
   if(typeof event.body !== 'string' || !event.body){
     throw new Error('El cuerpo de la solicitud está vacío.');
@@ -116,29 +131,45 @@ exports.handler = async (event) => {
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method:'POST',
       headers:{
-        'Authorization':`Bearer ${apiKey}`,
+        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
         'Content-Type':'application/json'
       },
       body:JSON.stringify({
-        from:sender,
-        to:[recipient],
+        from:process.env.CONTACT_FROM,
+        to:[process.env.CONTACT_EMAIL],
         reply_to:payload.email.trim(),
         subject:email.subject,
         text:email.text
       })
     });
 
+    console.info('Resend API response', {status:resendResponse.status});
     let result;
     try {
       result = await resendResponse.json();
     } catch {
+      console.error('Resend returned a non-JSON response', {status:resendResponse.status});
       return response(502, {ok:false, error:'El proveedor de correo devolvió una respuesta no válida.'});
     }
     if(!resendResponse.ok || typeof result.id !== 'string' || !result.id){
+      console.error('Resend rejected contact email request', {
+        status:resendResponse.status,
+        errorCode:sanitizeLogValue(
+          typeof result.name === 'string' ? result.name
+            : typeof result.code === 'string' ? result.code
+              : typeof result.statusCode === 'number' ? String(result.statusCode) : undefined,
+          payload
+        ),
+        errorMessage:sanitizeLogValue(result.message, payload)
+      });
       return response(502, {ok:false, error:'No se pudo entregar el mensaje. Inténtalo de nuevo.'});
     }
     return response(200, {ok:true});
-  } catch {
+  } catch (error) {
+    console.error('Could not reach Resend API', {
+      errorName:sanitizeLogValue(error?.name, payload),
+      errorMessage:sanitizeLogValue(error?.message, payload)
+    });
     return response(502, {ok:false, error:'No se pudo conectar con el proveedor de correo. Inténtalo de nuevo.'});
   }
 };
