@@ -656,14 +656,37 @@
         dropdownToggle.focus();
       }
     });
-    document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+    document.getElementById('newsletterForm').addEventListener('submit', async function (event) {
       event.preventDefault();
       const input = event.currentTarget.querySelector('input');
       const button = event.currentTarget.querySelector('button');
       const original = button.textContent;
-      button.textContent = '¡Gracias!';
-      input.value = '';
-      setTimeout(function () { button.textContent = original; }, 2400);
+      const email = input.value;
+
+      button.textContent = 'Enviando...';
+      button.disabled = true;
+
+      try {
+        const res = await fetch('/.netlify/functions/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        if (res.ok) {
+          button.textContent = '¡Gracias!';
+          input.value = '';
+        } else {
+          button.textContent = 'Error, inténtalo de nuevo';
+        }
+      } catch (err) {
+        button.textContent = 'Error, inténtalo de nuevo';
+      } finally {
+        setTimeout(() => {
+          button.textContent = original;
+          button.disabled = false;
+        }, 3000);
+      }
     });
   </script>
 </body>
