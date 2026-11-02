@@ -1637,56 +1637,6 @@ if(grid) services.forEach((s)=>{
   grid.appendChild(card);
 });
 
-/* ============ CONTACT FORM ============ */
-const contactForm = document.getElementById('contactForm');
-if(contactForm) contactForm.addEventListener('submit', async function(e){
-  e.preventDefault();
-  const f = e.target;
-  const status = document.getElementById('formMsg');
-  const submit = f.querySelector('[type="submit"]');
-  const payload = {
-    name:f.elements.namedItem('name').value.trim(),
-    company:f.elements.namedItem('company').value.trim(),
-    email:f.elements.namedItem('email').value.trim(),
-    suppliers:f.elements.namedItem('suppliers').value.trim(),
-    challenge:f.elements.namedItem('challenge').value.trim()
-  };
-
-  submit.disabled = true;
-  status.classList.remove('error');
-  status.setAttribute('role', 'status');
-  status.textContent = 'Enviando tu mensaje...';
-  status.classList.add('show');
-
-  try {
-    const response = await fetch('/.netlify/functions/contact', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
-    });
-    let result;
-    try {
-      result = await response.json();
-    } catch {
-      throw new Error('El servicio devolvió una respuesta no válida.');
-    }
-    if(!response.ok || result.ok !== true){
-      throw new Error(typeof result.error === 'string' ? result.error : 'No se pudo enviar el mensaje.');
-    }
-
-    status.textContent = 'Gracias. Hemos recibido tu mensaje y nos pondremos en contacto contigo.';
-    f.reset();
-  } catch {
-    status.setAttribute('role', 'alert');
-    status.classList.add('error');
-    status.textContent = 'No se pudo enviar tu mensaje. Comprueba la conexión e inténtalo de nuevo; tus datos siguen en el formulario.';
-  } finally {
-    submit.disabled = false;
-  }
-});
-
-/* ============ NEWSLETTER ============ */
-
 /* ============ CHATBOT ============ */
 const chatFab = document.getElementById('chatFab');
 const chatWindow = document.getElementById('chatWindow');
@@ -1739,88 +1689,6 @@ function addChatMessage(text, role){
   chatBody.appendChild(div);
   chatBody.scrollTop = chatBody.scrollHeight;
   return message;
-}
-
-const sentTelegramEvents = new Set();
-const pendingTelegramEvents = new Map();
-
-async function sendTelegramEvent(payload){
-  if(sentTelegramEvents.has(payload.eventId)) return;
-  if(pendingTelegramEvents.has(payload.eventId)){
-    return pendingTelegramEvents.get(payload.eventId);
-  }
-
-  const request = (async ()=>{
-    const response = await fetch('/.netlify/functions/telegram', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
-    });
-    let result;
-    try {
-      result = await response.json();
-    } catch {
-      throw new Error('El servicio devolvió una respuesta no válida.');
-    }
-    if(!response.ok || result.ok !== true){
-      throw new Error(typeof result.error === 'string' ? result.error : 'No se pudo confirmar el envío.');
-    }
-    sentTelegramEvents.add(payload.eventId);
-  })();
-
-  pendingTelegramEvents.set(payload.eventId, request);
-  try {
-    await request;
-  } finally {
-    pendingTelegramEvents.delete(payload.eventId);
-  }
-}
-
-function sendVisitorMessageToTelegram(message){
-  const payload = {
-    type:'visitor_message',
-    eventId:message.id,
-    conversationId:chatConversation.id,
-    serviceCategory:chatConversation.serviceCategory,
-    message:{
-      text:message.text,
-      createdAt:message.createdAt
-    }
-  };
-  const notice = document.createElement('div');
-  notice.className = 'chat-msg bot';
-  notice.setAttribute('role', 'alert');
-  notice.hidden = true;
-  const status = document.createElement('span');
-  const retry = document.createElement('button');
-  retry.type = 'button';
-  retry.className = 'chat-option-button';
-  retry.textContent = 'Reintentar envío';
-  retry.hidden = true;
-  retry.addEventListener('click', async ()=>{
-    retry.disabled = true;
-    retry.textContent = 'Enviando...';
-    status.textContent = 'Enviando el mensaje...';
-    try {
-      await sendTelegramEvent(payload);
-      notice.remove();
-    } catch {
-      status.textContent = 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
-      retry.textContent = 'Reintentar envío';
-      retry.disabled = false;
-    }
-  });
-  notice.append(status, retry);
-  chatBody.appendChild(notice);
-
-  sendTelegramEvent(payload).then(()=>{
-    notice.remove();
-  }).catch(()=>{
-    notice.hidden = false;
-    status.textContent = 'No se pudo enviar el mensaje. Comprueba la conexión e inténtalo de nuevo.';
-    retry.hidden = false;
-    chatBody.scrollTop = chatBody.scrollHeight;
-  });
 }
 
 function showChatChoices(choices){
@@ -1987,61 +1855,22 @@ function showAdditionalInformationPrompt(){
   ]);
 }
 
-async function sendContactRequest(){
-  if(!['additional-choice', 'additional-information', 'send-failed'].includes(chatConversation.status)) return;
+function sendContactRequest(){
+  if(!['additional-choice', 'additional-information'].includes(chatConversation.status)) return;
 
-  const existingRequest = chatConversation.contactRequest;
-  const comment = getContactComment();
-  const sameRequest = existingRequest.comment === comment;
-  const contactRequest = {
-    ...existingRequest,
-    comment,
-    eventId:sameRequest && existingRequest.eventId ? existingRequest.eventId : createChatId(),
-    createdAt:sameRequest ? existingRequest.createdAt : new Date().toISOString()
-  };
-  chatConversation.contactRequest = contactRequest;
-  chatConversation.status = 'sending';
+  chatConversation.status = 'complete';
   document.getElementById('chatOptions')?.remove();
   chatInputRow.hidden = true;
 
-  try {
-    await sendTelegramEvent({
-      type:'contact_request',
-      eventId:contactRequest.eventId,
-      conversationId:chatConversation.id,
-      serviceCategory:chatConversation.serviceCategory,
-      contact:{
-        name:contactRequest.name,
-        email:contactRequest.email,
-        phone:contactRequest.phone,
-        comment:contactRequest.comment,
-        createdAt:contactRequest.createdAt
-      }
-    });
-    chatConversation.status = 'complete';
-    addChatMessage(
-      `Muchas gracias por contactar con LABAD Consultoría, ${chatConversation.name}. Hemos registrado tu solicitud y nos pondremos en contacto contigo lo antes posible. Te agradecemos tu interés. ¡Que tengas un buen día!`,
-      'system'
-    );
-  } catch {
-    chatConversation.status = 'send-failed';
-    const notice = document.createElement('div');
-    notice.className = 'chat-msg bot';
-    notice.setAttribute('role', 'alert');
-    notice.textContent = 'No se pudo enviar tu solicitud. Comprueba la conexión y reintenta; tus respuestas y datos se conservarán.';
-    const retry = document.createElement('button');
-    retry.type = 'button';
-    retry.className = 'chat-option-button';
-    retry.textContent = 'Reintentar envío';
-    retry.addEventListener('click', ()=>{
-      notice.remove();
-      chatConversation.status = 'send-failed';
-      sendContactRequest();
-    });
-    notice.appendChild(retry);
-    chatBody.appendChild(notice);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
+  const message = document.createElement('div');
+  message.className = 'chat-msg bot';
+  message.append('El chat no puede enviar solicitudes en este momento. Por favor, escribe a ');
+  const emailLink = document.createElement('a');
+  emailLink.href = 'mailto:info@labadconsultoria.com';
+  emailLink.textContent = 'info@labadconsultoria.com';
+  message.append(emailLink, '.');
+  chatBody.appendChild(message);
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 function handleChatChoice(choice){
