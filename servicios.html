@@ -21,14 +21,7 @@
     footer{background:var(--primary);color:var(--white);padding:48px 0 22px}.footer-grid{display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12)} .footer-brand{font-family:'Playfair Display',serif;letter-spacing:.15em;text-transform:uppercase;font-size:38px}.footer-tag{font-family:'Cormorant Garamond',serif;font-size:30px;font-style:italic;color:var(--gold)} .footer-grid h3{color:var(--white);margin:0 0 12px;font-size:18px}.footer-grid p,.footer-grid li,.footer-grid a{color:rgba(255,255,255,.82)} .footer-links{list-style:none;padding:0;margin:0;display:grid;gap:8px}.footer-meta{text-align:center;padding-top:18px;color:rgba(255,255,255,.76);font-size:14px}
     @media (max-width:900px){ .nav-links{display:none}. .mobile{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(26,58,42,.1);border-radius:6px;background:transparent;color:var(--primary);font-size:22px}. .nav.is-open .nav-links{display:flex;position:absolute;left:0;right:0;top:92px;background:rgba(245,242,236,.98);flex-direction:column;align-items:flex-start;padding:18px 24px;border-bottom:1px solid var(--line)} .nav-links a{display:block;width:100%}.service-banner,.footer-grid{grid-template-columns:1fr}} @media (max-width:640px){ .container{width:min(100% - 28px, 1180px)} }
   </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MFEF1S653S"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MFEF1S653S');
-</script>
+
 </head>
 <body>
   <header>
@@ -97,30 +90,36 @@
     </article>
   </main>
 
-  <footer>
-    <div class="container footer-grid">
+  <footer style="background:#fff;color:var(--body);padding:0">
+    <div class="container footer-grid" style="border-color:#E5E7EB">
       <div>
-        <div class="footer-brand">LABAD</div>
-        <div class="footer-tag">Transformamos la sostenibilidad en ventaja competitiva.</div>
-        <p>Consultor?a focalizada en sostenibilidad, descarbonizaci?n y econom?a circular.</p>
+        <img src="images/labad-brand.png" alt="LABAD">
+        <p class="brand-sub" style="color:var(--primary)">Sustainability Strategy &amp; Circular Economy Consulting</p>
+        <p style="color:var(--body)">Bilbao, País Vasco</p>
       </div>
-      <div>
-        <h3>Links r?pidos</h3>
-        <ul class="footer-links">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="servicios.html">Servicios</a></li>
-          <li><a href="quienes-somos.html">Qui?nes Somos</a></li>
-          <li><a href="index.html#contacto">Contacto</a></li>
+      <nav aria-label="Navegación del pie de página">
+        <h3 style="color:var(--primary)">NAVEGACIÓN</h3>
+        <ul class="footer-links" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+          <li><a style="color:var(--primary)" href="index.html">Inicio</a></li>
+          <li><a style="color:var(--primary)" href="servicios.html">Servicios</a></li>
+          <li><a style="color:var(--primary)" href="quienes-somos.html">Quiénes somos</a></li>
+          <li><a style="color:var(--primary)" href="index.html#como-trabajamos">Metodología</a></li>
+          <li><a style="color:var(--primary)" href="index.html#articulos">Artículos y novedades</a></li>
+          <li><a style="color:var(--primary)" href="pia-pilot.html">PIA Pilot</a></li>
+          <li><a style="color:var(--primary)" href="index.html#contacto">Contacto</a></li>
+          <li><a style="color:var(--primary)" href="aviso-legal.html">Aviso Legal</a></li>
+          <li><a style="color:var(--primary)" href="politica-privacidad.html">Privacidad</a></li>
+          <li><a style="color:var(--primary)" href="politica-cookies.html">Cookies</a></li>
         </ul>
-      </div>
+      </nav>
       <div>
-        <h3>Contacto</h3>
-        <p>contacto@labad.es</p>
-        <p>LinkedIn: LABAD Consulting</p>
-        <p>Espa?a ? Europa</p>
+        <h3 style="color:var(--primary)">SÍGUENOS</h3>
+        <a style="color:var(--primary)" href="https://www.linkedin.com/in/natia-omiadze" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+        </a>
       </div>
     </div>
-    <div class="container footer-meta">? 2024 LABAD. Todos los derechos reservados.</div>
+    <div class="container footer-meta" style="background:#1a1a2e;color:#fff">© 2026 LABAD. Todos los derechos reservados.</div>
   </footer>
 
   <script>
@@ -128,5 +127,7 @@
     const btn = document.getElementById('menuBtn');
     btn.addEventListener('click', () => nav.classList.toggle('is-open'));
   </script>
+<div id="cookies-banner-container"></div>
+<script src="cookies-banner.js"></script>
 </body>
 </html>
