@@ -1582,7 +1582,7 @@ footer{padding:0;background:#fff;border-top:1px solid #E5E7EB;}
   <div class="container newsletter-inner">
     <p>Suscríbete para recibir noticias sobre compras sostenibles y artículos como este.</p>
     <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="Tu email" required>
+      <input type="email" name="email" placeholder="Tu email" required>
       <button class="btn btn-fill" type="submit">Suscribirme</button>
     </form>
   </div>
@@ -1804,39 +1804,6 @@ document.getElementById('contactForm').addEventListener('submit', async function
   }
 });
 
-/* ============ NEWSLETTER ============ */
-document.getElementById('newsletterForm').addEventListener('submit', async function(e){
-  e.preventDefault();
-  const input = e.target.querySelector('input');
-  const btn = e.target.querySelector('button');
-  const original = btn.textContent;
-  const email = input.value;
-
-  btn.textContent = 'Enviando...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch('/.netlify/functions/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-
-    if (res.ok) {
-      btn.textContent = '¡Gracias!';
-      input.value = '';
-    } else {
-      btn.textContent = 'Error, inténtalo de nuevo';
-    }
-  } catch (err) {
-    btn.textContent = 'Error, inténtalo de nuevo';
-  } finally {
-    setTimeout(() => {
-      btn.textContent = original;
-      btn.disabled = false;
-    }, 3000);
-  }
-});
 
 /* ============ CHATBOT ============ */
 const chatFab = document.getElementById('chatFab');
@@ -2317,6 +2284,7 @@ chatSend.addEventListener('click', handleChatSend);
 chatInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') handleChatSend(); });
 </script>
 <div id="cookies-banner-container"></div>
+<script src="subscribe.js"></script>
 <script src="cookies-banner.js"></script>
 </body>
 </html>
