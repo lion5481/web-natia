@@ -2006,7 +2006,7 @@ async function sendContactRequest(){
     }
 
     chatConversation.status = 'complete';
-    addChatMessage('✅ ¡Gracias! Hemos recibido tu consulta. Te contactaremos en menos de 24 horas.', 'system');
+    addChatMessage('✅ ¡Gracias! Tu mensaje se ha enviado correctamente. Nuestra agente te contactará lo antes posible.', 'system');
   } catch(error) {
     console.error('No se pudo enviar la consulta del chat:', error);
     chatConversation.status = 'send-failed';
